@@ -30,10 +30,20 @@ twitter_username: --
 github_username:  sibosend
 
 # Build settings
-theme: minimal-mistakes-jekyll
+# theme: minimal-mistakes-jekyll
 
 plugins:
   - jekyll-feed
+
+permalink: /:year/:month/:title/
+
+markdown: kramdown
+kramdown:
+  input: GFM # Enable GitHub Flavored Markdown (fenced code blocks)
+  hard_wrap: true
+
+exclude: ['README.md', 'LICENSE']
+
 
 # Exclude from processing.
 # The following items will not be processed, by default.
