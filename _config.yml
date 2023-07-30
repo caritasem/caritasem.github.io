@@ -179,9 +179,15 @@ analytics:
 
 ## => Build
 ##############################
-markdown    : gfm
+markdown    : kramdown
 highlighter : rouge
 permalink   : /:year/:month/:title/
+
+
+kramdown:
+  input: GFM # Enable GitHub Flavored Markdown (fenced code blocks)
+  hard_wrap: true
+
 
 exclude:
   - CHANGELOG.md
