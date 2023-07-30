@@ -272,7 +272,7 @@ defaults:
         excerpt_type: html
   ## posts
   - scope:
-      path: ""
+      path: "_posts"
       type: posts
     values:
       layout: article
