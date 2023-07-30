@@ -37,13 +37,24 @@ plugins:
 
 permalink: /:year/:month/:title/
 
-markdown: kramdown
-kramdown:
-  input: GFM # Enable GitHub Flavored Markdown (fenced code blocks)
-  hard_wrap: true
+markdown: GFM
+# kramdown:
+#   input: GFM # Enable GitHub Flavored Markdown (fenced code blocks)
+#   hard_wrap: true
 
-exclude: ['README.md', 'LICENSE']
-
+exclude: 
+  - README.md
+  - LICENSE
+  - gemfiles/
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - .sass-cache/
+  - .jekyll-cache/
 
 # Exclude from processing.
 # The following items will not be processed, by default.
