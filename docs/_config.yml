@@ -1,94 +1,28 @@
 # Welcome to Jekyll!
 #
 # This config file is meant for settings that affect your whole blog, values
-# which you are expected to set up once and rarely edit after that. If you find
-# yourself editing this file very often, consider using Jekyll's data files
-# feature for the data you need to update frequently.
-#
+# which you are expected to set up once and rarely need to edit after that.
 # For technical reasons, this file is *NOT* reloaded automatically when you use
-# 'bundle exec jekyll serve'. If you change this file, please restart the server process.
+# 'jekyll serve'. If you change this file, please restart the server process.
 #
-# If you need help with YAML syntax, here are some quick references for you:
-# https://learn-the-web.algonquindesign.ca/topics/markdown-yaml-cheat-sheet/#yaml
-# https://learnxinyminutes.com/docs/yaml/
-#
-# Site settings
-# These are used to personalize your new site. If you look in the HTML files,
-# you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
-# You can create any custom variable you would like, and they will be accessible
-# in the templates via {{ site.myvariable }}.
-
-title: sibosend
-email: caritasem@foxmail.com
-description: >- # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
-baseurl: "/" # the subpath of your site, e.g. /blog
-url: "https://sibosend.github.io" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: --
-github_username:  sibosend
-
-# Build settings
-# theme: minimal-mistakes-jekyll
-
-# plugins:
-#   - jekyll-feed
-
-permalink: /:year/:month/:title/
-
-markdown: GFM
-# kramdown:
-#   input: GFM # Enable GitHub Flavored Markdown (fenced code blocks)
-#   hard_wrap: true
-
-exclude: 
-  - README.md
-  - LICENSE
-  - gemfiles/
-  - Gemfile
-  - Gemfile.lock
-  - node_modules/
-  - vendor/bundle/
-  - vendor/cache/
-  - vendor/gems/
-  - vendor/ruby/
-  - .sass-cache/
-  - .jekyll-cache/
-  - _site/
-# Exclude from processing.
-# The following items will not be processed, by default.
-# Any item listed under the `exclude:` key here will be automatically added to
-# the internal "default list".
-#
-# Excluded items can be processed by explicitly listing the directories or
-# their entries' file path in the `include:` list.
-#
-# exclude:
-#   - .sass-cache/
-#   - .jekyll-cache/
-#   - gemfiles/
-#   - Gemfile
-#   - Gemfile.lock
-#   - node_modules/
-#   - vendor/bundle/
-#   - vendor/cache/
-#   - vendor/gems/
-#   - vendor/ruby/
-
+# ,--------.      ,--.   ,--. ,--.
+# '--.  .--',---.  \  `.'  /,-'  '-.
+#    |  |  | .-. :  .'    \ '-.  .-'
+#    |  |  \   --. /  .'.  \  |  |
+#    `--'   `----''--'   '--' `--'
 
 # config file for demo site, DELETE IT IF YOU WANT.
 
 
 ## => Site Settings
 ##############################
-text_skin: dark # "default" (default), "dark", "forest", "ocean", "chocolate", "orange"
-highlight_theme: tomorrow-night-bright # "default" (default), "tomorrow", "tomorrow-night", "tomorrow-night-eighties", "tomorrow-night-blue", "tomorrow-night-bright"
-# url     : https://tianqi.name
-# baseurl : /jekyll-TeXt-theme
-# title   : TeXt Theme
-# description: >
-#   A super customizable Jekyll theme for personal site, team site, blog, project, documentation, etc.
+text_skin: default # "default" (default), "dark", "forest", "ocean", "chocolate", "orange"
+highlight_theme: default # "default" (default), "tomorrow", "tomorrow-night", "tomorrow-night-eighties", "tomorrow-night-blue", "tomorrow-night-bright"
+url     : https://tianqi.name
+baseurl : /jekyll-TeXt-theme
+title   : TeXt Theme
+description: >
+  A super customizable Jekyll theme for personal site, team site, blog, project, documentation, etc.
 
 
 ## => Language and Timezone
@@ -107,23 +41,23 @@ author:
   bio: >
     TeXt is a super customizable Jekyll theme for personal site, team site, blog, project, documentation, etc.
     Similar to iOS 11 style, it has large and prominent titles, round buttons and cards.
-  email     : caritasem@foxmail.com
+  email     : kitian616@outlook.com
   facebook  :
-  twitter   : 
-  weibo     : 
-  googleplus: 
+  twitter   : kitian616
+  weibo     : 234695683
+  googleplus: 101827554735084402671
   telegram  :
   medium    :
   zhihu     :
   douban    :
   linkedin  :
-  github    : sibosend
+  github    : kitian616/jekyll-TeXt-theme
   npm       :
 
 
 ## => GitHub Repository (if the site is hosted by GitHub)
 ##############################
-repository: sibosend
+repository: kitian616/jekyll-TeXt-theme
 repository_tree: master
 
 
@@ -131,7 +65,7 @@ repository_tree: master
 ##############################
 paths:
   root    : # title link url, "/" (default)
-  home    : / # home layout url, "/" (default)
+  home    : /test/ # home layout url, "/" (default)
   archive : # "/archive.html" (default)
   rss     : # "/feed.xml" (default)
 
@@ -196,18 +130,18 @@ comments:
   ## Gitalk
   # please refer to https://github.com/gitalk/gitalk for more info.
   gitalk:
-    clientID    : 
-    clientSecret: 
-    repository  : 
-    owner       : 
+    clientID    : 143666b578a416f82175
+    clientSecret: 1d1c0604a1a4bff9b59ab7f56724dc0e8b837775
+    repository  : gitalk-demo
+    owner       : kitian616
     admin:
-      - 
+      - kitian616
 
   ## Valine
   # please refer to https://valine.js.org/en/ for more info.
   valine:
-    app_id      : 
-    app_key     : 
+    app_id      : uAG3OhdcH8H4fxSqXLyBljA7-gzGzoHsz
+    app_key     : Mzf5m9skSwYVWVXhGiYMNyXs
     placeholder : # Prompt information
     visitor     : # false (default)
     meta        : # "[nick, mail, link]" (default) nickname, E-mail, Personal-site
@@ -220,9 +154,9 @@ pageview:
 
   ## Leancloud
   leancloud:
-    app_id    : 
-    app_key   : 
-    app_class : 
+    app_id    : uAG3OhdcH8H4fxSqXLyBljA7-gzGzoHsz
+    app_key   : Mzf5m9skSwYVWVXhGiYMNyXs
+    app_class : TeXtDemo
 
 
 ## => Search
@@ -242,15 +176,35 @@ analytics:
 
   ## Google Analytics
   google:
-    tracking_id : 
+    tracking_id : UA-71907556-1
     anonymize_ip: false
 
 
 ## => Build
 ##############################
-# markdown    : gfm
+markdown    : kramdown
 highlighter : rouge
-# permalink   : date
+permalink   : date
+
+exclude:
+  - CHANGELOG.md
+  - HOW_TO_RELEASE.md
+  - Gemfile
+  - Gemfile.lock
+  - LICENSE
+  - README-*.md
+  - README.md
+  - gulpfile.js
+  - jekyll-text-theme.gemspec
+  - package-lock.json
+  - package.json
+  # - /docs
+  - /node_modules
+  # - /screenshots
+  # - /test
+  - /vendor
+  - /_posts
+  - /index.html
 
 collections_dir: docs
 collections:
@@ -272,7 +226,7 @@ defaults:
         excerpt_type: html
   ## posts
   - scope:
-      path: "_posts"
+      path: ""
       type: posts
     values:
       layout: article
@@ -342,4 +296,4 @@ plugins:
   - jekyll-sitemap
   - jemoji
 
-data_dir: /_data
+data_dir: /docs/_data
