@@ -3,7 +3,9 @@ layout: article
 title:  "指标监控模型"
 date:   2023-08-16 20:00:07 +0800
 categories: monitor
-tags: monitor、model
+tags: 
+    - monitor
+    - model
 ---
 
 ### 4个黄金指标
