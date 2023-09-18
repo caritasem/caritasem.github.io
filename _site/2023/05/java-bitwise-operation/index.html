@@ -1,0 +1,58 @@
+<table>
+  <tbody>
+    <tr>
+      <td>java支持的位运算符有7个，分为两类：位逻辑运算和移位运算。位逻辑运算符包括按位取反（~）、按位与（&amp;）、按位或（</td>
+      <td>）和按位异或（^）4种，。移位运算符包括左移（«）、右移（»）和无符号右移（»&gt;）3种。位运算符只能用于整型数据，包括byte、short、int、long和char类型。下表列出了各种位运算符的功能与示例。假设a = 10, b = 3。</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>~运算符是对运算数的每一位按位取反。<br />
+下表列出了位运算符的基本运算,假设整数变量A的值为60和变量B的值为13：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">操作符</th>
+      <th style="text-align: center">描述</th>
+      <th style="text-align: center">例子</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">&amp;</td>
+      <td style="text-align: center">如果相对应位都是1，则结果为1，否则为0</td>
+      <td style="text-align: center">A &amp; B得到 12，即0000 1100</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">|</td>
+      <td style="text-align: center">如果相对应位都是0，则结果为0，否则为1</td>
+      <td style="text-align: center">A | B得到61，即 0011 1101</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">^</td>
+      <td style="text-align: center">如果相对应位值相同，则结果为0，否则为1</td>
+      <td style="text-align: center">A ^ B得到 49，即 0011 0001</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">~</td>
+      <td style="text-align: center">按位取反运算符翻转操作数的每一位，即0变成1，1变成0。</td>
+      <td style="text-align: center">~A得到 -61，即1100 0011</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">«</td>
+      <td style="text-align: center">按位左移运算符。左操作数按位左移右操作数指定的位数。 （低位补零）</td>
+      <td style="text-align: center">A « 2得到 240，即 1111 0000</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">»</td>
+      <td style="text-align: center">“有符号”按位右移运算符。左操作数按位右移右操作数指定的位数。 该操作符使用 “符号扩展”：若符号为正，则高位插入 0；若符号为负，则高位插入 1。</td>
+      <td style="text-align: center">A » 2得到15即 1111</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">»&gt;</td>
+      <td style="text-align: center">“无符号”按位右移补零操作符。左操作数的值按右操作数指定的位数右移，移动得到的空位以零填充。 该操作符使用 “零扩展”，无论正负，都在高位插入 0。</td>
+      <td style="text-align: center">A »&gt; 2得到 15，即 0000 1111</td>
+    </tr>
+  </tbody>
+</table>

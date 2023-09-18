@@ -1,11 +1,10 @@
 <!DOCTYPE html><html lang="en">
   <head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>About - sibosend</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>supervisor python multiprocessing 监听信号 实现所有进程同时退出 - sibosend</title>
 
-<meta name="description" content="Your Site Description
-">
-<link rel="canonical" href="http://localhost:4000/about/"><link rel="alternate" type="application/rss+xml" title="sibosend" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
+<meta name="description" content="supervisor 多进程管理使用 supervisor 管理进程，如果被管理的项目是多进程模式，就需要注意一下：　　1、程序内是否有接收处理 kill -15 | SIGnal。　　2、python 程序无法监听 kill -9 信号（其他编程语言没有了解，但按理说应该是一样的），也无法拒绝（kill -9 ...">
+<link rel="canonical" href="http://localhost:4000/2023/09/supervisor-grand-subprocess/"><link rel="alternate" type="application/rss+xml" title="sibosend" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
 
 <meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/assets/browserconfig.xml">
 
@@ -255,7 +254,7 @@
 </head>
   <body>
     <div class="root" data-is-touch="false">
-      <div class="layout--page js-page-root"><div class="page__main js-page-main page__viewport cell cell--auto">
+      <div class="layout--page js-page-root"><div class="page__main js-page-main page__viewport has-aside cell cell--auto">
 
       <div class="page__main-inner"><div class="page__header d-print-none"><header class="header"><div class="main">
       <div class="header__title">
@@ -274,109 +273,280 @@
   </header>
 </div><div class="page__content"><div class ="main"><div class="grid grid--reverse">
 
-              <div class="col-aside d-print-none js-col-aside"></div>
+              <div class="col-aside d-print-none js-col-aside"><aside class="page__aside js-page-aside"><div class="toc-aside js-toc-root"></div>
+</aside></div>
 
               <div class="col-main cell cell--auto"><!-- start custom main top snippet -->
 
 <!-- end custom main top snippet -->
-<article itemscope itemtype="http://schema.org/Article"><div class="article__header"><header><h1>About</h1></header></div><meta itemprop="headline" content="About"><meta itemprop="author" content="caritasem"/><div class="js-article-content"><div class="layout--article"><!-- start custom article top snippet -->
+<article itemscope itemtype="http://schema.org/Article"><div class="article__header"><header><h1>supervisor python multiprocessing 监听信号 实现所有进程同时退出</h1></header><span class="split-space">&nbsp;</span>
+          <a class="edit-on-github"
+            title="Edit on Github"
+            href="https://github.com/sibosend/tree/master/_posts/2023-09-07-supervisor-grand-subprocess.md">
+            <i class="far fa-edit"></i></a></div><meta itemprop="headline" content="supervisor python multiprocessing 监听信号 实现所有进程同时退出"><div class="article__info clearfix"><ul class="left-col menu"><li>
+              <a class="button button--secondary button--pill button--sm"
+                href="/archive.html?tag=supervisor">supervisor</a>
+            </li><li>
+              <a class="button button--secondary button--pill button--sm"
+                href="/archive.html?tag=python">python</a>
+            </li><li>
+              <a class="button button--secondary button--pill button--sm"
+                href="/archive.html?tag=multiprocessing">multiprocessing</a>
+            </li></ul><ul class="right-col menu"><li><i class="far fa-calendar-alt"></i> <span>Sep 07, 2023</span>
+            </li></ul></div><meta itemprop="author" content="caritasem"/><meta itemprop="datePublished" content="2023-09-07T20:00:07+08:00">
+    <meta itemprop="keywords" content="supervisor,python,multiprocessing"><div class="js-article-content"><div class="layout--article"><!-- start custom article top snippet -->
 
 <!-- end custom article top snippet -->
-<div class="article__content" itemprop="articleBody"><p><img src="https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/TeXt-home.jpg" alt="TeXt Theme" /></p>
+<div class="article__content" itemprop="articleBody"><h2 id="supervisor-多进程管理">supervisor 多进程管理</h2>
 
-<p>TeXt is a super customizable Jekyll theme for personal site, team site, blog, project, documentation, etc. Similar to iOS 11 style, it has large and prominent titles, round buttons and cards.</p>
+<p>使用 supervisor 管理进程，如果被管理的项目是多进程模式，就需要注意一下：</p>
 
-<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Hello, World!</span><span class="dl">'</span><span class="p">))();</span>
+<p>　　1、程序内是否有接收处理 kill -15 | SIGnal。</p>
+
+<p>　　2、python 程序无法监听 kill -9 信号（其他编程语言没有了解，但按理说应该是一样的），也无法拒绝（kill -9 是立马强制结束进程），所以不要随便使用 kill -9 结束一个进程(kill params[pid], 会允许程序延迟退出，所以程序内可以监听 kill -15 | SIGnal)，如果使用 kill -9 结束了一个主进程，那么它的子进程就会成为孤儿进程，使用 kill -9 结束某个子进程，就会有可能导致其成为僵尸进程。</p>
+
+<p>　　3、如果确实有需要强制结束某个进程，为了安全起见，可以使用 kill  -9  -params[gpid] 代替， 如 kill  -9  -7634，强制立马结束 7634 进程组内的所有进程，正常情况下，主进程的 pid 和该进程组的 gpid 相同，但意义不一样。</p>
+
+<p>　　4、kill -15 (默认)和 kill -9 是两种不同的信号，python 程序可以监听 kill -15(也就理所当然的可以拒绝kill -15)，但是无法监听 kill -9(也就无法拒绝)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>如果程序没有监听并处理 kill | SIGnal 就需要到相应服务的 supervisor 管理配置文件声明：stop 服务时，允许 supervisor stop 该进程组下的所有进程：
 </code></pre></div></div>
 
-<h2 id="features">Features</h2>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="n">killasgroup</span><span class="o">=</span><span class="n">true</span>  <span class="c1"># 允许杀死该进程组内的所有进程
+</span><span class="n">stopasgroup</span><span class="o">=</span><span class="n">true</span>  <span class="c1"># 允许停止该进程组内的所有进程
+</span>
+</code></pre></div></div>
+<p>但是如果子进程里又新开了子进程，采用上述方式用supervisor是关闭不掉的，可以使用os和| SIGnal模块，用内核功能帮助完成必要的辅助操作，不影响应用层持续执行。</p>
 
-<ul>
-  <li>Responsive</li>
-  <li>Semantic HTML</li>
-  <li>Skins</li>
-  <li>Highlight Theme</li>
-  <li>Internationalization</li>
-  <li>Search</li>
-  <li>Table of contents</li>
-  <li>Authors</li>
-  <li>Additional styles (alert, tag, image, icon, button, grid, etc)</li>
-  <li>Extensions (audios, videos, slides, demos)</li>
-  <li>Markdown enhancements (<a href="https://www.mathjax.org/">MathJax</a>, <a href="https://mermaidjs.github.io/">mermaid</a>, <a href="http://www.chartjs.org/">chartjs</a>)</li>
-  <li>Sharing (<a href="https://www.addtoany.com/">AddToAny</a>, <a href="https://www.addthis.com/">AddThis</a>)</li>
-  <li>Comments (<a href="https://disqus.com/">Disqus</a>, <a href="https://gitalk.github.io/">Gitalk</a>, <a href="https://valine.js.org/en/">Valine</a>)</li>
-  <li>Pageview (<a href="https://leancloud.cn/">LeanCloud</a>)</li>
-  <li>Analytics (<a href="https://analytics.google.com/analytics/web/">Google Analytics</a>)</li>
-  <li>RSS (<a href="https://github.com/jekyll/jekyll-feed">jekyll-feed</a>)</li>
-</ul>
-
-<h2 id="skins">Skins</h2>
-
-<p>TeXt has 6 built-in skins, you can also set up your own skin.</p>
+<h2 id="常用信号量">常用信号量</h2>
 
 <table>
   <thead>
     <tr>
-      <th><code class="language-plaintext highlighter-rouge">default</code></th>
-      <th><code class="language-plaintext highlighter-rouge">dark</code></th>
-      <th><code class="language-plaintext highlighter-rouge">forest</code></th>
+      <th>信号</th>
+      <th>值</th>
+      <th>处理动作</th>
+      <th>发出信号的原因</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td><img src="https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/skins_default.jpg" alt="Default" /></td>
-      <td><img src="https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/skins_dark.jpg" alt="Dark" /></td>
-      <td><img src="https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/skins_forest.jpg" alt="Forest" /></td>
+      <td>SIGHUP</td>
+      <td>1</td>
+      <td>A</td>
+      <td>终端挂起或者控制进程终止</td>
+    </tr>
+    <tr>
+      <td>SIGINT</td>
+      <td>2</td>
+      <td>A</td>
+      <td>键盘中断（如break键被按下：如 control + c）</td>
+    </tr>
+    <tr>
+      <td>SIGQUIT</td>
+      <td>3</td>
+      <td>C</td>
+      <td>键盘的退出键被按下</td>
+    </tr>
+    <tr>
+      <td>SIGILL</td>
+      <td>4</td>
+      <td>C</td>
+      <td>非法指令</td>
+    </tr>
+    <tr>
+      <td>SIGABRT</td>
+      <td>6</td>
+      <td>C</td>
+      <td>由abort(3)发出的退出指令</td>
+    </tr>
+    <tr>
+      <td>SIGFPE</td>
+      <td>8</td>
+      <td>C</td>
+      <td>浮点异常</td>
+    </tr>
+    <tr>
+      <td>SIGKILL</td>
+      <td>9</td>
+      <td>AEF</td>
+      <td>Kill信号 (无法被程序捕获，程序也无法拒绝)</td>
+    </tr>
+    <tr>
+      <td>SIGSEGV</td>
+      <td>11</td>
+      <td>C</td>
+      <td>无效的内存引用</td>
+    </tr>
+    <tr>
+      <td>SIGPIPE</td>
+      <td>13</td>
+      <td>A</td>
+      <td>管道破裂: 写一个没有读端口的管道</td>
+    </tr>
+    <tr>
+      <td>SIGALRM</td>
+      <td>14</td>
+      <td>A</td>
+      <td>由alarm(2)发出的信号</td>
+    </tr>
+    <tr>
+      <td>SIGTERM</td>
+      <td>15</td>
+      <td>A</td>
+      <td>终止信号 （程序内可以监听该信号，当多进程中的任意进程监听到该信号，就退出所有进程，实现多进程安全退出）</td>
+    </tr>
+    <tr>
+      <td>SIGUSR1</td>
+      <td>30,10,16</td>
+      <td>A</td>
+      <td>用户自定义信号1</td>
+    </tr>
+    <tr>
+      <td>SIGUSR2</td>
+      <td>31,12,17</td>
+      <td>A</td>
+      <td>用户自定义信号2</td>
+    </tr>
+    <tr>
+      <td>SIGCHLD</td>
+      <td>20,17,18</td>
+      <td>B</td>
+      <td>子进程结束信号</td>
+    </tr>
+    <tr>
+      <td>SIGCONT</td>
+      <td>19,18,25</td>
+      <td> </td>
+      <td>进程继续（曾被停止的进程）</td>
+    </tr>
+    <tr>
+      <td>SIGSTOP</td>
+      <td>17,19,23</td>
+      <td>DEF</td>
+      <td>终止进程</td>
+    </tr>
+    <tr>
+      <td>SIGTSTP</td>
+      <td>18,20,24</td>
+      <td>D</td>
+      <td>控制终端（tty）上按下停止键</td>
+    </tr>
+    <tr>
+      <td>SIGTTIN</td>
+      <td>21,21,26</td>
+      <td>D</td>
+      <td>后台进程企图从控制终端读</td>
+    </tr>
+    <tr>
+      <td>SIGTTOU</td>
+      <td>22,22,27</td>
+      <td>D</td>
+      <td>后台进程企图从控制终端写</td>
     </tr>
   </tbody>
 </table>
 
-<table>
-  <thead>
-    <tr>
-      <th><code class="language-plaintext highlighter-rouge">ocean</code></th>
-      <th><code class="language-plaintext highlighter-rouge">chocolate</code></th>
-      <th><code class="language-plaintext highlighter-rouge">orange</code></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><img src="https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/skins_ocean.jpg" alt="Ocean" /></td>
-      <td><img src="https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/skins_chocolate.jpg" alt="Chocolate" /></td>
-      <td><img src="https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/skins_orange.jpg" alt="Orange" /></td>
-    </tr>
-  </tbody>
-</table>
+<p>python 多进程处理 SIGINT SIGTERM 方式, 示例如下：</p>
 
-<h3 id="highlight-theme">Highlight Theme</h3>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kn">import</span> <span class="n">os</span>
+<span class="kn">import</span> <span class="n">sys</span>
+<span class="kn">import</span> <span class="n">time</span>
+<span class="kn">import</span> <span class="n">signal</span>
+<span class="kn">import</span> <span class="n">multiprocessing</span>
+<span class="kn">from</span> <span class="n">multiprocessing</span> <span class="kn">import</span> <span class="n">Process</span>
 
-<p>TeXt use <a href="https://github.com/chriskempson/tomorrow-theme">Tomorrow</a> as the highlight theme.</p>
 
-<table>
-  <thead>
-    <tr>
-      <th><code class="language-plaintext highlighter-rouge">tomorrow</code></th>
-      <th><code class="language-plaintext highlighter-rouge">tomorrow-night</code></th>
-      <th><code class="language-plaintext highlighter-rouge">tomorrow-night-eighties</code></th>
-      <th><code class="language-plaintext highlighter-rouge">tomorrow-night-blue</code></th>
-      <th><code class="language-plaintext highlighter-rouge">tomorrow-night-bright</code></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><img src="https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/highlight_tomorrow.png" alt="Tomorrow" /></td>
-      <td><img src="https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/highlight_tomorrow-night.png" alt="Tomorrow Night" /></td>
-      <td><img src="https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/highlight_tomorrow-night-eighties.png" alt="Tomorrow Night Eighties" /></td>
-      <td><img src="https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/highlight_tomorrow-night-blue.png" alt="Tomorrow Night Blue" /></td>
-      <td><img src="https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/highlight_tomorrow-night-bright.png" alt="Tomorrow Night Bright" /></td>
-    </tr>
-  </tbody>
-</table>
-</div><div class="d-print-none"><footer class="article__footer"><!-- start custom article footer snippet -->
+<span class="k">def</span> <span class="nf">fun_grandchild</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">grand current pid is % s, group id is % s</span><span class="sh">"</span> <span class="o">%</span>
+              <span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="nf">getpid</span><span class="p">(),</span> <span class="n">os</span><span class="p">.</span><span class="nf">getpgrp</span><span class="p">()))</span>
+        <span class="n">time</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">fun</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="nc">Process</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">fun_grandchild</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="nf">str</span><span class="p">(</span><span class="mi">1</span><span class="p">),))</span>
+    <span class="n">t</span><span class="p">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="n">t</span><span class="p">.</span><span class="nf">start</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">t</span><span class="p">.</span><span class="nf">join</span><span class="p">()</span>
+    <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="nf">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">current pid is % s, group id is % s</span><span class="sh">"</span> <span class="o">%</span>
+              <span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="nf">getpid</span><span class="p">(),</span> <span class="n">os</span><span class="p">.</span><span class="nf">getpgrp</span><span class="p">()))</span>
+        <span class="n">time</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">term</span><span class="p">(</span><span class="n">signals</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">====current pid is % s, group id is % s</span><span class="sh">"</span> <span class="o">%</span>
+          <span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="nf">getpid</span><span class="p">(),</span> <span class="n">os</span><span class="p">.</span><span class="nf">getpgrp</span><span class="p">()))</span>
+
+    <span class="c1"># os.getpid() 获取当前进程号
+</span>    <span class="c1"># os.getpgid(params[pid]) 获取当前进程号的所在的组的组进程号
+</span>
+    <span class="c1"># 杀死某个进程：os.kill(params[pid], params[signal.SIGKILL])
+</span>    <span class="c1"># 杀死某个进程组下的所有进程：os.killpg(params[gpid], params[signal.SIGKILL])
+</span>
+    <span class="c1"># os.kill(os.getpid(), signal.SIGKILL)
+</span>
+    <span class="n">os</span><span class="p">.</span><span class="nf">killpg</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="nf">getpgid</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="nf">getpid</span><span class="p">()),</span> <span class="n">signal</span><span class="p">.</span><span class="n">SIGKILL</span><span class="p">)</span>
+
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">-------</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># 这行代码永远也不会被执行
+</span>
+
+<span class="k">def</span> <span class="nf">signal_handler</span><span class="p">(</span><span class="n">signals</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">You pressed Ctrl+C，进程号{}</span><span class="sh">'</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="nf">getpid</span><span class="p">()))</span>
+    <span class="c1"># 优雅地退出（让 control + c 不抛出异常信息）
+</span>    <span class="n">sys</span><span class="p">.</span><span class="nf">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">"</span><span class="s">__main__</span><span class="sh">"</span><span class="p">:</span>
+
+    <span class="c1"># 监听信号，注册回调函数(主进程或者子进程都会监听)
+</span>    <span class="n">signal</span><span class="p">.</span><span class="nf">signal</span><span class="p">(</span><span class="n">signal</span><span class="p">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="n">signal_handler</span><span class="p">)</span>  <span class="c1"># control + c 会发送该信号
+</span>    <span class="n">signal</span><span class="p">.</span><span class="nf">signal</span><span class="p">(</span><span class="n">signal</span><span class="p">.</span><span class="n">SIGTERM</span><span class="p">,</span> <span class="n">term</span><span class="p">)</span>
+
+    <span class="c1"># 程序无法捕获 signal.SIGKIL，会报错（但是可以发送，如 term() 中所示）
+</span>    <span class="c1"># signal.signal(signal.SIGKILL, term)
+</span>
+    <span class="n">processes</span> <span class="o">=</span> <span class="nf">list</span><span class="p">()</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">currentpid is % s</span><span class="sh">"</span> <span class="o">%</span> <span class="n">os</span><span class="p">.</span><span class="nf">getpid</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="nc">Process</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">fun</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="nf">str</span><span class="p">(</span><span class="n">i</span><span class="p">),))</span>
+        <span class="n">t</span><span class="p">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">t</span><span class="p">.</span><span class="nf">start</span><span class="p">()</span>
+        <span class="n">processes</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">processes</span><span class="p">:</span>
+            <span class="n">p</span><span class="p">.</span><span class="nf">join</span><span class="p">()</span>
+    <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="nf">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+
+</code></pre></div></div>
+
+<hr />
+<ol>
+  <li>https://www.cnblogs.com/lowmanisbusy/p/12733695.html</li>
+</ol>
+
+</div><section class="article__sharing d-print-none"></section><div class="d-print-none"><footer class="article__footer"><meta itemprop="dateModified" content="2023-09-07T20:00:07+08:00"><!-- start custom article footer snippet -->
 
 <!-- end custom article footer snippet -->
-</footer>
-</div>
+<div class="article__subscribe"><div class="subscribe"><i class="fas fa-rss"></i> <a type="application/rss+xml" href="/feed.xml">Subscribe</a></div>
+</div><div class="article__license"><div class="license">
+    <p>This work is licensed under a <a itemprop="license" rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">Attribution-NonCommercial 4.0 International</a> license.
+      <a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">
+        <img alt="Attribution-NonCommercial 4.0 International" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" />
+      </a>
+    </p>
+  </div></div></footer>
+<div class="article__section-navigator clearfix"><div class="previous"><span>PREVIOUS</span><a href="/2023/08/sre-heinrich-law/">稳定性之heinrich’s law</a></div><div class="next"><span>NEXT</span><a href="/2023/09/sre-pre-event/">SRE建设之事前建设</a></div></div></div>
 
 </div>
 
@@ -942,6 +1112,68 @@ window.Lazyload.js([SOURCES.jquery, PAHTS.search_js], function() {
 /*(function () {
 
 })();*/
+</script><script>
+  /* toc must before affix, since affix need to konw toc' height. */(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  var TOC_SELECTOR = window.TEXT_VARIABLES.site.toc.selectors;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window);
+    var $articleContent = $('.js-article-content');
+    var $tocRoot = $('.js-toc-root'), $col2 = $('.js-col-aside');
+    var toc;
+    var tocDisabled = false;
+    var hasSidebar = $('.js-page-root').hasClass('layout--page--sidebar');
+    var hasToc = $articleContent.find(TOC_SELECTOR).length > 0;
+
+    function disabled() {
+      return $col2.css('display') === 'none' || !hasToc;
+    }
+
+    tocDisabled = disabled();
+
+    toc = $tocRoot.toc({
+      selectors: TOC_SELECTOR,
+      container: $articleContent,
+      scrollTarget: hasSidebar ? '.js-page-main' : null,
+      scroller: hasSidebar ? '.js-page-main' : null,
+      disabled: tocDisabled
+    });
+
+    $window.on('resize', window.throttle(function() {
+      tocDisabled = disabled();
+      toc && toc.setOptions({
+        disabled: tocDisabled
+      });
+    }, 100));
+
+  });
+})();
+(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window), $pageFooter = $('.js-page-footer');
+    var $pageAside = $('.js-page-aside');
+    var affix;
+    var tocDisabled = false;
+    var hasSidebar = $('.js-page-root').hasClass('layout--page--sidebar');
+
+    affix = $pageAside.affix({
+      offsetBottom: $pageFooter.outerHeight(),
+      scrollTarget: hasSidebar ? '.js-page-main' : null,
+      scroller: hasSidebar ? '.js-page-main' : null,
+      scroll: hasSidebar ? $('.js-page-main').children() : null,
+      disabled: tocDisabled
+    });
+
+    $window.on('resize', window.throttle(function() {
+      affix && affix.setOptions({
+        disabled: tocDisabled
+      });
+    }, 100));
+
+    window.pageAsideAffix = affix;
+  });
+})();
 </script><script>
   window.Lazyload.js(['https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js', 'https://cdn.bootcss.com/Chart.js/2.7.2/Chart.bundle.min.js'], function() {
     var $canvas = null, $this = null, _ctx = null, _text = '';
