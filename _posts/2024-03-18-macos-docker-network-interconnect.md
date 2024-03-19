@@ -71,11 +71,17 @@ tags:
    docker network connect NETWORKNAME openvpn_bridge
    # 注意 NETWORKNAME 为 docker network list 列出的网络组name
    ```
-1. 打开Docker Desktop，在容器openvpn_bridge上调整Firewall设置
-    ```
-    iptables -t nat -A POSTROUTING -d 172.31.1.0/24 -o eth1 -j SNAT --to-source 172.31.1.2
-    # 注： 其他网段如是
-    ```
+1. 更改防火墙设置
+   1. 进入Docker环境
+        ```
+        docker run -it --rm --privileged --pid=host justincormack/nsenter1
+        cd /var/lib/docker/volumes/$OVPN_DATA/_data/
+        ```
+    2. 追加nat信息
+        ```
+        echo 'iptables -t nat -A POSTROUTING -d 172.31.1.0/24 -o eth1 -j SNAT --to-source 172.31.1.2' >> ovpn_env.sh
+        # 注： 其他网段如是
+        ```
 
 如此这番操作，就可以直接通过宿主机去访问docker容器实例的ip了，使用ping命令也能ping通。
 
