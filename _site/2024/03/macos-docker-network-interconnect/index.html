@@ -1,10 +1,10 @@
 <!DOCTYPE html><html lang="en">
   <head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>指标监控模型 - caritasem</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>mac 下docker多个网段与host间网络互通 - caritasem</title>
 
-<meta name="description" content="4个黄金指标Four Golden Signals是Google针对大量分布式监控的经验总结，4个黄金指标可以在服务级别帮助衡量终端用户体验、服务中断、业务影响等层面的问题。主要关注与以下四种类型的指标：延迟，通讯量，错误以及饱和度：  延迟 Latency：服务请求所需时间。记录用户所有请求所需的时间，重点是要...">
-<link rel="canonical" href="http://localhost:4000/2023/08/monitor-models/"><link rel="alternate" type="application/rss+xml" title="caritasem" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
+<meta name="description" content="背景在macos系统下，如果在docker内部署多个容器，每个容器使用不同的网段，如使用172.17.x.x / 10.x.x.x 网段，则需要解决从宿主机到各个容器的网络通信。如果是使用其他Linux系统的用户则不用担心这个问题，Linux系统会自动帮我们处理好ip之间的互通（宿主机和各个容器之间）。而Mac想...">
+<link rel="canonical" href="http://localhost:4000/2024/03/macos-docker-network-interconnect/"><link rel="alternate" type="application/rss+xml" title="caritasem" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
 
 <meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/assets/browserconfig.xml">
 
@@ -279,66 +279,116 @@
               <div class="col-main cell cell--auto"><!-- start custom main top snippet -->
 
 <!-- end custom main top snippet -->
-<article itemscope itemtype="http://schema.org/Article"><div class="article__header"><header><h1>指标监控模型</h1></header><span class="split-space">&nbsp;</span>
+<article itemscope itemtype="http://schema.org/Article"><div class="article__header"><header><h1>mac 下docker多个网段与host间网络互通</h1></header><span class="split-space">&nbsp;</span>
           <a class="edit-on-github"
             title="Edit on Github"
-            href="https://github.com/sibosend/tree/master/_posts/2023-08-16-monitor-models.md">
-            <i class="far fa-edit"></i></a></div><meta itemprop="headline" content="指标监控模型"><div class="article__info clearfix"><ul class="left-col menu"><li>
+            href="https://github.com/sibosend/tree/master/_posts/2024-03-18-macos-docker-network-interconnect.md">
+            <i class="far fa-edit"></i></a></div><meta itemprop="headline" content="mac 下docker多个网段与host间网络互通"><div class="article__info clearfix"><ul class="left-col menu"><li>
               <a class="button button--secondary button--pill button--sm"
-                href="/archive?tag=monitor">monitor</a>
-            </li><li>
-              <a class="button button--secondary button--pill button--sm"
-                href="/archive?tag=model">model</a>
-            </li></ul><ul class="right-col menu"><li><i class="far fa-calendar-alt"></i> <span>Aug 16, 2023</span>
-            </li></ul></div><meta itemprop="author" content="caritasem"/><meta itemprop="datePublished" content="2023-08-16T20:00:07+08:00">
-    <meta itemprop="keywords" content="monitor,model"><div class="js-article-content"><div class="layout--article"><!-- start custom article top snippet -->
+                href="/archive?tag=docker">docker</a>
+            </li></ul><ul class="right-col menu"><li><i class="far fa-calendar-alt"></i> <span>Mar 18, 2024</span>
+            </li></ul></div><meta itemprop="author" content="caritasem"/><meta itemprop="datePublished" content="2024-03-18T11:00:07+08:00">
+    <meta itemprop="keywords" content="docker"><div class="js-article-content"><div class="layout--article"><!-- start custom article top snippet -->
 
 <!-- end custom article top snippet -->
-<div class="article__content" itemprop="articleBody"><h3 id="4个黄金指标">4个黄金指标</h3>
-<p>Four Golden Signals是Google针对大量分布式监控的经验总结，4个黄金指标可以在服务级别帮助衡量终端用户体验、服务中断、业务影响等层面的问题。主要关注与以下四种类型的指标：延迟，通讯量，错误以及饱和度：</p>
+<div class="article__content" itemprop="articleBody"><h2 id="背景">背景</h2>
+
+<p>在macos系统下，如果在docker内部署多个容器，每个容器使用不同的网段，如使用172.17.x.x / 10.x.x.x 网段，则需要解决从宿主机到各个容器的网络通信。</p>
+
+<p>如果是使用其他Linux系统的用户则不用担心这个问题，Linux系统会自动帮我们处理好ip之间的互通（宿主机和各个容器之间）。而Mac想要直接访问容器的ip，则需要曲线救国，通过搭建一个vpn服务，然后通过vpn再去和容器的网段互联。</p>
+
+<p>经过尝试openvpn成为了最佳的解决方案。</p>
+
+<p>其中网络连通的原理，如下图所示，openvpn作为一个转接的桥梁。</p>
+
+<p><img src="/assets/posts/202403/docker.mac.互通.svg" /></p>
+
+<blockquote>
+  <p>该容器(openvpn)在Docker For Mac容器和主机Mac本身之间创建VPN网络, 通过挂载多块虚拟网卡打通各个子网间的路由。</p>
+</blockquote>
+
+<p>使用到的工具：</p>
 <ul>
-  <li>延迟 Latency：服务请求所需时间。</li>
+  <li>Docker Desktop</li>
+  <li>docker镜像为 https://github.com/kylemanna/docker-openvpn</li>
+  <li>Tunnelblick</li>
 </ul>
 
-<p>记录用户所有请求所需的时间，重点是要区分成功请求的延迟时间和失败请求的延迟时间。 例如在数据库或者其他关键祸端服务异常触发HTTP 500的情况下，用户也可能会很快得到请求失败的响应内容，如果不加区分计算这些请求的延迟，可能导致计算结果与实际结果产生巨大的差异。除此以外，在微服务中通常提倡“快速失败”，开发人员需要特别注意这些延迟较大的错误，因为这些缓慢的错误会明显影响系统的性能，因此追踪这些错误的延迟也是非常重要的。</p>
+<h2 id="执行步骤">执行步骤：</h2>
+<ol>
+  <li>初始化一个ovpn数据Volume，用以保存配置文件和凭证。
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> export OVPN_DATA="ovpn-data-example"
+ docker volume create --name $OVPN_DATA
+</code></pre></div>    </div>
+  </li>
+  <li>创建所需要的vpn环境配置文件
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker run -v $OVPN_DATA:/etc/openvpn --rm kylemanna/openvpn \
+     ovpn_genconfig -u udp://localhost \
+     -p 'route 172.31.1.0 255.255.255.0'  
 
-<ul>
-  <li>通讯量 Traffic：监控当前系统的流量，用于衡量服务的容量需求。</li>
-</ul>
+ # 注意将需要互通的docker环境下的网段都追加到上述命令中
+</code></pre></div>    </div>
+  </li>
+  <li>创建vpn 链接所需的密钥
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -v $OVPN_DATA:/etc/openvpn --rm -it kylemanna/openvpn ovpn_initpki
+</code></pre></div>    </div>
+  </li>
+  <li>运行vpn server
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker run -v $OVPN_DATA:/etc/openvpn  --name openvpn_bridge  -d -p 1194:1194/udp --cap-add=NET_ADMIN kylemanna/openvpn
+ # openvpn_bridge 为容器名称，可以换掉
+</code></pre></div>    </div>
+  </li>
+  <li>创建一个不含秘钥的客户端凭证
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker run -v $OVPN_DATA:/etc/openvpn --rm -it kylemanna/openvpn easyrsa build-client-full CLIENTNAME nopass
+ # CLIENTNAME 请更改
+</code></pre></div>    </div>
+  </li>
+  <li>使用上述证书生成客户端配置。
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -v $OVPN_DATA:/etc/openvpn --rm kylemanna/openvpn ovpn_getclient CLIENTNAME &gt; CLIENTNAME.ovpn
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>上面这一步生成的 CLIENTNAME.ovpn 配置需要在Tunnelblink里面使用。Tunnelblink是一款开源免费的针对MacOS的OpenVPN图形化客户端，可以非常方便地使用openvpn配置来连接网络服务。</p>
 
-<p>流量对于不同类型的系统而言可能代表不同的含义。例如，在HTTP REST API中, 流量通常是每秒HTTP请求数；</p>
+    <p>下载并安装后Tunnelblink（下载dmg包-双击安装-选择 已有网络配置），运行它，然后再到终端执行如下命令来添加网络配置：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> open ./CLIENTNAME.ovpn
+</code></pre></div>    </div>
+  </li>
+  <li>将vpn容器挂载到所需要互通的网段上
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># 在host终端执行
+docker network list
+docker network connect NETWORKNAME openvpn_bridge
+# 注意 NETWORKNAME 为 docker network list 列出的网络组name
+</code></pre></div>    </div>
+  </li>
+  <li>更改防火墙设置
+    <ol>
+      <li>进入Docker环境
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  docker run -it --rm --privileged --pid=host justincormack/nsenter1
+  cd /var/lib/docker/volumes/$OVPN_DATA/_data/
+</code></pre></div>        </div>
+      </li>
+      <li>追加nat信息
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> echo 'iptables -t nat -A POSTROUTING -d 172.31.1.0/24 -o eth1 -j SNAT --to-source 172.31.1.2' &gt;&gt; ovpn_env.sh
+ # 注： 其他网段如是
+</code></pre></div>        </div>
+      </li>
+    </ol>
+  </li>
+</ol>
 
-<ul>
-  <li>错误 Error：监控当前系统所有发生的错误请求，衡量当前系统错误发生的速率。</li>
-</ul>
+<p>如此这番操作，就可以直接通过宿主机去访问docker容器实例的ip了，使用ping命令也能ping通。</p>
 
-<p>对于失败而言有些是显式的(比如, HTTP 500错误)，而有些是隐式(比如，HTTP响应200，但实际业务流程依然是失败的)。<br />
-对于一些显式的错误如HTTP 500可以通过在负载均衡器(如Nginx)上进行捕获，而对于一些系统内部的异常，则可能需要直接从服务中添加钩子统计并进行获取。</p>
+<p>注意：</p>
+<ol>
+  <li>
+    <p>开启Tunnelblink的dockerForMac后可能导致您的有些网页无法打开，本人环境下实测关闭Tunnelblink的DNS功能即可。<br />
+<img src="/assets/posts/202403/openvpn.nodns.png" /></p>
+  </li>
+  <li></li>
+</ol>
 
-<ul>
-  <li>饱和度 Saturation：衡量当前服务的饱和度。</li>
-</ul>
-
-<p>主要强调最能影响服务状态的受限制的资源。 例如，如果系统主要受内存影响，那就主要关注系统的内存状态，如果系统主要受限与磁盘I/O，那就主要观测磁盘I/O的状态。因为通常情况下，当这些资源达到饱和后，服务的性能会明显下降。同时还可以利用饱和度对系统做出预测，比如，“磁盘是否可能在4个小时候就满了”。</p>
-
-<h3 id="red方法">RED方法</h3>
-<p>RED方法是Weave Cloud在基于Google的“4个黄金指标”的原则下结合Prometheus以及Kubernetes容器实践，细化和总结的方法论，特别适合于云原生应用以及微服务架构应用的监控和度量。主要关注以下三种关键指标：</p>
-<ul>
-  <li>(请求)速率 Rate：服务每秒接收的请求数。</li>
-  <li>(请求)错误 Error：每秒失败的请求数。</li>
-  <li>(请求)耗时 Duration：每个请求的耗时。</li>
-</ul>
-
-<p>在“4大黄金信号”的原则下，RED方法可以有效的帮助用户衡量云原生以及微服务应用下的用户体验问题。</p>
-
-<h3 id="use方法">USE方法</h3>
-
-<p>USE方法全称”Utilization Saturation and Errors Method”，主要用于分析系统性能问题，可以指导用户快速识别资源瓶颈以及错误的方法。正如USE方法的名字所表示的含义，USE方法主要关注与资源的：使用率(Utilization)、饱和度(Saturation)以及错误(Errors)。</p>
-
-<p>通过对资源以上指标持续观察，通过以下流程可以知道用户识别资源瓶颈：</p>
-
-<p><img src="/assets/posts/202308/USEMethod.png" /></p>
-</div><section class="article__sharing d-print-none"></section><div class="d-print-none"><footer class="article__footer"><meta itemprop="dateModified" content="2023-08-16T20:00:07+08:00"><!-- start custom article footer snippet -->
+</div><section class="article__sharing d-print-none"></section><div class="d-print-none"><footer class="article__footer"><meta itemprop="dateModified" content="2024-03-18T11:00:07+08:00"><!-- start custom article footer snippet -->
 
 <!-- end custom article footer snippet -->
 <div class="article__subscribe"><div class="subscribe"><i class="fas fa-rss"></i> <a type="application/rss+xml" href="/feed.xml">Subscribe</a></div>
@@ -349,7 +399,7 @@
       </a>
     </p>
   </div></div></footer>
-<div class="article__section-navigator clearfix"><div class="previous"><span>PREVIOUS</span><a href="/2023/08/how-to-monitor-latency/">Latency监控指标</a></div><div class="next"><span>NEXT</span><a href="/2023/08/google-scorecard/">Google自我评分卡</a></div></div></div>
+<div class="article__section-navigator clearfix"><div class="previous"><span>PREVIOUS</span><a href="/2023/11/engineer-motto/">工程金句</a></div><div class="next"><span>NEXT</span><a href="/2024/03/springboot-redis-cluster/">Springboot 对接Redis Cluster 消息队列</a></div></div></div>
 
 </div>
 

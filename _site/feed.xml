@@ -1,5 +1,453 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-09-18T11:37:56+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">sibosend</title><subtitle>Your Site Description
-</subtitle><author><name>caritasem</name></author><entry><title type="html">supervisor python multiprocessing 监听信号 实现所有进程同时退出</title><link href="http://localhost:4000/2023/09/supervisor-grand-subprocess/" rel="alternate" type="text/html" title="supervisor python multiprocessing 监听信号 实现所有进程同时退出" /><published>2023-09-07T20:00:07+08:00</published><updated>2023-09-07T20:00:07+08:00</updated><id>http://localhost:4000/2023/09/supervisor-grand-subprocess</id><content type="html" xml:base="http://localhost:4000/2023/09/supervisor-grand-subprocess/"><![CDATA[<h2 id="supervisor-多进程管理">supervisor 多进程管理</h2>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-03-26T11:48:51+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">caritasem</title><subtitle>Your Site Description
+</subtitle><author><name>caritasem</name></author><entry><title type="html">how to install blender as a python module on Ubuntu 20.04</title><link href="http://localhost:4000/2024/03/install-blender-python-module-on-ubuntu/" rel="alternate" type="text/html" title="how to install blender as a python module on Ubuntu 20.04" /><published>2024-03-26T11:00:07+08:00</published><updated>2024-03-26T11:00:07+08:00</updated><id>http://localhost:4000/2024/03/install-blender-python-module-on-ubuntu</id><content type="html" xml:base="http://localhost:4000/2024/03/install-blender-python-module-on-ubuntu/"><![CDATA[<p>在服务器上需要用到Blender bpy库来处理3D模型，发现普通安装过程非常难解决环境依赖问题，无论是 pip install bpy，还是按照官网推荐的 source code compile方式，都不容易走通。</p>
+
+<p>解决方案是使用 wheel 方式安装，不用关心依赖关系了~</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># 创建虚拟环境
+conda create --prefix /folder/condaenv/blender python=3.10
+conda activate /folder/condaenv/blender
+
+# 下载whl
+wget https://pypi.tuna.tsinghua.edu.cn/packages/9c/cf/536e231d0fff186e46668ae701f6788cdd740ff48545dadfad234bb0255b/bpy-3.6.0-cp310-cp310-manylinux_2_28_x86_64.whl#sha256=ede2c95ace7848f4f5a075a7d8cc3a9e643c335f4596c3c15087d93c7ae5f56a
+
+# 安装
+pip install bpy-3.6.0-cp310-cp310-manylinux_2_28_x86_64.whl
+
+</code></pre></div></div>
+
+<p>all done!</p>
+
+<p><img src="/assets/posts/202403/bpy.png" /></p>
+
+<h3 id="附录">附录</h3>
+
+<h4 id="wheelwhl包到底是什么">wheel（.whl）包到底是什么</h4>
+<p>wheel包本质上是一个zip文件。是已编译发行版的一种格式。需要注意的是，尽管它是已经编译好的，包里面一般不包含.pyc或是Python字节码。一个wheel包的文件名由以下这些部分组成：</p>
+
+<p>{dist}-{version}(-{build})?-{python}-{abi}-{platform}.whl</p>
+
+<p>以上面的bpy为例：</p>
+
+<p>bpy-3.6.0-cp310-cp310-manylinux_2_28_x86_64.whl</p>
+
+<p>bpy是包名（dist）。<br />
+3.6.0是包的版本号（version）。<br />
+cp310是对python解释器和版本的要求（python）。cp指的是CPython解释器，310指的是版本3.10的Python。<br />
+第二个cp310是ABI的标签（python）。ABI即应用二进制接口（Application Binary Interface）。这个一般来说我们不用关心。<br />
+manylinux_2_28_x86_64是平台标签（platform），告诉我们这个包是为 Linux 操作系统的，适用于x86-64指令集。</p>
+
+<p>manylinux是一个比较有意思的平台标签。鉴于Linux系统有不同的发行版（Ubuntu，CentOS，Fedora等等），而安装包需要编译C/C++代码，那有可能不同Linux发行版就不能运行安装包了，而为每个Linux发行版生成一个wheel又太麻烦，所以就诞生了manylinux系列标签：manylinux1（PEP513），manylinux2010（PEP571）和manylinux2014（PEP599）。<br />
+manylinux标签的核心是一个CentOS的Docker镜像，打包了一些编译器套件、多版本Python和pip、动态库等来确保兼容性。这个在PEP513里面有提到。</p>]]></content><author><name>caritasem</name></author><category term="blender" /><category term="blender" /><category term="ubuntu" /><category term="bpy" /><summary type="html"><![CDATA[在服务器上需要用到Blender bpy库来处理3D模型，发现普通安装过程非常难解决环境依赖问题，无论是 pip install bpy，还是按照官网推荐的 source code compile方式，都不容易走通。 解决方案是使用 wheel 方式安装，不用关心依赖关系了~ # 创建虚拟环境 conda create --prefix /folder/condaenv/blender python=3.10 conda activate /folder/condaenv/blender # 下载whl wget https://pypi.tuna.tsinghua.edu.cn/packages/9c/cf/536e231d0fff186e46668ae701f6788cdd740ff48545dadfad234bb0255b/bpy-3.6.0-cp310-cp310-manylinux_2_28_x86_64.whl#sha256=ede2c95ace7848f4f5a075a7d8cc3a9e643c335f4596c3c15087d93c7ae5f56a # 安装 pip install bpy-3.6.0-cp310-cp310-manylinux_2_28_x86_64.whl all done! 附录 wheel（.whl）包到底是什么 wheel包本质上是一个zip文件。是已编译发行版的一种格式。需要注意的是，尽管它是已经编译好的，包里面一般不包含.pyc或是Python字节码。一个wheel包的文件名由以下这些部分组成： {dist}-{version}(-{build})?-{python}-{abi}-{platform}.whl 以上面的bpy为例： bpy-3.6.0-cp310-cp310-manylinux_2_28_x86_64.whl bpy是包名（dist）。 3.6.0是包的版本号（version）。 cp310是对python解释器和版本的要求（python）。cp指的是CPython解释器，310指的是版本3.10的Python。 第二个cp310是ABI的标签（python）。ABI即应用二进制接口（Application Binary Interface）。这个一般来说我们不用关心。 manylinux_2_28_x86_64是平台标签（platform），告诉我们这个包是为 Linux 操作系统的，适用于x86-64指令集。 manylinux是一个比较有意思的平台标签。鉴于Linux系统有不同的发行版（Ubuntu，CentOS，Fedora等等），而安装包需要编译C/C++代码，那有可能不同Linux发行版就不能运行安装包了，而为每个Linux发行版生成一个wheel又太麻烦，所以就诞生了manylinux系列标签：manylinux1（PEP513），manylinux2010（PEP571）和manylinux2014（PEP599）。 manylinux标签的核心是一个CentOS的Docker镜像，打包了一些编译器套件、多版本Python和pip、动态库等来确保兼容性。这个在PEP513里面有提到。]]></summary></entry><entry><title type="html">mac 下docker多个网段与host间网络互通</title><link href="http://localhost:4000/2024/03/macos-docker-network-interconnect/" rel="alternate" type="text/html" title="mac 下docker多个网段与host间网络互通" /><published>2024-03-18T11:00:07+08:00</published><updated>2024-03-18T11:00:07+08:00</updated><id>http://localhost:4000/2024/03/macos-docker-network-interconnect</id><content type="html" xml:base="http://localhost:4000/2024/03/macos-docker-network-interconnect/"><![CDATA[<h2 id="背景">背景</h2>
+
+<p>在macos系统下，如果在docker内部署多个容器，每个容器使用不同的网段，如使用172.17.x.x / 10.x.x.x 网段，则需要解决从宿主机到各个容器的网络通信。</p>
+
+<p>如果是使用其他Linux系统的用户则不用担心这个问题，Linux系统会自动帮我们处理好ip之间的互通（宿主机和各个容器之间）。而Mac想要直接访问容器的ip，则需要曲线救国，通过搭建一个vpn服务，然后通过vpn再去和容器的网段互联。</p>
+
+<p>经过尝试openvpn成为了最佳的解决方案。</p>
+
+<p>其中网络连通的原理，如下图所示，openvpn作为一个转接的桥梁。</p>
+
+<p><img src="/assets/posts/202403/docker.mac.互通.svg" /></p>
+
+<blockquote>
+  <p>该容器(openvpn)在Docker For Mac容器和主机Mac本身之间创建VPN网络, 通过挂载多块虚拟网卡打通各个子网间的路由。</p>
+</blockquote>
+
+<p>使用到的工具：</p>
+<ul>
+  <li>Docker Desktop</li>
+  <li>docker镜像为 https://github.com/kylemanna/docker-openvpn</li>
+  <li>Tunnelblick</li>
+</ul>
+
+<h2 id="执行步骤">执行步骤：</h2>
+<ol>
+  <li>初始化一个ovpn数据Volume，用以保存配置文件和凭证。
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> export OVPN_DATA="ovpn-data-example"
+ docker volume create --name $OVPN_DATA
+</code></pre></div>    </div>
+  </li>
+  <li>创建所需要的vpn环境配置文件
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker run -v $OVPN_DATA:/etc/openvpn --rm kylemanna/openvpn \
+     ovpn_genconfig -u udp://localhost \
+     -p 'route 172.31.1.0 255.255.255.0'  
+
+ # 注意将需要互通的docker环境下的网段都追加到上述命令中
+</code></pre></div>    </div>
+  </li>
+  <li>创建vpn 链接所需的密钥
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -v $OVPN_DATA:/etc/openvpn --rm -it kylemanna/openvpn ovpn_initpki
+</code></pre></div>    </div>
+  </li>
+  <li>运行vpn server
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker run -v $OVPN_DATA:/etc/openvpn  --name openvpn_bridge  -d -p 1194:1194/udp --cap-add=NET_ADMIN kylemanna/openvpn
+ # openvpn_bridge 为容器名称，可以换掉
+</code></pre></div>    </div>
+  </li>
+  <li>创建一个不含秘钥的客户端凭证
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker run -v $OVPN_DATA:/etc/openvpn --rm -it kylemanna/openvpn easyrsa build-client-full CLIENTNAME nopass
+ # CLIENTNAME 请更改
+</code></pre></div>    </div>
+  </li>
+  <li>使用上述证书生成客户端配置。
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -v $OVPN_DATA:/etc/openvpn --rm kylemanna/openvpn ovpn_getclient CLIENTNAME &gt; CLIENTNAME.ovpn
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>上面这一步生成的 CLIENTNAME.ovpn 配置需要在Tunnelblink里面使用。Tunnelblink是一款开源免费的针对MacOS的OpenVPN图形化客户端，可以非常方便地使用openvpn配置来连接网络服务。</p>
+
+    <p>下载并安装后Tunnelblink（下载dmg包-双击安装-选择 已有网络配置），运行它，然后再到终端执行如下命令来添加网络配置：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> open ./CLIENTNAME.ovpn
+</code></pre></div>    </div>
+  </li>
+  <li>将vpn容器挂载到所需要互通的网段上
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># 在host终端执行
+docker network list
+docker network connect NETWORKNAME openvpn_bridge
+# 注意 NETWORKNAME 为 docker network list 列出的网络组name
+</code></pre></div>    </div>
+  </li>
+  <li>更改防火墙设置
+    <ol>
+      <li>进入Docker环境
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  docker run -it --rm --privileged --pid=host justincormack/nsenter1
+  cd /var/lib/docker/volumes/$OVPN_DATA/_data/
+</code></pre></div>        </div>
+      </li>
+      <li>追加nat信息
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> echo 'iptables -t nat -A POSTROUTING -d 172.31.1.0/24 -o eth1 -j SNAT --to-source 172.31.1.2' &gt;&gt; ovpn_env.sh
+ # 注： 其他网段如是
+</code></pre></div>        </div>
+      </li>
+    </ol>
+  </li>
+</ol>
+
+<p>如此这番操作，就可以直接通过宿主机去访问docker容器实例的ip了，使用ping命令也能ping通。</p>
+
+<p>注意：</p>
+<ol>
+  <li>
+    <p>开启Tunnelblink的dockerForMac后可能导致您的有些网页无法打开，本人环境下实测关闭Tunnelblink的DNS功能即可。<br />
+<img src="/assets/posts/202403/openvpn.nodns.png" /></p>
+  </li>
+  <li></li>
+</ol>]]></content><author><name>caritasem</name></author><category term="docker" /><category term="docker" /><summary type="html"><![CDATA[背景 在macos系统下，如果在docker内部署多个容器，每个容器使用不同的网段，如使用172.17.x.x / 10.x.x.x 网段，则需要解决从宿主机到各个容器的网络通信。 如果是使用其他Linux系统的用户则不用担心这个问题，Linux系统会自动帮我们处理好ip之间的互通（宿主机和各个容器之间）。而Mac想要直接访问容器的ip，则需要曲线救国，通过搭建一个vpn服务，然后通过vpn再去和容器的网段互联。 经过尝试openvpn成为了最佳的解决方案。 其中网络连通的原理，如下图所示，openvpn作为一个转接的桥梁。 该容器(openvpn)在Docker For Mac容器和主机Mac本身之间创建VPN网络, 通过挂载多块虚拟网卡打通各个子网间的路由。 使用到的工具： Docker Desktop docker镜像为 https://github.com/kylemanna/docker-openvpn Tunnelblick 执行步骤： 初始化一个ovpn数据Volume，用以保存配置文件和凭证。 export OVPN_DATA="ovpn-data-example" docker volume create --name $OVPN_DATA 创建所需要的vpn环境配置文件 docker run -v $OVPN_DATA:/etc/openvpn --rm kylemanna/openvpn \ ovpn_genconfig -u udp://localhost \ -p 'route 172.31.1.0 255.255.255.0' # 注意将需要互通的docker环境下的网段都追加到上述命令中 创建vpn 链接所需的密钥 docker run -v $OVPN_DATA:/etc/openvpn --rm -it kylemanna/openvpn ovpn_initpki 运行vpn server docker run -v $OVPN_DATA:/etc/openvpn --name openvpn_bridge -d -p 1194:1194/udp --cap-add=NET_ADMIN kylemanna/openvpn # openvpn_bridge 为容器名称，可以换掉 创建一个不含秘钥的客户端凭证 docker run -v $OVPN_DATA:/etc/openvpn --rm -it kylemanna/openvpn easyrsa build-client-full CLIENTNAME nopass # CLIENTNAME 请更改 使用上述证书生成客户端配置。 docker run -v $OVPN_DATA:/etc/openvpn --rm kylemanna/openvpn ovpn_getclient CLIENTNAME &gt; CLIENTNAME.ovpn 上面这一步生成的 CLIENTNAME.ovpn 配置需要在Tunnelblink里面使用。Tunnelblink是一款开源免费的针对MacOS的OpenVPN图形化客户端，可以非常方便地使用openvpn配置来连接网络服务。 下载并安装后Tunnelblink（下载dmg包-双击安装-选择 已有网络配置），运行它，然后再到终端执行如下命令来添加网络配置： open ./CLIENTNAME.ovpn 将vpn容器挂载到所需要互通的网段上 # 在host终端执行 docker network list docker network connect NETWORKNAME openvpn_bridge # 注意 NETWORKNAME 为 docker network list 列出的网络组name 更改防火墙设置 进入Docker环境 docker run -it --rm --privileged --pid=host justincormack/nsenter1 cd /var/lib/docker/volumes/$OVPN_DATA/_data/ 追加nat信息 echo 'iptables -t nat -A POSTROUTING -d 172.31.1.0/24 -o eth1 -j SNAT --to-source 172.31.1.2' &gt;&gt; ovpn_env.sh # 注： 其他网段如是 如此这番操作，就可以直接通过宿主机去访问docker容器实例的ip了，使用ping命令也能ping通。 注意： 开启Tunnelblink的dockerForMac后可能导致您的有些网页无法打开，本人环境下实测关闭Tunnelblink的DNS功能即可。]]></summary></entry><entry><title type="html">Springboot 对接Redis Cluster 消息队列</title><link href="http://localhost:4000/2024/03/springboot-redis-cluster/" rel="alternate" type="text/html" title="Springboot 对接Redis Cluster 消息队列" /><published>2024-03-18T11:00:07+08:00</published><updated>2024-03-18T11:00:07+08:00</updated><id>http://localhost:4000/2024/03/springboot-redis-cluster</id><content type="html" xml:base="http://localhost:4000/2024/03/springboot-redis-cluster/"><![CDATA[<blockquote>
+
+  <p>…</p>
+
+</blockquote>]]></content><author><name>caritasem</name></author><category term="springboot" /><category term="springboot" /><summary type="html"><![CDATA[…]]></summary></entry><entry><title type="html">工程金句</title><link href="http://localhost:4000/2023/11/engineer-motto/" rel="alternate" type="text/html" title="工程金句" /><published>2023-11-06T11:00:07+08:00</published><updated>2023-11-06T11:00:07+08:00</updated><id>http://localhost:4000/2023/11/engineer-motto</id><content type="html" xml:base="http://localhost:4000/2023/11/engineer-motto/"><![CDATA[<blockquote>
+
+  <p>要学会用后台思维写前端，算法思维写后台，产品思维写算法。我们做的不仅仅是功能，要让每一行代码都具备灵魂。</p>
+
+</blockquote>]]></content><author><name>caritasem</name></author><category term="motto" /><category term="motto" /><summary type="html"><![CDATA[要学会用后台思维写前端，算法思维写后台，产品思维写算法。我们做的不仅仅是功能，要让每一行代码都具备灵魂。]]></summary></entry><entry><title type="html">MAC 如何安装 bsddb3</title><link href="http://localhost:4000/2023/10/python-bsddb3/" rel="alternate" type="text/html" title="MAC 如何安装 bsddb3" /><published>2023-10-26T20:00:07+08:00</published><updated>2023-10-26T20:00:07+08:00</updated><id>http://localhost:4000/2023/10/python-bsddb3</id><content type="html" xml:base="http://localhost:4000/2023/10/python-bsddb3/"><![CDATA[<h3 id="可行的方案">可行的方案</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>conda install -c conda-forge bsddb3
+</code></pre></div></div>
+
+<p>详细文档见 https://anaconda.org/conda-forge/bsddb3</p>
+
+<h3 id="不成功的方式">不成功的方式</h3>
+
+<p>pip install bsddb3直接安装失败，报错：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Collecting bsddb3 (from scrapy-deltafetch)
+  Using cached bsddb3-6.2.4.tar.gz
+    Complete output from command python setup.py egg_info:
+    Can't find a local Berkeley DB installation.
+    (suggestion: try the --berkeley-db=/path/to/bsddb option)
+</code></pre></div></div>
+
+<p>即使 brew install berkeley-db  之后，再次pip依旧报同样的错误。。。</p>
+
+<hr />
+<ol>
+  <li>https://igaojin.me/2018/08/06/MAC-%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85-bsddb3/</li>
+</ol>]]></content><author><name>caritasem</name></author><category term="python" /><category term="python" /><category term="mac" /><category term="bsddb3" /><summary type="html"><![CDATA[可行的方案 conda install -c conda-forge bsddb3 详细文档见 https://anaconda.org/conda-forge/bsddb3 不成功的方式 pip install bsddb3直接安装失败，报错： Collecting bsddb3 (from scrapy-deltafetch) Using cached bsddb3-6.2.4.tar.gz Complete output from command python setup.py egg_info: Can't find a local Berkeley DB installation. (suggestion: try the --berkeley-db=/path/to/bsddb option) 即使 brew install berkeley-db 之后，再次pip依旧报同样的错误。。。 https://igaojin.me/2018/08/06/MAC-%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85-bsddb3/]]></summary></entry><entry><title type="html">SRE建设之事前建设</title><link href="http://localhost:4000/2023/09/sre-data-quality/" rel="alternate" type="text/html" title="SRE建设之事前建设" /><published>2023-09-07T20:00:07+08:00</published><updated>2023-09-07T20:00:07+08:00</updated><id>http://localhost:4000/2023/09/sre-data-quality</id><content type="html" xml:base="http://localhost:4000/2023/09/sre-data-quality/"><![CDATA[<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">质量框架</th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">维度</td>
+      <td style="text-align: center">标准</td>
+      <td style="text-align: center">说明</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">形式质量</td>
+      <td style="text-align: center">完整性</td>
+      <td style="text-align: center">不同于数据库的完整性约束概念,此处数据完整性描述数据集对具体业务目标的覆盖程度,可以从字段和记录两个维度分析。</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">可理解性</td>
+      <td style="text-align: center">用来描述数据集是否能清晰的反应业务逻辑,字段和取值的具体意义是否明确。</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">一致性</td>
+      <td style="text-align: center">用来描述数据在不同维度上的连贯性,包括数据集在时间轴上的前后连贯性和在相关的不同数据集之间的横向连贯性。一致性并不意味着数值上的绝对相同,而是数据收集、处理的方法和标准的一致。</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">可获得性</td>
+      <td style="text-align: center">用来描述实际业务需要的数据的获取的难易程度,包括数据采集、数据清理、数据转化等多个环节。</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">内容质量</td>
+      <td style="text-align: center">准确性</td>
+      <td style="text-align: center">用来说明数据集对其描述或衡量的业务对象的描述程度。准确性是数据质量的重要组成部分。</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">可靠性</td>
+      <td style="text-align: center">用来描述数据集的可信赖程度,包括对数据采集、数据加工、数据应用等所有环节的处理是否值得信赖。</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">效用质量</td>
+      <td style="text-align: center">相关性/可用性</td>
+      <td style="text-align: center">用来说明数据集描述的概念对象和实际业务对象之间的相关程度,数据相关性是数据质量的重要组成部分。</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">时效性</td>
+      <td style="text-align: center">用来衡量实际业务需求时间和数据可用时间之间的延迟,包括数据产生时的时间参数和数据更新频率等方面。在实际的业务系统中,时效性是数据质量的一个重要方面。</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+<ol>
+  <li>https://blog.csdn.net/manzhizhen/article/details/103642565</li>
+</ol>]]></content><author><name>caritasem</name></author><category term="SRE" /><category term="SRE" /><category term="data quality" /><summary type="html"><![CDATA[质量框架     维度 标准 说明 形式质量 完整性 不同于数据库的完整性约束概念,此处数据完整性描述数据集对具体业务目标的覆盖程度,可以从字段和记录两个维度分析。   可理解性 用来描述数据集是否能清晰的反应业务逻辑,字段和取值的具体意义是否明确。   一致性 用来描述数据在不同维度上的连贯性,包括数据集在时间轴上的前后连贯性和在相关的不同数据集之间的横向连贯性。一致性并不意味着数值上的绝对相同,而是数据收集、处理的方法和标准的一致。   可获得性 用来描述实际业务需要的数据的获取的难易程度,包括数据采集、数据清理、数据转化等多个环节。 内容质量 准确性 用来说明数据集对其描述或衡量的业务对象的描述程度。准确性是数据质量的重要组成部分。   可靠性 用来描述数据集的可信赖程度,包括对数据采集、数据加工、数据应用等所有环节的处理是否值得信赖。 效用质量 相关性/可用性 用来说明数据集描述的概念对象和实际业务对象之间的相关程度,数据相关性是数据质量的重要组成部分。   时效性 用来衡量实际业务需求时间和数据可用时间之间的延迟,包括数据产生时的时间参数和数据更新频率等方面。在实际的业务系统中,时效性是数据质量的一个重要方面。 https://blog.csdn.net/manzhizhen/article/details/103642565]]></summary></entry><entry><title type="html">SRE建设之事前建设</title><link href="http://localhost:4000/2023/09/sre-pre-event/" rel="alternate" type="text/html" title="SRE建设之事前建设" /><published>2023-09-07T20:00:07+08:00</published><updated>2023-09-07T20:00:07+08:00</updated><id>http://localhost:4000/2023/09/sre-pre-event</id><content type="html" xml:base="http://localhost:4000/2023/09/sre-pre-event/"><![CDATA[<h2 id="背景">背景</h2>
+
+<p>稳定性的重要性，在VUCA约束下，达到稳定性，是对工程师全方位能力的锻炼。</p>
+
+<h3 id="vuca">VUCA</h3>
+<p>V: Volatility 易变性 <br />
+U: Uncertainty 不确定性<br />
+C: Complexity 复杂性<br />
+A: Ambiguity 模糊性</p>
+
+<h3 id="cap理论">CAP理论</h3>
+<p>C：Cost 成本<br />
+A：Quality 质量<br />
+P: Productivity 效率</p>
+
+<h2 id="不稳定的原因">不稳定的原因</h2>
+
+<h3 id="人为因素">人为因素</h3>
+<pre><code class="language-mermaid">mindmap
+  root((人为因素))
+        代码编写
+            代码逻辑错误
+            异常处理不合理
+            第三方库使用不正确
+            未遵循开发规范
+            死循环
+        配置问题
+            超时时间不合理
+            限流阈值不合理
+            配置错误
+        系统设计问题
+            循环调用
+            服务雪崩
+                基础服务故障影响上游业务
+            流量激增
+                大促活动
+                业务高峰
+                DDOS攻击
+        存储问题
+            数据库
+                慢查询
+                    没走索引
+                    查询结果过大
+                    大表关联查询
+                大事务
+                    死锁
+                    吞吐量低
+                共享存储风险
+                连接打满
+            缓存
+                命中率低
+                缓存溢出
+        资源不足
+            磁盘打满
+                日志未清理
+                日志输出过多
+            CPU打满
+                死循环
+                计算密集型任务
+            内存不足
+                内存泄露
+                内存溢出
+            线程耗尽
+                池大小不合理
+                核心与非核心线程未隔离
+                存在高耗时操作
+
+</code></pre>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>人为因素应通过规范流程来减少失误概率，提前预防，尽早发现，将功夫放在平日。
+</code></pre></div></div>
+
+<h3 id="自然因素">自然因素</h3>
+<pre><code class="language-mermaid">mindmap
+  root((自然因素))
+        服务器问题
+            机器宕机
+            机房停电
+        网络问题
+            线路故障
+            设备故障
+            网线被拔
+        三方服务问题
+            第三方故障
+            服务欠费
+            被拉黑
+</code></pre>
+<p>自然因素虽受客观因素影响，可控性不高，但是付费通道服务的费用问题，却是需要进行常规监控的。</p>
+
+<h2 id="稳定性总结">稳定性总结</h2>
+
+<p>做稳定性建设一定要结合公司或组织的实际情况，量入为出，最合适的方案才是最好的方案。稳定性建设的房子，如下：</p>
+
+<p><img src="/assets/posts/202309/稳定性.事前.svg" /></p>
+
+<h2 id="事前建设四要素">事前建设四要素</h2>
+<p>稳定性建设四要素：人、工具、预案和目标。</p>
+
+<h3 id="第一要素-人">第一要素： 人</h3>
+
+<p>要解决几个问题：</p>
+<ul>
+  <li>稳定性建设涉及哪些部门</li>
+  <li>如何降低犯错的概率</li>
+  <li>如何提高稳定性意识</li>
+  <li>如何定责</li>
+  <li>如何激励</li>
+</ul>
+
+<p>稳定性建设工作需要老板支持，它的实施一般需要开发、测试、运维、安全还有产品等同学参与，而且主导方应该是开发、测试和运维。确定了参与方后，就可以做关键的一步：“参与稳定性建设的每个团队都需要在OKR中背负一部分稳定性指标”，这也是为什么说稳定性建设工作需要老板支持，因为和绩效考核相关。</p>
+
+<p><em>稳定性工作，规范先行</em>。OKR的部分只是让各参与方在稳定性方面工作的投入变成合规化，平时如何去参与稳定性建设还得“有迹可循”，对于开发和测试来说就是要根据公司的当前技术体系去建设开发规范、提测规范、测试规范、上线规范、复盘规范等。我们拿和软件开发最相关的开发规范来说，开发规范是对开发人员的要求，让开发人员知道什么是必须要做的、什么是推荐的、什么是应该避免的。通常开发规范至少应该包括如下几个部分：</p>
+
+<p><em>编码规范</em>：对外接口命名方式、统一异常父类、业务异常码规范、对外提供服务不可用是抛异常还是返回错误码、统一第三方库的版本、哪些场景必须使用内部公共库、埋点日志怎么打、提供统一的日志、监控切面实现等，编码规范除了能规范开发的编码行为、避免犯一些低级错误和踩一些重复的坑外，另一个好处是让新入职的同学能快速了解公司的编码原则，这点对编码快速上手很重要。这里再重点说一下为什么要统一异常父类和业务异常码，例如虽然不同模块（这里的模块指的是能独立部署的项目）可能有不同的异常父类，比如订单模块的异常父类是OrderException、交易支付模块的异常父类是TradeException，而OrderException和TradeException的父类是BizException（当然BizException是定义在一个通用共公共库中的），而我们也需要去统一异常码，比如200代表正确的返回码，异常的返回码是6位数字（前3位代表模块，后3位代表异常类型），有了统一的异常父类和异常码后，很多切面就都可以由公共库来做了，比如统一的监控、统一的出入口日志打印，统一的异常拦截，压测标识透传、特殊的字段埋点等，千万别小看这些，这些能在未来持续提升研发效率，降低稳定性工作成本。</p>
+
+<p><em>公共库使用规范</em>：为了能对通用功能进行定制化改造和封装，公司内部肯定会有一些公共库，例如日志库、HTTP库、线程池库、监控埋点库等，这些库都“久经考验”，已经被证实是有效且可靠的，这些就应该强制使用，当然为了适应业务的发展，这些公共库也应该进行迭代和升级。</p>
+
+<p><em>项目结构规范</em>：为了贯彻标准的项目结构，一方面我们需要为各种类型项目通过“项目脚手架”来创建标准的项目结构原型，然后基于这个项目原型来进行开发，统一的项目结构一个最显著的好处是让开发能快速接手和了解项目，这种对于团队内维护多个项目很重要，人员能进行快速补位。</p>
+
+<p><em>数据库规范</em>：数据库连接资源堪比CPU资源，现在的应用都离不开数据库，而且通常数据库都属于核心资源，一旦数据库不可用，应用都没有太有效的止损手段，所以在数据库规范里，库名、表名、索引、字段、分库分表的一些规范都必须明确，</p>
+
+<p><em>考试</em>，将这些规范和历史的线上事故整理成试题，让新老开发定期去考试，考试是一种传统的考核机制，我们可以把规范和公共库的更新部分，也及时加入到考试试题中，来督促大伙及时学习。</p>
+
+<p>有了OKR、规范和考核机制，加上我们定期宣导，相信各成员的稳定性意识会有显著提高。</p>
+
+<p>事故定责一般是比较复杂的过程，除非事故原因非常简单明了，但实际上事故原因常常涉及多个团队，如果责任分摊不合理，难免会引发跨团队的争吵，合理的做法是引入第三方稳定性团队来干预，例如滴滴的星辰花团队，星辰花会撰写定责指南，并制定一些相关流程机制。</p>
+
+<p>当然，如果达成稳定性年度目标，也应该对这些团队进行适当表彰。</p>
+
+<h3 id="第二要素-工具">第二要素： 工具</h3>
+
+<p>建设必要的工具，来支撑稳定性目标的实现。常见的工具和平台包括：日志采集分析检索平台（例如ELK）、监控告警平台（例如Grafana）、分布式追踪系统（例如APM）、自动化打包部署平台（例如KooK）、服务降级系统、预案平台、根因定位平台、放火平台等。</p>
+
+<p>工具本质上是手段，它能降低我们在稳定性工作上投入的成本，例如有了监控告警平台，我们就不需要专人时刻盯着日志或大盘，有了分布式追踪系统，问题定位会更有效率，有了降级系统，一些故障能自动控制和恢复，不用我们再上线一次。要想做好稳定性工作，工具必不可少，没有工具，稳定性建设总是低效的。</p>
+
+<h3 id="第三要素-预案">第三要素： 预案</h3>
+
+<p>完善的紧急预案能回答如下4个问题：</p>
+
+<ul>
+  <li>故障发生时我们该做什么？</li>
+  <li>谁来指挥？</li>
+  <li>谁来决策？</li>
+  <li>如何善后？</li>
+</ul>
+
+<p>当一个不那么容易定位的故障发生时，你应该做的第一件事应该是什么？这在不同公司、同一个公司同一个团队的不同成员恐怕都会给出一个不同的答案，而在滴滴内部，我们大多会第一时间通知团队内其他成员、Leader（寻求帮助）和客服、上游业务开发等可能的影响方 （问题周知）。当这一步做完以后，一般就会有一部分同学加入问题排查和止损，然而介入的人多了，排查和止损的效率不一定会成比例的提升，这时候协调者很重要，协调者要避免介入的同学在做重复工作，协调者还需要持续和客服、上游业务开发等影响方沟通（我们曾经就经历过由于问题排查问题进度没有及时有效和业务方沟通，业务方将故障升级的case）。对于排查问题和止损的同学来说，要操作某个开关，有可能还要去查代码看开关的名字是什么，还有可能关掉一个功能需要操作多个开关，这些在紧急时刻都有可能由于慌乱而出错。而且什么条件下才能操作开关，谁能决定应不应该操作开关，恐怕在当时很难去做最正确的事情，而这一切，没错，都应该提前写到预案中！！！</p>
+
+<p>紧急预案一般要包含如下内容：</p>
+
+<ul>
+  <li>故障发生时应该通知哪些人或团队。</li>
+  <li>如何选出协调者，什么情况下该选出协调者。</li>
+  <li>协调者的职责有哪些。</li>
+  <li>需要操作开关时，谁有权利决策。</li>
+  <li>常见故障以及对应的止损方式。</li>
+  <li>止损的原则是什么，什么是最重要的。</li>
+  <li>善后方案谁来拍板。</li>
+</ul>
+
+<p>预案很重要，完备的预案能降低故障定位和止损的时间，提升协作效率。</p>
+
+<h3 id="第四要素-目标">第四要素： 目标</h3>
+
+<p>稳定性目标是要平衡建设投入成本和业务产出的关系。可以将故障等级分成了P0至P5六个等级，P0、P1、P2属于重大事故，是需要消耗服务不可用时长的（根据全年定的服务可用时长占比指标来计算出某个部门的全年服务不可用总时长），一旦年底某个部门的全年服务不可用时长超过年初设定的阈值，就会有一定的处罚，并影响部门绩效（之前达标也有奖励，但后来奖励取消了）。</p>
+
+<h2 id="稳定性建设四个方向">稳定性建设四个方向</h2>
+
+<h3 id="第一个方向根基要抓牢45">第一个方向：根基要抓牢（45%）</h3>
+
+<p>稳定性建设工作重在预防，根据作者多年的工作经验，至少6成线上故障都可以在预防工作中消除，我们需要投入45%的精力来做根基建设，所谓根基建设，就是把开发、测试、上线这三大流程做透！！下面列了几个关键点：</p>
+
+<p><em>Code Review</em>：CR其实是一个很重要的环节，当一个开发整个编码和提测都可以自己闭环搞定时，时间一长就容易产生懈怠，这时候写隐患代码的几率会大大提高，CR的过程并不是diss的过程，这个一定要在团队内拉齐，相反，CR是一次很好的团队沟通和塑造自己影响力的机会。我就很佩服那些代码写得质量高并且能把整个流程讲顺的人。我们团队的项目都接入了全流程（例如滴滴的鲲鹏），分支合master必须要其他人Review，但这是“离线”的，没有代码作者讲的过程，效果没有几个人坐在小黑屋讲的好，只是更快而已。我们团队规定，大于等于4人日的项目需要进行小黑屋CR。CR还可以让其他成员来检测该代码实现是否遵循了开发规范，毕竟“先污染后治理”的成本太高，记住，CR一定是一个相互学习的过程。</p>
+
+<p><em>设计评审</em>：再也没有比糟糕的设计更有破坏力的东西了，设计评审和CR可以放在一起做，先评审设计再进行CR，有人就会说，都编码完了才进行设计评审是不是晚了？其实这要看情况而定，如果团队内部经常产出“糟糕设计”，那么我觉得设计评审就应该编码之前来做，但如果团队成员专业能力和经验都还不错，那么我们允许你再编码之后再做设计评审，而且编码的过程其实也是设计的过程，可以规避提前设计而导致后续编码和设计不一致的问题。设计评审的原则是，既要讲最终的设计方案，也要讲你淘汰的设计方案！</p>
+
+<p><em>提测标准</em>：写完代码就可以提测了？当然不是，至少得完成补充单元测试、完成自测、完成开发侧的联调、通过测试用例（如果QA提前给了测试用例的话）、补充改动点和影响点（便于QA评估测试范围）、补充设计文档（对，现在滴滴的QA养成了读代码、看设计的习惯）这些步骤才能说可以提测了。当然，提测标准理论上是QA同学来定义的。</p>
+
+<p><em>测试流程</em>：测试的全流程覆盖最好能做到全自动化，很多测试用例可以沉淀下来，用来做全流程回归，当然这需要系统支持。我也见过太多犹豫QA没精力进行全流程回归而导致问题没有提前发现而产生的事故，所以测试的原则是尽可能自动化和全流程覆盖，让宝贵的人力资源投入到只能人工测试的环节。</p>
+
+<p><em>上线流程</em>：上线也是一个风险很高的操作，我们简单统计了19年的上线次数，光我们团队负责的系统就上线了五百多次。部署平台需要支持灰度发布、小流量发布，强制让开发在发布时观察线上大盘和日志，一旦有问题，能做到快速回滚（当然要关注回滚条件）。我们这边的做法是先小流量集群灰度（我们把单量少的城市单独做了一套小流量集群），再线上灰度，确保哪怕出问题也能控制影响。</p>
+
+<h3 id="第二个方向工作在日常30">第二个方向：工作在日常（30%）</h3>
+
+<p>俗话说养兵一日，用兵一时，平日的养兵其实也非常重要，这一方向我们需要投入30%的精力，需要我们做到如下几点：</p>
+
+<p><em>人人参与</em>：团队内人人都需要参与稳定性建设工作，稳定性工作不是某个人的事情，所以我会要求所有人的OKR中都有稳定性建设的部分。做toC研发的同学，都养成了带电脑回家的习惯，哪怕是加班到晚上12点，当然在外旅游也带着电脑，手机24小时保持畅通；稳定性已经成为了生活本身。</p>
+
+<p><em>持续完善监控告警</em>：监控告警就是我们发现故障的“眼睛”和“耳朵”，然而大多数监控告警都需要我们手动一个个配置，随着业务的不断迭代，会有很多新接口需要添加监控，一些老的监控的阈值也需要不断调整（否则大量告警会让人麻木），所以监控告警是一个持续优化的过程。</p>
+
+<p><em>及时消灭线上小隐患</em>：平日发现的一些问题要及时消灭，很多线上事故在事前都有一定预兆，放任平时的一些小问题不管，到后面只会给未来埋上隐患。</p>
+
+<p><em>跨团队联动</em>：稳定性肯定不是一个团队的事情，一些降级方案可能涉及多个团队的工作，所以定期的跨团队的沟通会议是很有必要的，要大伙一起使劲才能把事情做好。</p>
+
+<p><em>复盘机制</em>：对出过的线上事故一定要及时的进行复盘，通过复盘来发现我们现有流程、机制是否有问题，让大伙不要踩重复的坑，并不断完善我们的紧急预案。复盘虽然属于事后的行为，但很重要，我们需要通过复盘来看下次是否能预防此故障，或者是否能更快的定位和止损。</p>
+
+<p><em>会议机制</em>：稳定性周会、稳定性月会，我们通过各种定期的会议来总结一些阶段性进展和成果，拉齐大家认知，这也是大伙日常稳定性工作露出的一个机会，所以非常重要。</p>
+
+<h3 id="第三个方向预案是关键15">第三个方向：预案是关键（15%）</h3>
+
+<p>我们通常都会忽视预案的作用，因为预案整理起来确实比较麻烦，预案也需要随着功能的迭代而不断更新，否则将很容易过时，而且预案在平日非故障期间也确实没有发挥作用的机会。但我们不得不承认紧急预案相当重要，特别是当我们去定位和止损一个比较复杂的线上问题时。</p>
+
+<p>我们需要在预案的制定和演练上投入15%的精力，可以从如下三个方面着手：</p>
+
+<p><em>分场景制定和完善紧急预案</em>：如果我们还没有紧急预案，那第一步就是分类分场景整理下历史上经常发生的线上事故，例如MySQL故障预案、MQ故障预案、发单接口故障预案等。而且预案有可能会被多人查看，一定要清晰易懂，如果某些预案是有损的，需要把副作用也描述清楚。</p>
+
+<p><em>通过放火平台来验证预案</em>：借助放火平台和服务降级系统，我们可以通过主动给主流程服务的非核心依赖注入故障，来验证系统在遇到非核心依赖发生故障时，核心服务是否仍旧有效，如果某些预案无法做成系统自动的（比如某些预案有一定的风险或副作用），也可以在预发环境来验证该预案是否能达到预期效果，防止真正故障发生时“手生”。预案就是在这种不断演练过程中来优化和完善的，这样的预案才是动态的，才是活生生有效可靠的！</p>
+
+<h3 id="第四个方向容量是核心10">第四个方向：容量是核心（10%）</h3>
+
+<p>我们知道木桶效应，一个木桶能装多少水取决于最短的那块板，在分布式系统中也是如此，我们需要摸到分布式系统中的这块“短木板”才能知道整个系统的吞吐量（容量），如果我们没有这个值，老板问你明年单量要Double，问你要预算，要规划你凭什么给？最准确的容量预估方案就是——线上全链路压测。至于滴滴是如何做线上全链路压测，后续我会有专门的文章来阐述。</p>
+
+<p>我们继续探讨容量这个话题，我们应该投入10%的精力来摸容量、扩容量、水位预警等。容量也相当重要，根据我的经验，线上有大约10%的故障和容量有关，当遇到这种问题，最有效的解决方案就是扩容！关于容量，我们在日常需要做到如下三点：</p>
+
+<p><em>常态化的全链路压测</em>：线上全链路压测必须定期举行，特别的在有大促活动时，也需要提前进行一次。因为随着业务的快速迭代，系统老的瓶颈可能消失，新的瓶颈可能出现，所以之前的全链路压测的结果将失效，我们需要定期去摸这个线上环境的这个阈值。</p>
+
+<p><em>定期进行扩容演练</em>：在滴滴内部，我们会定期进行弹性云扩容演练，这在紧急情况下很有用，我们就曾经遇到过弹性云扩容比修改阈值重新上线更快解决问题的case。</p>
+
+<p><em>多活建设</em>：我们知道多活主要是为了容灾，但其实多活实际上也从整体上增加了系统容量，所以也属于容量扩充的范畴，一旦某个机房遇到瓶颈，我们可以分流到其他机房。当然多活建设需要一定成本，业务量大到一定程度才需要投入。</p>
+
+<h2 id="稳定性建设本质">稳定性建设本质</h2>
+<p>就像我们做项目要“面向风险”编程一样，系统稳定性建设的目的其实就是为了应对未来的风险，和未来风险做对抗（哪怕我们有些手段将未来的风险变小）。如果非让我们探究稳定性建设的本质，我觉得稳定性建设的本质是将系统和系统间未来不可控的因素逐渐变为可预见，可控的因素，并着手去一一解决的一个过程</p>
+
+<hr />
+<ol>
+  <li>https://blog.csdn.net/manzhizhen/article/details/103642565</li>
+</ol>]]></content><author><name>caritasem</name></author><category term="SRE" /><category term="SRE" /><category term="pre-event" /><summary type="html"><![CDATA[背景 稳定性的重要性，在VUCA约束下，达到稳定性，是对工程师全方位能力的锻炼。 VUCA V: Volatility 易变性 U: Uncertainty 不确定性 C: Complexity 复杂性 A: Ambiguity 模糊性 CAP理论 C：Cost 成本 A：Quality 质量 P: Productivity 效率 不稳定的原因 人为因素 mindmap root((人为因素)) 代码编写 代码逻辑错误 异常处理不合理 第三方库使用不正确 未遵循开发规范 死循环 配置问题 超时时间不合理 限流阈值不合理 配置错误 系统设计问题 循环调用 服务雪崩 基础服务故障影响上游业务 流量激增 大促活动 业务高峰 DDOS攻击 存储问题 数据库 慢查询 没走索引 查询结果过大 大表关联查询 大事务 死锁 吞吐量低 共享存储风险 连接打满 缓存 命中率低 缓存溢出 资源不足 磁盘打满 日志未清理 日志输出过多 CPU打满 死循环 计算密集型任务 内存不足 内存泄露 内存溢出 线程耗尽 池大小不合理 核心与非核心线程未隔离 存在高耗时操作 人为因素应通过规范流程来减少失误概率，提前预防，尽早发现，将功夫放在平日。 自然因素 mindmap root((自然因素)) 服务器问题 机器宕机 机房停电 网络问题 线路故障 设备故障 网线被拔 三方服务问题 第三方故障 服务欠费 被拉黑 自然因素虽受客观因素影响，可控性不高，但是付费通道服务的费用问题，却是需要进行常规监控的。 稳定性总结 做稳定性建设一定要结合公司或组织的实际情况，量入为出，最合适的方案才是最好的方案。稳定性建设的房子，如下： 事前建设四要素 稳定性建设四要素：人、工具、预案和目标。 第一要素： 人 要解决几个问题： 稳定性建设涉及哪些部门 如何降低犯错的概率 如何提高稳定性意识 如何定责 如何激励 稳定性建设工作需要老板支持，它的实施一般需要开发、测试、运维、安全还有产品等同学参与，而且主导方应该是开发、测试和运维。确定了参与方后，就可以做关键的一步：“参与稳定性建设的每个团队都需要在OKR中背负一部分稳定性指标”，这也是为什么说稳定性建设工作需要老板支持，因为和绩效考核相关。 稳定性工作，规范先行。OKR的部分只是让各参与方在稳定性方面工作的投入变成合规化，平时如何去参与稳定性建设还得“有迹可循”，对于开发和测试来说就是要根据公司的当前技术体系去建设开发规范、提测规范、测试规范、上线规范、复盘规范等。我们拿和软件开发最相关的开发规范来说，开发规范是对开发人员的要求，让开发人员知道什么是必须要做的、什么是推荐的、什么是应该避免的。通常开发规范至少应该包括如下几个部分： 编码规范：对外接口命名方式、统一异常父类、业务异常码规范、对外提供服务不可用是抛异常还是返回错误码、统一第三方库的版本、哪些场景必须使用内部公共库、埋点日志怎么打、提供统一的日志、监控切面实现等，编码规范除了能规范开发的编码行为、避免犯一些低级错误和踩一些重复的坑外，另一个好处是让新入职的同学能快速了解公司的编码原则，这点对编码快速上手很重要。这里再重点说一下为什么要统一异常父类和业务异常码，例如虽然不同模块（这里的模块指的是能独立部署的项目）可能有不同的异常父类，比如订单模块的异常父类是OrderException、交易支付模块的异常父类是TradeException，而OrderException和TradeException的父类是BizException（当然BizException是定义在一个通用共公共库中的），而我们也需要去统一异常码，比如200代表正确的返回码，异常的返回码是6位数字（前3位代表模块，后3位代表异常类型），有了统一的异常父类和异常码后，很多切面就都可以由公共库来做了，比如统一的监控、统一的出入口日志打印，统一的异常拦截，压测标识透传、特殊的字段埋点等，千万别小看这些，这些能在未来持续提升研发效率，降低稳定性工作成本。 公共库使用规范：为了能对通用功能进行定制化改造和封装，公司内部肯定会有一些公共库，例如日志库、HTTP库、线程池库、监控埋点库等，这些库都“久经考验”，已经被证实是有效且可靠的，这些就应该强制使用，当然为了适应业务的发展，这些公共库也应该进行迭代和升级。 项目结构规范：为了贯彻标准的项目结构，一方面我们需要为各种类型项目通过“项目脚手架”来创建标准的项目结构原型，然后基于这个项目原型来进行开发，统一的项目结构一个最显著的好处是让开发能快速接手和了解项目，这种对于团队内维护多个项目很重要，人员能进行快速补位。 数据库规范：数据库连接资源堪比CPU资源，现在的应用都离不开数据库，而且通常数据库都属于核心资源，一旦数据库不可用，应用都没有太有效的止损手段，所以在数据库规范里，库名、表名、索引、字段、分库分表的一些规范都必须明确， 考试，将这些规范和历史的线上事故整理成试题，让新老开发定期去考试，考试是一种传统的考核机制，我们可以把规范和公共库的更新部分，也及时加入到考试试题中，来督促大伙及时学习。 有了OKR、规范和考核机制，加上我们定期宣导，相信各成员的稳定性意识会有显著提高。 事故定责一般是比较复杂的过程，除非事故原因非常简单明了，但实际上事故原因常常涉及多个团队，如果责任分摊不合理，难免会引发跨团队的争吵，合理的做法是引入第三方稳定性团队来干预，例如滴滴的星辰花团队，星辰花会撰写定责指南，并制定一些相关流程机制。 当然，如果达成稳定性年度目标，也应该对这些团队进行适当表彰。 第二要素： 工具 建设必要的工具，来支撑稳定性目标的实现。常见的工具和平台包括：日志采集分析检索平台（例如ELK）、监控告警平台（例如Grafana）、分布式追踪系统（例如APM）、自动化打包部署平台（例如KooK）、服务降级系统、预案平台、根因定位平台、放火平台等。 工具本质上是手段，它能降低我们在稳定性工作上投入的成本，例如有了监控告警平台，我们就不需要专人时刻盯着日志或大盘，有了分布式追踪系统，问题定位会更有效率，有了降级系统，一些故障能自动控制和恢复，不用我们再上线一次。要想做好稳定性工作，工具必不可少，没有工具，稳定性建设总是低效的。 第三要素： 预案 完善的紧急预案能回答如下4个问题： 故障发生时我们该做什么？ 谁来指挥？ 谁来决策？ 如何善后？ 当一个不那么容易定位的故障发生时，你应该做的第一件事应该是什么？这在不同公司、同一个公司同一个团队的不同成员恐怕都会给出一个不同的答案，而在滴滴内部，我们大多会第一时间通知团队内其他成员、Leader（寻求帮助）和客服、上游业务开发等可能的影响方 （问题周知）。当这一步做完以后，一般就会有一部分同学加入问题排查和止损，然而介入的人多了，排查和止损的效率不一定会成比例的提升，这时候协调者很重要，协调者要避免介入的同学在做重复工作，协调者还需要持续和客服、上游业务开发等影响方沟通（我们曾经就经历过由于问题排查问题进度没有及时有效和业务方沟通，业务方将故障升级的case）。对于排查问题和止损的同学来说，要操作某个开关，有可能还要去查代码看开关的名字是什么，还有可能关掉一个功能需要操作多个开关，这些在紧急时刻都有可能由于慌乱而出错。而且什么条件下才能操作开关，谁能决定应不应该操作开关，恐怕在当时很难去做最正确的事情，而这一切，没错，都应该提前写到预案中！！！ 紧急预案一般要包含如下内容： 故障发生时应该通知哪些人或团队。 如何选出协调者，什么情况下该选出协调者。 协调者的职责有哪些。 需要操作开关时，谁有权利决策。 常见故障以及对应的止损方式。 止损的原则是什么，什么是最重要的。 善后方案谁来拍板。 预案很重要，完备的预案能降低故障定位和止损的时间，提升协作效率。 第四要素： 目标 稳定性目标是要平衡建设投入成本和业务产出的关系。可以将故障等级分成了P0至P5六个等级，P0、P1、P2属于重大事故，是需要消耗服务不可用时长的（根据全年定的服务可用时长占比指标来计算出某个部门的全年服务不可用总时长），一旦年底某个部门的全年服务不可用时长超过年初设定的阈值，就会有一定的处罚，并影响部门绩效（之前达标也有奖励，但后来奖励取消了）。 稳定性建设四个方向 第一个方向：根基要抓牢（45%） 稳定性建设工作重在预防，根据作者多年的工作经验，至少6成线上故障都可以在预防工作中消除，我们需要投入45%的精力来做根基建设，所谓根基建设，就是把开发、测试、上线这三大流程做透！！下面列了几个关键点： Code Review：CR其实是一个很重要的环节，当一个开发整个编码和提测都可以自己闭环搞定时，时间一长就容易产生懈怠，这时候写隐患代码的几率会大大提高，CR的过程并不是diss的过程，这个一定要在团队内拉齐，相反，CR是一次很好的团队沟通和塑造自己影响力的机会。我就很佩服那些代码写得质量高并且能把整个流程讲顺的人。我们团队的项目都接入了全流程（例如滴滴的鲲鹏），分支合master必须要其他人Review，但这是“离线”的，没有代码作者讲的过程，效果没有几个人坐在小黑屋讲的好，只是更快而已。我们团队规定，大于等于4人日的项目需要进行小黑屋CR。CR还可以让其他成员来检测该代码实现是否遵循了开发规范，毕竟“先污染后治理”的成本太高，记住，CR一定是一个相互学习的过程。 设计评审：再也没有比糟糕的设计更有破坏力的东西了，设计评审和CR可以放在一起做，先评审设计再进行CR，有人就会说，都编码完了才进行设计评审是不是晚了？其实这要看情况而定，如果团队内部经常产出“糟糕设计”，那么我觉得设计评审就应该编码之前来做，但如果团队成员专业能力和经验都还不错，那么我们允许你再编码之后再做设计评审，而且编码的过程其实也是设计的过程，可以规避提前设计而导致后续编码和设计不一致的问题。设计评审的原则是，既要讲最终的设计方案，也要讲你淘汰的设计方案！ 提测标准：写完代码就可以提测了？当然不是，至少得完成补充单元测试、完成自测、完成开发侧的联调、通过测试用例（如果QA提前给了测试用例的话）、补充改动点和影响点（便于QA评估测试范围）、补充设计文档（对，现在滴滴的QA养成了读代码、看设计的习惯）这些步骤才能说可以提测了。当然，提测标准理论上是QA同学来定义的。 测试流程：测试的全流程覆盖最好能做到全自动化，很多测试用例可以沉淀下来，用来做全流程回归，当然这需要系统支持。我也见过太多犹豫QA没精力进行全流程回归而导致问题没有提前发现而产生的事故，所以测试的原则是尽可能自动化和全流程覆盖，让宝贵的人力资源投入到只能人工测试的环节。 上线流程：上线也是一个风险很高的操作，我们简单统计了19年的上线次数，光我们团队负责的系统就上线了五百多次。部署平台需要支持灰度发布、小流量发布，强制让开发在发布时观察线上大盘和日志，一旦有问题，能做到快速回滚（当然要关注回滚条件）。我们这边的做法是先小流量集群灰度（我们把单量少的城市单独做了一套小流量集群），再线上灰度，确保哪怕出问题也能控制影响。 第二个方向：工作在日常（30%） 俗话说养兵一日，用兵一时，平日的养兵其实也非常重要，这一方向我们需要投入30%的精力，需要我们做到如下几点： 人人参与：团队内人人都需要参与稳定性建设工作，稳定性工作不是某个人的事情，所以我会要求所有人的OKR中都有稳定性建设的部分。做toC研发的同学，都养成了带电脑回家的习惯，哪怕是加班到晚上12点，当然在外旅游也带着电脑，手机24小时保持畅通；稳定性已经成为了生活本身。 持续完善监控告警：监控告警就是我们发现故障的“眼睛”和“耳朵”，然而大多数监控告警都需要我们手动一个个配置，随着业务的不断迭代，会有很多新接口需要添加监控，一些老的监控的阈值也需要不断调整（否则大量告警会让人麻木），所以监控告警是一个持续优化的过程。 及时消灭线上小隐患：平日发现的一些问题要及时消灭，很多线上事故在事前都有一定预兆，放任平时的一些小问题不管，到后面只会给未来埋上隐患。 跨团队联动：稳定性肯定不是一个团队的事情，一些降级方案可能涉及多个团队的工作，所以定期的跨团队的沟通会议是很有必要的，要大伙一起使劲才能把事情做好。 复盘机制：对出过的线上事故一定要及时的进行复盘，通过复盘来发现我们现有流程、机制是否有问题，让大伙不要踩重复的坑，并不断完善我们的紧急预案。复盘虽然属于事后的行为，但很重要，我们需要通过复盘来看下次是否能预防此故障，或者是否能更快的定位和止损。 会议机制：稳定性周会、稳定性月会，我们通过各种定期的会议来总结一些阶段性进展和成果，拉齐大家认知，这也是大伙日常稳定性工作露出的一个机会，所以非常重要。 第三个方向：预案是关键（15%） 我们通常都会忽视预案的作用，因为预案整理起来确实比较麻烦，预案也需要随着功能的迭代而不断更新，否则将很容易过时，而且预案在平日非故障期间也确实没有发挥作用的机会。但我们不得不承认紧急预案相当重要，特别是当我们去定位和止损一个比较复杂的线上问题时。 我们需要在预案的制定和演练上投入15%的精力，可以从如下三个方面着手： 分场景制定和完善紧急预案：如果我们还没有紧急预案，那第一步就是分类分场景整理下历史上经常发生的线上事故，例如MySQL故障预案、MQ故障预案、发单接口故障预案等。而且预案有可能会被多人查看，一定要清晰易懂，如果某些预案是有损的，需要把副作用也描述清楚。 通过放火平台来验证预案：借助放火平台和服务降级系统，我们可以通过主动给主流程服务的非核心依赖注入故障，来验证系统在遇到非核心依赖发生故障时，核心服务是否仍旧有效，如果某些预案无法做成系统自动的（比如某些预案有一定的风险或副作用），也可以在预发环境来验证该预案是否能达到预期效果，防止真正故障发生时“手生”。预案就是在这种不断演练过程中来优化和完善的，这样的预案才是动态的，才是活生生有效可靠的！ 第四个方向：容量是核心（10%） 我们知道木桶效应，一个木桶能装多少水取决于最短的那块板，在分布式系统中也是如此，我们需要摸到分布式系统中的这块“短木板”才能知道整个系统的吞吐量（容量），如果我们没有这个值，老板问你明年单量要Double，问你要预算，要规划你凭什么给？最准确的容量预估方案就是——线上全链路压测。至于滴滴是如何做线上全链路压测，后续我会有专门的文章来阐述。 我们继续探讨容量这个话题，我们应该投入10%的精力来摸容量、扩容量、水位预警等。容量也相当重要，根据我的经验，线上有大约10%的故障和容量有关，当遇到这种问题，最有效的解决方案就是扩容！关于容量，我们在日常需要做到如下三点： 常态化的全链路压测：线上全链路压测必须定期举行，特别的在有大促活动时，也需要提前进行一次。因为随着业务的快速迭代，系统老的瓶颈可能消失，新的瓶颈可能出现，所以之前的全链路压测的结果将失效，我们需要定期去摸这个线上环境的这个阈值。 定期进行扩容演练：在滴滴内部，我们会定期进行弹性云扩容演练，这在紧急情况下很有用，我们就曾经遇到过弹性云扩容比修改阈值重新上线更快解决问题的case。 多活建设：我们知道多活主要是为了容灾，但其实多活实际上也从整体上增加了系统容量，所以也属于容量扩充的范畴，一旦某个机房遇到瓶颈，我们可以分流到其他机房。当然多活建设需要一定成本，业务量大到一定程度才需要投入。 稳定性建设本质 就像我们做项目要“面向风险”编程一样，系统稳定性建设的目的其实就是为了应对未来的风险，和未来风险做对抗（哪怕我们有些手段将未来的风险变小）。如果非让我们探究稳定性建设的本质，我觉得稳定性建设的本质是将系统和系统间未来不可控的因素逐渐变为可预见，可控的因素，并着手去一一解决的一个过程 https://blog.csdn.net/manzhizhen/article/details/103642565]]></summary></entry><entry><title type="html">supervisor python multiprocessing 监听信号 实现所有进程同时退出</title><link href="http://localhost:4000/2023/09/supervisor-grand-subprocess/" rel="alternate" type="text/html" title="supervisor python multiprocessing 监听信号 实现所有进程同时退出" /><published>2023-09-07T20:00:07+08:00</published><updated>2023-09-07T20:00:07+08:00</updated><id>http://localhost:4000/2023/09/supervisor-grand-subprocess</id><content type="html" xml:base="http://localhost:4000/2023/09/supervisor-grand-subprocess/"><![CDATA[<h2 id="supervisor-多进程管理">supervisor 多进程管理</h2>
 
 <p>使用 supervisor 管理进程，如果被管理的项目是多进程模式，就需要注意一下：</p>
 
@@ -235,232 +683,7 @@
 <hr />
 <ol>
   <li>https://www.cnblogs.com/lowmanisbusy/p/12733695.html</li>
-</ol>]]></content><author><name>caritasem</name></author><category term="engineering" /><category term="supervisor" /><category term="python" /><category term="multiprocessing" /><summary type="html"><![CDATA[supervisor 多进程管理 使用 supervisor 管理进程，如果被管理的项目是多进程模式，就需要注意一下： 　　1、程序内是否有接收处理 kill -15 | SIGnal。 　　2、python 程序无法监听 kill -9 信号（其他编程语言没有了解，但按理说应该是一样的），也无法拒绝（kill -9 是立马强制结束进程），所以不要随便使用 kill -9 结束一个进程(kill params[pid], 会允许程序延迟退出，所以程序内可以监听 kill -15 | SIGnal)，如果使用 kill -9 结束了一个主进程，那么它的子进程就会成为孤儿进程，使用 kill -9 结束某个子进程，就会有可能导致其成为僵尸进程。 　　3、如果确实有需要强制结束某个进程，为了安全起见，可以使用 kill -9 -params[gpid] 代替， 如 kill -9 -7634，强制立马结束 7634 进程组内的所有进程，正常情况下，主进程的 pid 和该进程组的 gpid 相同，但意义不一样。 　　4、kill -15 (默认)和 kill -9 是两种不同的信号，python 程序可以监听 kill -15(也就理所当然的可以拒绝kill -15)，但是无法监听 kill -9(也就无法拒绝) 如果程序没有监听并处理 kill | SIGnal 就需要到相应服务的 supervisor 管理配置文件声明：stop 服务时，允许 supervisor stop 该进程组下的所有进程： killasgroup=true # 允许杀死该进程组内的所有进程 stopasgroup=true # 允许停止该进程组内的所有进程 但是如果子进程里又新开了子进程，采用上述方式用supervisor是关闭不掉的，可以使用os和| SIGnal模块，用内核功能帮助完成必要的辅助操作，不影响应用层持续执行。 常用信号量 信号 值 处理动作 发出信号的原因 SIGHUP 1 A 终端挂起或者控制进程终止 SIGINT 2 A 键盘中断（如break键被按下：如 control + c） SIGQUIT 3 C 键盘的退出键被按下 SIGILL 4 C 非法指令 SIGABRT 6 C 由abort(3)发出的退出指令 SIGFPE 8 C 浮点异常 SIGKILL 9 AEF Kill信号 (无法被程序捕获，程序也无法拒绝) SIGSEGV 11 C 无效的内存引用 SIGPIPE 13 A 管道破裂: 写一个没有读端口的管道 SIGALRM 14 A 由alarm(2)发出的信号 SIGTERM 15 A 终止信号 （程序内可以监听该信号，当多进程中的任意进程监听到该信号，就退出所有进程，实现多进程安全退出） SIGUSR1 30,10,16 A 用户自定义信号1 SIGUSR2 31,12,17 A 用户自定义信号2 SIGCHLD 20,17,18 B 子进程结束信号 SIGCONT 19,18,25   进程继续（曾被停止的进程） SIGSTOP 17,19,23 DEF 终止进程 SIGTSTP 18,20,24 D 控制终端（tty）上按下停止键 SIGTTIN 21,21,26 D 后台进程企图从控制终端读 SIGTTOU 22,22,27 D 后台进程企图从控制终端写 python 多进程处理 SIGINT SIGTERM 方式, 示例如下： import os import sys import time import signal import multiprocessing from multiprocessing import Process def fun_grandchild(x): while True: print("grand current pid is % s, group id is % s" % (os.getpid(), os.getpgrp())) time.sleep(1) def fun(x): t = Process(target=fun_grandchild, args=(str(1),)) t.daemon = False t.start() try: t.join() except Exception as e: print(str(e)) while True: print("current pid is % s, group id is % s" % (os.getpid(), os.getpgrp())) time.sleep(1) def term(signals, frame): print("====current pid is % s, group id is % s" % (os.getpid(), os.getpgrp())) # os.getpid() 获取当前进程号 # os.getpgid(params[pid]) 获取当前进程号的所在的组的组进程号 # 杀死某个进程：os.kill(params[pid], params[signal.SIGKILL]) # 杀死某个进程组下的所有进程：os.killpg(params[gpid], params[signal.SIGKILL]) # os.kill(os.getpid(), signal.SIGKILL) os.killpg(os.getpgid(os.getpid()), signal.SIGKILL) print("-------") # 这行代码永远也不会被执行 def signal_handler(signals, frame): print('You pressed Ctrl+C，进程号{}'.format(os.getpid())) # 优雅地退出（让 control + c 不抛出异常信息） sys.exit(0) if __name__ == "__main__": # 监听信号，注册回调函数(主进程或者子进程都会监听) signal.signal(signal.SIGINT, signal_handler) # control + c 会发送该信号 signal.signal(signal.SIGTERM, term) # 程序无法捕获 signal.SIGKIL，会报错（但是可以发送，如 term() 中所示） # signal.signal(signal.SIGKILL, term) processes = list() print("currentpid is % s" % os.getpid()) for i in range(3): t = Process(target=fun, args=(str(i),)) t.daemon = False t.start() processes.append(t) try: for p in processes: p.join() except Exception as e: print(str(e)) https://www.cnblogs.com/lowmanisbusy/p/12733695.html]]></summary></entry><entry><title type="html">SRE建设之事前建设</title><link href="http://localhost:4000/2023/09/sre-pre-event/" rel="alternate" type="text/html" title="SRE建设之事前建设" /><published>2023-09-07T20:00:07+08:00</published><updated>2023-09-07T20:00:07+08:00</updated><id>http://localhost:4000/2023/09/sre-pre-event</id><content type="html" xml:base="http://localhost:4000/2023/09/sre-pre-event/"><![CDATA[<h2 id="背景">背景</h2>
-
-<p>稳定性的重要性，在VUCA约束下，达到稳定性，是对工程师全方位能力的锻炼。</p>
-
-<h3 id="vuca">VUCA</h3>
-<p>V: Volatility 易变性 <br />
-U: Uncertainty 不确定性<br />
-C: Complexity 复杂性<br />
-A: Ambiguity 模糊性</p>
-
-<h3 id="cap理论">CAP理论</h3>
-<p>C：Cost 成本<br />
-A：Quality 质量<br />
-P: Productivity 效率</p>
-
-<h2 id="不稳定的原因">不稳定的原因</h2>
-
-<h3 id="人为因素">人为因素</h3>
-<pre><code class="language-mermaid">mindmap
-  root((人为因素))
-        代码编写
-            代码逻辑错误
-            异常处理不合理
-            第三方库使用不正确
-            未遵循开发规范
-            死循环
-        配置问题
-            超时时间不合理
-            限流阈值不合理
-            配置错误
-        系统设计问题
-            循环调用
-            服务雪崩
-                基础服务故障影响上游业务
-            流量激增
-                大促活动
-                业务高峰
-                DDOS攻击
-        存储问题
-            数据库
-                慢查询
-                    没走索引
-                    查询结果过大
-                    大表关联查询
-                大事务
-                    死锁
-                    吞吐量低
-                共享存储风险
-                连接打满
-            缓存
-                命中率低
-                缓存溢出
-        资源不足
-            磁盘打满
-                日志未清理
-                日志输出过多
-            CPU打满
-                死循环
-                计算密集型任务
-            内存不足
-                内存泄露
-                内存溢出
-            线程耗尽
-                池大小不合理
-                核心与非核心线程未隔离
-                存在高耗时操作
-
-</code></pre>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>人为因素应通过规范流程来减少失误概率，提前预防，尽早发现，将功夫放在平日。
-</code></pre></div></div>
-
-<h3 id="自然因素">自然因素</h3>
-<pre><code class="language-mermaid">mindmap
-  root((自然因素))
-        服务器问题
-            机器宕机
-            机房停电
-        网络问题
-            线路故障
-            设备故障
-            网线被拔
-        三方服务问题
-            第三方故障
-            服务欠费
-            被拉黑
-</code></pre>
-<p>自然因素虽受客观因素影响，可控性不高，但是付费通道服务的费用问题，却是需要进行常规监控的。</p>
-
-<h2 id="稳定性总结">稳定性总结</h2>
-
-<p>做稳定性建设一定要结合公司或组织的实际情况，量入为出，最合适的方案才是最好的方案。稳定性建设的房子，如下：</p>
-
-<p><img src="/assets/posts/202309/稳定性.事前.svg" /></p>
-
-<h2 id="事前建设四要素">事前建设四要素</h2>
-<p>稳定性建设四要素：人、工具、预案和目标。</p>
-
-<h3 id="第一要素-人">第一要素： 人</h3>
-
-<p>要解决几个问题：</p>
-<ul>
-  <li>稳定性建设涉及哪些部门</li>
-  <li>如何降低犯错的概率</li>
-  <li>如何提高稳定性意识</li>
-  <li>如何定责</li>
-  <li>如何激励</li>
-</ul>
-
-<p>稳定性建设工作需要老板支持，它的实施一般需要开发、测试、运维、安全还有产品等同学参与，而且主导方应该是开发、测试和运维。确定了参与方后，就可以做关键的一步：“参与稳定性建设的每个团队都需要在OKR中背负一部分稳定性指标”，这也是为什么说稳定性建设工作需要老板支持，因为和绩效考核相关。</p>
-
-<p><em>稳定性工作，规范先行</em>。OKR的部分只是让各参与方在稳定性方面工作的投入变成合规化，平时如何去参与稳定性建设还得“有迹可循”，对于开发和测试来说就是要根据公司的当前技术体系去建设开发规范、提测规范、测试规范、上线规范、复盘规范等。我们拿和软件开发最相关的开发规范来说，开发规范是对开发人员的要求，让开发人员知道什么是必须要做的、什么是推荐的、什么是应该避免的。通常开发规范至少应该包括如下几个部分：</p>
-
-<p><em>编码规范</em>：对外接口命名方式、统一异常父类、业务异常码规范、对外提供服务不可用是抛异常还是返回错误码、统一第三方库的版本、哪些场景必须使用内部公共库、埋点日志怎么打、提供统一的日志、监控切面实现等，编码规范除了能规范开发的编码行为、避免犯一些低级错误和踩一些重复的坑外，另一个好处是让新入职的同学能快速了解公司的编码原则，这点对编码快速上手很重要。这里再重点说一下为什么要统一异常父类和业务异常码，例如虽然不同模块（这里的模块指的是能独立部署的项目）可能有不同的异常父类，比如订单模块的异常父类是OrderException、交易支付模块的异常父类是TradeException，而OrderException和TradeException的父类是BizException（当然BizException是定义在一个通用共公共库中的），而我们也需要去统一异常码，比如200代表正确的返回码，异常的返回码是6位数字（前3位代表模块，后3位代表异常类型），有了统一的异常父类和异常码后，很多切面就都可以由公共库来做了，比如统一的监控、统一的出入口日志打印，统一的异常拦截，压测标识透传、特殊的字段埋点等，千万别小看这些，这些能在未来持续提升研发效率，降低稳定性工作成本。</p>
-
-<p><em>公共库使用规范</em>：为了能对通用功能进行定制化改造和封装，公司内部肯定会有一些公共库，例如日志库、HTTP库、线程池库、监控埋点库等，这些库都“久经考验”，已经被证实是有效且可靠的，这些就应该强制使用，当然为了适应业务的发展，这些公共库也应该进行迭代和升级。</p>
-
-<p><em>项目结构规范</em>：为了贯彻标准的项目结构，一方面我们需要为各种类型项目通过“项目脚手架”来创建标准的项目结构原型，然后基于这个项目原型来进行开发，统一的项目结构一个最显著的好处是让开发能快速接手和了解项目，这种对于团队内维护多个项目很重要，人员能进行快速补位。</p>
-
-<p><em>数据库规范</em>：数据库连接资源堪比CPU资源，现在的应用都离不开数据库，而且通常数据库都属于核心资源，一旦数据库不可用，应用都没有太有效的止损手段，所以在数据库规范里，库名、表名、索引、字段、分库分表的一些规范都必须明确，</p>
-
-<p><em>考试</em>，将这些规范和历史的线上事故整理成试题，让新老开发定期去考试，考试是一种传统的考核机制，我们可以把规范和公共库的更新部分，也及时加入到考试试题中，来督促大伙及时学习。</p>
-
-<p>有了OKR、规范和考核机制，加上我们定期宣导，相信各成员的稳定性意识会有显著提高。</p>
-
-<p>事故定责一般是比较复杂的过程，除非事故原因非常简单明了，但实际上事故原因常常涉及多个团队，如果责任分摊不合理，难免会引发跨团队的争吵，合理的做法是引入第三方稳定性团队来干预，例如滴滴的星辰花团队，星辰花会撰写定责指南，并制定一些相关流程机制。</p>
-
-<p>当然，如果达成稳定性年度目标，也应该对这些团队进行适当表彰。</p>
-
-<h3 id="第二要素-工具">第二要素： 工具</h3>
-
-<p>建设必要的工具，来支撑稳定性目标的实现。常见的工具和平台包括：日志采集分析检索平台（例如ELK）、监控告警平台（例如Grafana）、分布式追踪系统（例如APM）、自动化打包部署平台（例如KooK）、服务降级系统、预案平台、根因定位平台、放火平台等。</p>
-
-<p>工具本质上是手段，它能降低我们在稳定性工作上投入的成本，例如有了监控告警平台，我们就不需要专人时刻盯着日志或大盘，有了分布式追踪系统，问题定位会更有效率，有了降级系统，一些故障能自动控制和恢复，不用我们再上线一次。要想做好稳定性工作，工具必不可少，没有工具，稳定性建设总是低效的。</p>
-
-<h3 id="第三要素-预案">第三要素： 预案</h3>
-
-<p>完善的紧急预案能回答如下4个问题：</p>
-
-<ul>
-  <li>故障发生时我们该做什么？</li>
-  <li>谁来指挥？</li>
-  <li>谁来决策？</li>
-  <li>如何善后？</li>
-</ul>
-
-<p>当一个不那么容易定位的故障发生时，你应该做的第一件事应该是什么？这在不同公司、同一个公司同一个团队的不同成员恐怕都会给出一个不同的答案，而在滴滴内部，我们大多会第一时间通知团队内其他成员、Leader（寻求帮助）和客服、上游业务开发等可能的影响方 （问题周知）。当这一步做完以后，一般就会有一部分同学加入问题排查和止损，然而介入的人多了，排查和止损的效率不一定会成比例的提升，这时候协调者很重要，协调者要避免介入的同学在做重复工作，协调者还需要持续和客服、上游业务开发等影响方沟通（我们曾经就经历过由于问题排查问题进度没有及时有效和业务方沟通，业务方将故障升级的case）。对于排查问题和止损的同学来说，要操作某个开关，有可能还要去查代码看开关的名字是什么，还有可能关掉一个功能需要操作多个开关，这些在紧急时刻都有可能由于慌乱而出错。而且什么条件下才能操作开关，谁能决定应不应该操作开关，恐怕在当时很难去做最正确的事情，而这一切，没错，都应该提前写到预案中！！！</p>
-
-<p>紧急预案一般要包含如下内容：</p>
-
-<ul>
-  <li>故障发生时应该通知哪些人或团队。</li>
-  <li>如何选出协调者，什么情况下该选出协调者。</li>
-  <li>协调者的职责有哪些。</li>
-  <li>需要操作开关时，谁有权利决策。</li>
-  <li>常见故障以及对应的止损方式。</li>
-  <li>止损的原则是什么，什么是最重要的。</li>
-  <li>善后方案谁来拍板。</li>
-</ul>
-
-<p>预案很重要，完备的预案能降低故障定位和止损的时间，提升协作效率。</p>
-
-<h3 id="第四要素-目标">第四要素： 目标</h3>
-
-<p>稳定性目标是要平衡建设投入成本和业务产出的关系。可以将故障等级分成了P0至P5六个等级，P0、P1、P2属于重大事故，是需要消耗服务不可用时长的（根据全年定的服务可用时长占比指标来计算出某个部门的全年服务不可用总时长），一旦年底某个部门的全年服务不可用时长超过年初设定的阈值，就会有一定的处罚，并影响部门绩效（之前达标也有奖励，但后来奖励取消了）。</p>
-
-<h2 id="稳定性建设四个方向">稳定性建设四个方向</h2>
-
-<h3 id="第一个方向根基要抓牢45">第一个方向：根基要抓牢（45%）</h3>
-
-<p>稳定性建设工作重在预防，根据作者多年的工作经验，至少6成线上故障都可以在预防工作中消除，我们需要投入45%的精力来做根基建设，所谓根基建设，就是把开发、测试、上线这三大流程做透！！下面列了几个关键点：</p>
-
-<p><em>Code Review</em>：CR其实是一个很重要的环节，当一个开发整个编码和提测都可以自己闭环搞定时，时间一长就容易产生懈怠，这时候写隐患代码的几率会大大提高，CR的过程并不是diss的过程，这个一定要在团队内拉齐，相反，CR是一次很好的团队沟通和塑造自己影响力的机会。我就很佩服那些代码写得质量高并且能把整个流程讲顺的人。我们团队的项目都接入了全流程（例如滴滴的鲲鹏），分支合master必须要其他人Review，但这是“离线”的，没有代码作者讲的过程，效果没有几个人坐在小黑屋讲的好，只是更快而已。我们团队规定，大于等于4人日的项目需要进行小黑屋CR。CR还可以让其他成员来检测该代码实现是否遵循了开发规范，毕竟“先污染后治理”的成本太高，记住，CR一定是一个相互学习的过程。</p>
-
-<p><em>设计评审</em>：再也没有比糟糕的设计更有破坏力的东西了，设计评审和CR可以放在一起做，先评审设计再进行CR，有人就会说，都编码完了才进行设计评审是不是晚了？其实这要看情况而定，如果团队内部经常产出“糟糕设计”，那么我觉得设计评审就应该编码之前来做，但如果团队成员专业能力和经验都还不错，那么我们允许你再编码之后再做设计评审，而且编码的过程其实也是设计的过程，可以规避提前设计而导致后续编码和设计不一致的问题。设计评审的原则是，既要讲最终的设计方案，也要讲你淘汰的设计方案！</p>
-
-<p><em>提测标准</em>：写完代码就可以提测了？当然不是，至少得完成补充单元测试、完成自测、完成开发侧的联调、通过测试用例（如果QA提前给了测试用例的话）、补充改动点和影响点（便于QA评估测试范围）、补充设计文档（对，现在滴滴的QA养成了读代码、看设计的习惯）这些步骤才能说可以提测了。当然，提测标准理论上是QA同学来定义的。</p>
-
-<p><em>测试流程</em>：测试的全流程覆盖最好能做到全自动化，很多测试用例可以沉淀下来，用来做全流程回归，当然这需要系统支持。我也见过太多犹豫QA没精力进行全流程回归而导致问题没有提前发现而产生的事故，所以测试的原则是尽可能自动化和全流程覆盖，让宝贵的人力资源投入到只能人工测试的环节。</p>
-
-<p><em>上线流程</em>：上线也是一个风险很高的操作，我们简单统计了19年的上线次数，光我们团队负责的系统就上线了五百多次。部署平台需要支持灰度发布、小流量发布，强制让开发在发布时观察线上大盘和日志，一旦有问题，能做到快速回滚（当然要关注回滚条件）。我们这边的做法是先小流量集群灰度（我们把单量少的城市单独做了一套小流量集群），再线上灰度，确保哪怕出问题也能控制影响。</p>
-
-<h3 id="第二个方向工作在日常30">第二个方向：工作在日常（30%）</h3>
-
-<p>俗话说养兵一日，用兵一时，平日的养兵其实也非常重要，这一方向我们需要投入30%的精力，需要我们做到如下几点：</p>
-
-<p><em>人人参与</em>：团队内人人都需要参与稳定性建设工作，稳定性工作不是某个人的事情，所以我会要求所有人的OKR中都有稳定性建设的部分。做toC研发的同学，都养成了带电脑回家的习惯，哪怕是加班到晚上12点，当然在外旅游也带着电脑，手机24小时保持畅通；稳定性已经成为了生活本身。</p>
-
-<p><em>持续完善监控告警</em>：监控告警就是我们发现故障的“眼睛”和“耳朵”，然而大多数监控告警都需要我们手动一个个配置，随着业务的不断迭代，会有很多新接口需要添加监控，一些老的监控的阈值也需要不断调整（否则大量告警会让人麻木），所以监控告警是一个持续优化的过程。</p>
-
-<p><em>及时消灭线上小隐患</em>：平日发现的一些问题要及时消灭，很多线上事故在事前都有一定预兆，放任平时的一些小问题不管，到后面只会给未来埋上隐患。</p>
-
-<p><em>跨团队联动</em>：稳定性肯定不是一个团队的事情，一些降级方案可能涉及多个团队的工作，所以定期的跨团队的沟通会议是很有必要的，要大伙一起使劲才能把事情做好。</p>
-
-<p><em>复盘机制</em>：对出过的线上事故一定要及时的进行复盘，通过复盘来发现我们现有流程、机制是否有问题，让大伙不要踩重复的坑，并不断完善我们的紧急预案。复盘虽然属于事后的行为，但很重要，我们需要通过复盘来看下次是否能预防此故障，或者是否能更快的定位和止损。</p>
-
-<p><em>会议机制</em>：稳定性周会、稳定性月会，我们通过各种定期的会议来总结一些阶段性进展和成果，拉齐大家认知，这也是大伙日常稳定性工作露出的一个机会，所以非常重要。</p>
-
-<h3 id="第三个方向预案是关键15">第三个方向：预案是关键（15%）</h3>
-
-<p>我们通常都会忽视预案的作用，因为预案整理起来确实比较麻烦，预案也需要随着功能的迭代而不断更新，否则将很容易过时，而且预案在平日非故障期间也确实没有发挥作用的机会。但我们不得不承认紧急预案相当重要，特别是当我们去定位和止损一个比较复杂的线上问题时。</p>
-
-<p>我们需要在预案的制定和演练上投入15%的精力，可以从如下三个方面着手：</p>
-
-<p><em>分场景制定和完善紧急预案</em>：如果我们还没有紧急预案，那第一步就是分类分场景整理下历史上经常发生的线上事故，例如MySQL故障预案、MQ故障预案、发单接口故障预案等。而且预案有可能会被多人查看，一定要清晰易懂，如果某些预案是有损的，需要把副作用也描述清楚。</p>
-
-<p><em>通过放火平台来验证预案</em>：借助放火平台和服务降级系统，我们可以通过主动给主流程服务的非核心依赖注入故障，来验证系统在遇到非核心依赖发生故障时，核心服务是否仍旧有效，如果某些预案无法做成系统自动的（比如某些预案有一定的风险或副作用），也可以在预发环境来验证该预案是否能达到预期效果，防止真正故障发生时“手生”。预案就是在这种不断演练过程中来优化和完善的，这样的预案才是动态的，才是活生生有效可靠的！</p>
-
-<h3 id="第四个方向容量是核心10">第四个方向：容量是核心（10%）</h3>
-
-<p>我们知道木桶效应，一个木桶能装多少水取决于最短的那块板，在分布式系统中也是如此，我们需要摸到分布式系统中的这块“短木板”才能知道整个系统的吞吐量（容量），如果我们没有这个值，老板问你明年单量要Double，问你要预算，要规划你凭什么给？最准确的容量预估方案就是——线上全链路压测。至于滴滴是如何做线上全链路压测，后续我会有专门的文章来阐述。</p>
-
-<p>我们继续探讨容量这个话题，我们应该投入10%的精力来摸容量、扩容量、水位预警等。容量也相当重要，根据我的经验，线上有大约10%的故障和容量有关，当遇到这种问题，最有效的解决方案就是扩容！关于容量，我们在日常需要做到如下三点：</p>
-
-<p><em>常态化的全链路压测</em>：线上全链路压测必须定期举行，特别的在有大促活动时，也需要提前进行一次。因为随着业务的快速迭代，系统老的瓶颈可能消失，新的瓶颈可能出现，所以之前的全链路压测的结果将失效，我们需要定期去摸这个线上环境的这个阈值。</p>
-
-<p><em>定期进行扩容演练</em>：在滴滴内部，我们会定期进行弹性云扩容演练，这在紧急情况下很有用，我们就曾经遇到过弹性云扩容比修改阈值重新上线更快解决问题的case。</p>
-
-<p><em>多活建设</em>：我们知道多活主要是为了容灾，但其实多活实际上也从整体上增加了系统容量，所以也属于容量扩充的范畴，一旦某个机房遇到瓶颈，我们可以分流到其他机房。当然多活建设需要一定成本，业务量大到一定程度才需要投入。</p>
-
-<h2 id="稳定性建设本质">稳定性建设本质</h2>
-<p>就像我们做项目要“面向风险”编程一样，系统稳定性建设的目的其实就是为了应对未来的风险，和未来风险做对抗（哪怕我们有些手段将未来的风险变小）。如果非让我们探究稳定性建设的本质，我觉得稳定性建设的本质是将系统和系统间未来不可控的因素逐渐变为可预见，可控的因素，并着手去一一解决的一个过程</p>
-
-<hr />
-<ol>
-  <li>https://blog.csdn.net/manzhizhen/article/details/103642565</li>
-</ol>]]></content><author><name>caritasem</name></author><category term="SRE" /><category term="SRE" /><category term="pre-event" /><summary type="html"><![CDATA[背景 稳定性的重要性，在VUCA约束下，达到稳定性，是对工程师全方位能力的锻炼。 VUCA V: Volatility 易变性 U: Uncertainty 不确定性 C: Complexity 复杂性 A: Ambiguity 模糊性 CAP理论 C：Cost 成本 A：Quality 质量 P: Productivity 效率 不稳定的原因 人为因素 mindmap root((人为因素)) 代码编写 代码逻辑错误 异常处理不合理 第三方库使用不正确 未遵循开发规范 死循环 配置问题 超时时间不合理 限流阈值不合理 配置错误 系统设计问题 循环调用 服务雪崩 基础服务故障影响上游业务 流量激增 大促活动 业务高峰 DDOS攻击 存储问题 数据库 慢查询 没走索引 查询结果过大 大表关联查询 大事务 死锁 吞吐量低 共享存储风险 连接打满 缓存 命中率低 缓存溢出 资源不足 磁盘打满 日志未清理 日志输出过多 CPU打满 死循环 计算密集型任务 内存不足 内存泄露 内存溢出 线程耗尽 池大小不合理 核心与非核心线程未隔离 存在高耗时操作 人为因素应通过规范流程来减少失误概率，提前预防，尽早发现，将功夫放在平日。 自然因素 mindmap root((自然因素)) 服务器问题 机器宕机 机房停电 网络问题 线路故障 设备故障 网线被拔 三方服务问题 第三方故障 服务欠费 被拉黑 自然因素虽受客观因素影响，可控性不高，但是付费通道服务的费用问题，却是需要进行常规监控的。 稳定性总结 做稳定性建设一定要结合公司或组织的实际情况，量入为出，最合适的方案才是最好的方案。稳定性建设的房子，如下： 事前建设四要素 稳定性建设四要素：人、工具、预案和目标。 第一要素： 人 要解决几个问题： 稳定性建设涉及哪些部门 如何降低犯错的概率 如何提高稳定性意识 如何定责 如何激励 稳定性建设工作需要老板支持，它的实施一般需要开发、测试、运维、安全还有产品等同学参与，而且主导方应该是开发、测试和运维。确定了参与方后，就可以做关键的一步：“参与稳定性建设的每个团队都需要在OKR中背负一部分稳定性指标”，这也是为什么说稳定性建设工作需要老板支持，因为和绩效考核相关。 稳定性工作，规范先行。OKR的部分只是让各参与方在稳定性方面工作的投入变成合规化，平时如何去参与稳定性建设还得“有迹可循”，对于开发和测试来说就是要根据公司的当前技术体系去建设开发规范、提测规范、测试规范、上线规范、复盘规范等。我们拿和软件开发最相关的开发规范来说，开发规范是对开发人员的要求，让开发人员知道什么是必须要做的、什么是推荐的、什么是应该避免的。通常开发规范至少应该包括如下几个部分： 编码规范：对外接口命名方式、统一异常父类、业务异常码规范、对外提供服务不可用是抛异常还是返回错误码、统一第三方库的版本、哪些场景必须使用内部公共库、埋点日志怎么打、提供统一的日志、监控切面实现等，编码规范除了能规范开发的编码行为、避免犯一些低级错误和踩一些重复的坑外，另一个好处是让新入职的同学能快速了解公司的编码原则，这点对编码快速上手很重要。这里再重点说一下为什么要统一异常父类和业务异常码，例如虽然不同模块（这里的模块指的是能独立部署的项目）可能有不同的异常父类，比如订单模块的异常父类是OrderException、交易支付模块的异常父类是TradeException，而OrderException和TradeException的父类是BizException（当然BizException是定义在一个通用共公共库中的），而我们也需要去统一异常码，比如200代表正确的返回码，异常的返回码是6位数字（前3位代表模块，后3位代表异常类型），有了统一的异常父类和异常码后，很多切面就都可以由公共库来做了，比如统一的监控、统一的出入口日志打印，统一的异常拦截，压测标识透传、特殊的字段埋点等，千万别小看这些，这些能在未来持续提升研发效率，降低稳定性工作成本。 公共库使用规范：为了能对通用功能进行定制化改造和封装，公司内部肯定会有一些公共库，例如日志库、HTTP库、线程池库、监控埋点库等，这些库都“久经考验”，已经被证实是有效且可靠的，这些就应该强制使用，当然为了适应业务的发展，这些公共库也应该进行迭代和升级。 项目结构规范：为了贯彻标准的项目结构，一方面我们需要为各种类型项目通过“项目脚手架”来创建标准的项目结构原型，然后基于这个项目原型来进行开发，统一的项目结构一个最显著的好处是让开发能快速接手和了解项目，这种对于团队内维护多个项目很重要，人员能进行快速补位。 数据库规范：数据库连接资源堪比CPU资源，现在的应用都离不开数据库，而且通常数据库都属于核心资源，一旦数据库不可用，应用都没有太有效的止损手段，所以在数据库规范里，库名、表名、索引、字段、分库分表的一些规范都必须明确， 考试，将这些规范和历史的线上事故整理成试题，让新老开发定期去考试，考试是一种传统的考核机制，我们可以把规范和公共库的更新部分，也及时加入到考试试题中，来督促大伙及时学习。 有了OKR、规范和考核机制，加上我们定期宣导，相信各成员的稳定性意识会有显著提高。 事故定责一般是比较复杂的过程，除非事故原因非常简单明了，但实际上事故原因常常涉及多个团队，如果责任分摊不合理，难免会引发跨团队的争吵，合理的做法是引入第三方稳定性团队来干预，例如滴滴的星辰花团队，星辰花会撰写定责指南，并制定一些相关流程机制。 当然，如果达成稳定性年度目标，也应该对这些团队进行适当表彰。 第二要素： 工具 建设必要的工具，来支撑稳定性目标的实现。常见的工具和平台包括：日志采集分析检索平台（例如ELK）、监控告警平台（例如Grafana）、分布式追踪系统（例如APM）、自动化打包部署平台（例如KooK）、服务降级系统、预案平台、根因定位平台、放火平台等。 工具本质上是手段，它能降低我们在稳定性工作上投入的成本，例如有了监控告警平台，我们就不需要专人时刻盯着日志或大盘，有了分布式追踪系统，问题定位会更有效率，有了降级系统，一些故障能自动控制和恢复，不用我们再上线一次。要想做好稳定性工作，工具必不可少，没有工具，稳定性建设总是低效的。 第三要素： 预案 完善的紧急预案能回答如下4个问题： 故障发生时我们该做什么？ 谁来指挥？ 谁来决策？ 如何善后？ 当一个不那么容易定位的故障发生时，你应该做的第一件事应该是什么？这在不同公司、同一个公司同一个团队的不同成员恐怕都会给出一个不同的答案，而在滴滴内部，我们大多会第一时间通知团队内其他成员、Leader（寻求帮助）和客服、上游业务开发等可能的影响方 （问题周知）。当这一步做完以后，一般就会有一部分同学加入问题排查和止损，然而介入的人多了，排查和止损的效率不一定会成比例的提升，这时候协调者很重要，协调者要避免介入的同学在做重复工作，协调者还需要持续和客服、上游业务开发等影响方沟通（我们曾经就经历过由于问题排查问题进度没有及时有效和业务方沟通，业务方将故障升级的case）。对于排查问题和止损的同学来说，要操作某个开关，有可能还要去查代码看开关的名字是什么，还有可能关掉一个功能需要操作多个开关，这些在紧急时刻都有可能由于慌乱而出错。而且什么条件下才能操作开关，谁能决定应不应该操作开关，恐怕在当时很难去做最正确的事情，而这一切，没错，都应该提前写到预案中！！！ 紧急预案一般要包含如下内容： 故障发生时应该通知哪些人或团队。 如何选出协调者，什么情况下该选出协调者。 协调者的职责有哪些。 需要操作开关时，谁有权利决策。 常见故障以及对应的止损方式。 止损的原则是什么，什么是最重要的。 善后方案谁来拍板。 预案很重要，完备的预案能降低故障定位和止损的时间，提升协作效率。 第四要素： 目标 稳定性目标是要平衡建设投入成本和业务产出的关系。可以将故障等级分成了P0至P5六个等级，P0、P1、P2属于重大事故，是需要消耗服务不可用时长的（根据全年定的服务可用时长占比指标来计算出某个部门的全年服务不可用总时长），一旦年底某个部门的全年服务不可用时长超过年初设定的阈值，就会有一定的处罚，并影响部门绩效（之前达标也有奖励，但后来奖励取消了）。 稳定性建设四个方向 第一个方向：根基要抓牢（45%） 稳定性建设工作重在预防，根据作者多年的工作经验，至少6成线上故障都可以在预防工作中消除，我们需要投入45%的精力来做根基建设，所谓根基建设，就是把开发、测试、上线这三大流程做透！！下面列了几个关键点： Code Review：CR其实是一个很重要的环节，当一个开发整个编码和提测都可以自己闭环搞定时，时间一长就容易产生懈怠，这时候写隐患代码的几率会大大提高，CR的过程并不是diss的过程，这个一定要在团队内拉齐，相反，CR是一次很好的团队沟通和塑造自己影响力的机会。我就很佩服那些代码写得质量高并且能把整个流程讲顺的人。我们团队的项目都接入了全流程（例如滴滴的鲲鹏），分支合master必须要其他人Review，但这是“离线”的，没有代码作者讲的过程，效果没有几个人坐在小黑屋讲的好，只是更快而已。我们团队规定，大于等于4人日的项目需要进行小黑屋CR。CR还可以让其他成员来检测该代码实现是否遵循了开发规范，毕竟“先污染后治理”的成本太高，记住，CR一定是一个相互学习的过程。 设计评审：再也没有比糟糕的设计更有破坏力的东西了，设计评审和CR可以放在一起做，先评审设计再进行CR，有人就会说，都编码完了才进行设计评审是不是晚了？其实这要看情况而定，如果团队内部经常产出“糟糕设计”，那么我觉得设计评审就应该编码之前来做，但如果团队成员专业能力和经验都还不错，那么我们允许你再编码之后再做设计评审，而且编码的过程其实也是设计的过程，可以规避提前设计而导致后续编码和设计不一致的问题。设计评审的原则是，既要讲最终的设计方案，也要讲你淘汰的设计方案！ 提测标准：写完代码就可以提测了？当然不是，至少得完成补充单元测试、完成自测、完成开发侧的联调、通过测试用例（如果QA提前给了测试用例的话）、补充改动点和影响点（便于QA评估测试范围）、补充设计文档（对，现在滴滴的QA养成了读代码、看设计的习惯）这些步骤才能说可以提测了。当然，提测标准理论上是QA同学来定义的。 测试流程：测试的全流程覆盖最好能做到全自动化，很多测试用例可以沉淀下来，用来做全流程回归，当然这需要系统支持。我也见过太多犹豫QA没精力进行全流程回归而导致问题没有提前发现而产生的事故，所以测试的原则是尽可能自动化和全流程覆盖，让宝贵的人力资源投入到只能人工测试的环节。 上线流程：上线也是一个风险很高的操作，我们简单统计了19年的上线次数，光我们团队负责的系统就上线了五百多次。部署平台需要支持灰度发布、小流量发布，强制让开发在发布时观察线上大盘和日志，一旦有问题，能做到快速回滚（当然要关注回滚条件）。我们这边的做法是先小流量集群灰度（我们把单量少的城市单独做了一套小流量集群），再线上灰度，确保哪怕出问题也能控制影响。 第二个方向：工作在日常（30%） 俗话说养兵一日，用兵一时，平日的养兵其实也非常重要，这一方向我们需要投入30%的精力，需要我们做到如下几点： 人人参与：团队内人人都需要参与稳定性建设工作，稳定性工作不是某个人的事情，所以我会要求所有人的OKR中都有稳定性建设的部分。做toC研发的同学，都养成了带电脑回家的习惯，哪怕是加班到晚上12点，当然在外旅游也带着电脑，手机24小时保持畅通；稳定性已经成为了生活本身。 持续完善监控告警：监控告警就是我们发现故障的“眼睛”和“耳朵”，然而大多数监控告警都需要我们手动一个个配置，随着业务的不断迭代，会有很多新接口需要添加监控，一些老的监控的阈值也需要不断调整（否则大量告警会让人麻木），所以监控告警是一个持续优化的过程。 及时消灭线上小隐患：平日发现的一些问题要及时消灭，很多线上事故在事前都有一定预兆，放任平时的一些小问题不管，到后面只会给未来埋上隐患。 跨团队联动：稳定性肯定不是一个团队的事情，一些降级方案可能涉及多个团队的工作，所以定期的跨团队的沟通会议是很有必要的，要大伙一起使劲才能把事情做好。 复盘机制：对出过的线上事故一定要及时的进行复盘，通过复盘来发现我们现有流程、机制是否有问题，让大伙不要踩重复的坑，并不断完善我们的紧急预案。复盘虽然属于事后的行为，但很重要，我们需要通过复盘来看下次是否能预防此故障，或者是否能更快的定位和止损。 会议机制：稳定性周会、稳定性月会，我们通过各种定期的会议来总结一些阶段性进展和成果，拉齐大家认知，这也是大伙日常稳定性工作露出的一个机会，所以非常重要。 第三个方向：预案是关键（15%） 我们通常都会忽视预案的作用，因为预案整理起来确实比较麻烦，预案也需要随着功能的迭代而不断更新，否则将很容易过时，而且预案在平日非故障期间也确实没有发挥作用的机会。但我们不得不承认紧急预案相当重要，特别是当我们去定位和止损一个比较复杂的线上问题时。 我们需要在预案的制定和演练上投入15%的精力，可以从如下三个方面着手： 分场景制定和完善紧急预案：如果我们还没有紧急预案，那第一步就是分类分场景整理下历史上经常发生的线上事故，例如MySQL故障预案、MQ故障预案、发单接口故障预案等。而且预案有可能会被多人查看，一定要清晰易懂，如果某些预案是有损的，需要把副作用也描述清楚。 通过放火平台来验证预案：借助放火平台和服务降级系统，我们可以通过主动给主流程服务的非核心依赖注入故障，来验证系统在遇到非核心依赖发生故障时，核心服务是否仍旧有效，如果某些预案无法做成系统自动的（比如某些预案有一定的风险或副作用），也可以在预发环境来验证该预案是否能达到预期效果，防止真正故障发生时“手生”。预案就是在这种不断演练过程中来优化和完善的，这样的预案才是动态的，才是活生生有效可靠的！ 第四个方向：容量是核心（10%） 我们知道木桶效应，一个木桶能装多少水取决于最短的那块板，在分布式系统中也是如此，我们需要摸到分布式系统中的这块“短木板”才能知道整个系统的吞吐量（容量），如果我们没有这个值，老板问你明年单量要Double，问你要预算，要规划你凭什么给？最准确的容量预估方案就是——线上全链路压测。至于滴滴是如何做线上全链路压测，后续我会有专门的文章来阐述。 我们继续探讨容量这个话题，我们应该投入10%的精力来摸容量、扩容量、水位预警等。容量也相当重要，根据我的经验，线上有大约10%的故障和容量有关，当遇到这种问题，最有效的解决方案就是扩容！关于容量，我们在日常需要做到如下三点： 常态化的全链路压测：线上全链路压测必须定期举行，特别的在有大促活动时，也需要提前进行一次。因为随着业务的快速迭代，系统老的瓶颈可能消失，新的瓶颈可能出现，所以之前的全链路压测的结果将失效，我们需要定期去摸这个线上环境的这个阈值。 定期进行扩容演练：在滴滴内部，我们会定期进行弹性云扩容演练，这在紧急情况下很有用，我们就曾经遇到过弹性云扩容比修改阈值重新上线更快解决问题的case。 多活建设：我们知道多活主要是为了容灾，但其实多活实际上也从整体上增加了系统容量，所以也属于容量扩充的范畴，一旦某个机房遇到瓶颈，我们可以分流到其他机房。当然多活建设需要一定成本，业务量大到一定程度才需要投入。 稳定性建设本质 就像我们做项目要“面向风险”编程一样，系统稳定性建设的目的其实就是为了应对未来的风险，和未来风险做对抗（哪怕我们有些手段将未来的风险变小）。如果非让我们探究稳定性建设的本质，我觉得稳定性建设的本质是将系统和系统间未来不可控的因素逐渐变为可预见，可控的因素，并着手去一一解决的一个过程 https://blog.csdn.net/manzhizhen/article/details/103642565]]></summary></entry><entry><title type="html">稳定性之heinrich’s law</title><link href="http://localhost:4000/2023/08/sre-heinrich-law/" rel="alternate" type="text/html" title="稳定性之heinrich’s law" /><published>2023-08-20T20:00:07+08:00</published><updated>2023-08-20T20:00:07+08:00</updated><id>http://localhost:4000/2023/08/sre-heinrich-law</id><content type="html" xml:base="http://localhost:4000/2023/08/sre-heinrich-law/"><![CDATA[<h3 id="海因里希法则和稳定性">海因里希法则和稳定性</h3>
+</ol>]]></content><author><name>caritasem</name></author><category term="engineering" /><category term="supervisor" /><category term="python" /><category term="multiprocessing" /><summary type="html"><![CDATA[supervisor 多进程管理 使用 supervisor 管理进程，如果被管理的项目是多进程模式，就需要注意一下： 　　1、程序内是否有接收处理 kill -15 | SIGnal。 　　2、python 程序无法监听 kill -9 信号（其他编程语言没有了解，但按理说应该是一样的），也无法拒绝（kill -9 是立马强制结束进程），所以不要随便使用 kill -9 结束一个进程(kill params[pid], 会允许程序延迟退出，所以程序内可以监听 kill -15 | SIGnal)，如果使用 kill -9 结束了一个主进程，那么它的子进程就会成为孤儿进程，使用 kill -9 结束某个子进程，就会有可能导致其成为僵尸进程。 　　3、如果确实有需要强制结束某个进程，为了安全起见，可以使用 kill -9 -params[gpid] 代替， 如 kill -9 -7634，强制立马结束 7634 进程组内的所有进程，正常情况下，主进程的 pid 和该进程组的 gpid 相同，但意义不一样。 　　4、kill -15 (默认)和 kill -9 是两种不同的信号，python 程序可以监听 kill -15(也就理所当然的可以拒绝kill -15)，但是无法监听 kill -9(也就无法拒绝) 如果程序没有监听并处理 kill | SIGnal 就需要到相应服务的 supervisor 管理配置文件声明：stop 服务时，允许 supervisor stop 该进程组下的所有进程： killasgroup=true # 允许杀死该进程组内的所有进程 stopasgroup=true # 允许停止该进程组内的所有进程 但是如果子进程里又新开了子进程，采用上述方式用supervisor是关闭不掉的，可以使用os和| SIGnal模块，用内核功能帮助完成必要的辅助操作，不影响应用层持续执行。 常用信号量 信号 值 处理动作 发出信号的原因 SIGHUP 1 A 终端挂起或者控制进程终止 SIGINT 2 A 键盘中断（如break键被按下：如 control + c） SIGQUIT 3 C 键盘的退出键被按下 SIGILL 4 C 非法指令 SIGABRT 6 C 由abort(3)发出的退出指令 SIGFPE 8 C 浮点异常 SIGKILL 9 AEF Kill信号 (无法被程序捕获，程序也无法拒绝) SIGSEGV 11 C 无效的内存引用 SIGPIPE 13 A 管道破裂: 写一个没有读端口的管道 SIGALRM 14 A 由alarm(2)发出的信号 SIGTERM 15 A 终止信号 （程序内可以监听该信号，当多进程中的任意进程监听到该信号，就退出所有进程，实现多进程安全退出） SIGUSR1 30,10,16 A 用户自定义信号1 SIGUSR2 31,12,17 A 用户自定义信号2 SIGCHLD 20,17,18 B 子进程结束信号 SIGCONT 19,18,25   进程继续（曾被停止的进程） SIGSTOP 17,19,23 DEF 终止进程 SIGTSTP 18,20,24 D 控制终端（tty）上按下停止键 SIGTTIN 21,21,26 D 后台进程企图从控制终端读 SIGTTOU 22,22,27 D 后台进程企图从控制终端写 python 多进程处理 SIGINT SIGTERM 方式, 示例如下： import os import sys import time import signal import multiprocessing from multiprocessing import Process def fun_grandchild(x): while True: print("grand current pid is % s, group id is % s" % (os.getpid(), os.getpgrp())) time.sleep(1) def fun(x): t = Process(target=fun_grandchild, args=(str(1),)) t.daemon = False t.start() try: t.join() except Exception as e: print(str(e)) while True: print("current pid is % s, group id is % s" % (os.getpid(), os.getpgrp())) time.sleep(1) def term(signals, frame): print("====current pid is % s, group id is % s" % (os.getpid(), os.getpgrp())) # os.getpid() 获取当前进程号 # os.getpgid(params[pid]) 获取当前进程号的所在的组的组进程号 # 杀死某个进程：os.kill(params[pid], params[signal.SIGKILL]) # 杀死某个进程组下的所有进程：os.killpg(params[gpid], params[signal.SIGKILL]) # os.kill(os.getpid(), signal.SIGKILL) os.killpg(os.getpgid(os.getpid()), signal.SIGKILL) print("-------") # 这行代码永远也不会被执行 def signal_handler(signals, frame): print('You pressed Ctrl+C，进程号{}'.format(os.getpid())) # 优雅地退出（让 control + c 不抛出异常信息） sys.exit(0) if __name__ == "__main__": # 监听信号，注册回调函数(主进程或者子进程都会监听) signal.signal(signal.SIGINT, signal_handler) # control + c 会发送该信号 signal.signal(signal.SIGTERM, term) # 程序无法捕获 signal.SIGKIL，会报错（但是可以发送，如 term() 中所示） # signal.signal(signal.SIGKILL, term) processes = list() print("currentpid is % s" % os.getpid()) for i in range(3): t = Process(target=fun, args=(str(i),)) t.daemon = False t.start() processes.append(t) try: for p in processes: p.join() except Exception as e: print(str(e)) https://www.cnblogs.com/lowmanisbusy/p/12733695.html]]></summary></entry><entry><title type="html">稳定性之heinrich’s law</title><link href="http://localhost:4000/2023/08/sre-heinrich-law/" rel="alternate" type="text/html" title="稳定性之heinrich’s law" /><published>2023-08-20T20:00:07+08:00</published><updated>2023-08-20T20:00:07+08:00</updated><id>http://localhost:4000/2023/08/sre-heinrich-law</id><content type="html" xml:base="http://localhost:4000/2023/08/sre-heinrich-law/"><![CDATA[<h3 id="海因里希法则和稳定性">海因里希法则和稳定性</h3>
 
 <p>海因里希法则是美国著名安全工程师海因里希提出的300：29：1法则。意思是：当一个企业有300起隐患或违章，非常可能要发生29起轻伤或故障，另外还有一起重伤、死亡事故。”海因里希法则”原是通过分析工伤事故的发生概率，为保险公司的经营提出的法则。</p>
 
@@ -574,261 +797,4 @@ P: Productivity 效率</p>
 <ul>
   <li>https://medium.com/source-and-buggy/why-does-software-engineering-take-so-long-77a3f1832739</li>
   <li>左耳朵耗子</li>
-</ul>]]></content><author><name>caritasem</name></author><category term="engineering" /><category term="agile" /><category term="model" /><summary type="html"><![CDATA[初生牛犊 对于年轻的、刚入行的计算机学生来说，代码在他们眼中是这样的： 稍有小成 当然，实习生们都很聪明，他们知道学术界和工业界的代码有哪些不同，他们会花点儿时间给代码加上注释，做点测试，code review…… 但是，他们依然不会意识到这座冰山有多深。 A11Y: accessibility,是指设计和创建可以被所有人，包括那些有残疾的人，使用的网站和应用程序。例如让盲人通过语音方式使用软件。 l10n : localization（本地化）, 类似的还有i18n （国际化）。 GDPR：General Data Protection Regulation（通用数据保护条例），这是一项在2018年5月25日生效的欧洲联盟立法。GDPR 的主要目标是保护个人在网络上的数据安全，给予个人对自己的个人数据更多的控制权。 重要的是，冰山海面下的部分依然涉及到代码，也就是说，程序员的代码只有一小部分被用户使用，大部分都在用户的视线之外。 但是在海面以下的部分提供了真正的冰山浮力： 没有测试，系统的功能早晚会被发现问题，没有可靠的开发工具，程序员很快就会失去动力。 没有针对和解决客户问题的流程，客户很快就会抛弃你，把业务搬到别的地方。 不是所有的新产品都会触及冰山的所有部分，但很多项目都会触及大部分冰山。 即使是个最简单的活儿，也会慢慢变成一个大项目，例如，你想把一些用户数据保存在服务器上，在你开始之前，就得考虑这些事情： 🗄 确保数据得到备份，数据丢失了，用户可受不了 🗑 允许用户随时删除他们的数据，包括备份中的数据 📲 允许用户下载他们自己的数据和元数据，以符合GDPR的要求 📚 设计你的存储系统以符合HIPAA，FISA和欧盟的数据本地化政策等法律 🚂 随着存储系统的改变，迁移现有的用户数据 📊 监控后端，处理停机事件，配额使用情况和安全漏洞 👮 控制和审计客户允许的代理对用户数据的访问 如果有实习生在一个夏天就完成这么一个完整的项目，那就非常让人惊讶，印象深刻！ 拨云见日 但是，你以为这就完了吗？ 不！ 我们在冰山之下还有一个完整的冰山： 这个元冰山依然是由代码构成的，只是和你的项目代码关联不大。 你需要用IDE来编写代码，用编译器来编译代码，用调试器来调试代码，用Git来管理代码….. 你需要用到各种操作系统，数据库，框架，编程语言，流程图，安全扫描工具，静态分析工具，自动化脚本…… 你还需要白板，视频会议，电子邮件，Slack…… 它们不会影响你应用的工作方式，但是会影响你的工作效率和应对问题的能力，不好的、不适合的工具会让程序员付出高昂的代价。 最终，软件质量是由用户看得见的功能，看不见的代码，以及帮助编写代码的代码工具组成的。 只有当所有这一切都完美融合，才会创建出高质量的软件和服务。 返璞归真 吃透基础技术是为了更好地理解程序的运行原理，并基于这些基础技术进化出更优化的产品。吃透基础技术，有很多好处，具体来说，有如下几点。 万丈高楼平地起。一栋楼能盖多高，一座大桥能造多长，重要的是它们的地基。同样对于技术人员来说，基础知识越扎实，走得就会越远。 计算机技术太多了，但是仔细分析你会发现，只是表现形式很多，而基础技术并不多。学好基础技术，能让你一通百通，更快地使用各种新技术，从而可以更轻松地与时代同行。 很多分布式系统架构，以及高可用、高性能、高并发的解决方案基本都可以在基础技术上找到它们的身影。所以，学习基础技术能让你更好地掌握更高维度的技术。 https://medium.com/source-and-buggy/why-does-software-engineering-take-so-long-77a3f1832739 左耳朵耗子]]></summary></entry><entry><title type="html">敏捷项目管理评估方法</title><link href="http://localhost:4000/2023/08/agile-project-estimation/" rel="alternate" type="text/html" title="敏捷项目管理评估方法" /><published>2023-08-19T20:00:07+08:00</published><updated>2023-08-19T20:00:07+08:00</updated><id>http://localhost:4000/2023/08/agile-project-estimation</id><content type="html" xml:base="http://localhost:4000/2023/08/agile-project-estimation/"><![CDATA[<h3 id="t-shirt-size-estimation">T-Shirt Size Estimation</h3>
-
-<p>Amazon用一种T-Shirt Size 估计的方式来做项目。</p>
-
-<p><img src="/assets/posts/202308/Snip20230819_76.png" /></p>
-
-<p>产品经理会对每一条需求评估上业务影响力的尺寸，如：XXXL 影响一千万人以上或是可以占到上亿美金的市场，XXL，影响百万用户或是占了千万金级别以上的市场，后面还有XL，L，M，S，这样下来。<br />
-开发团队也一样，要评估投入的人员时间成本，XXXL表示要干1年，XXL干半年，XL干3个月，L干两个月，M干一个月，S干两周以下。等等。<br />
-于是，</p>
-
-<p>当业务影响力是XL，时间人员成本是S，这是最高优先级。<br />
-当业务影响力是M，时间人员成本是M，这是低优先级。<br />
-当业务影响力是S，时间人员成本是XL，直接砍掉这个需求。因为是亏的。<br />
-当业务影响力是XXL，时间人员成本是XXL，需要简化需求，把需求简化成XL，时间人员成本变成M以下。</p>]]></content><author><name>caritasem</name></author><category term="agile" /><category term="agile" /><category term="model" /><summary type="html"><![CDATA[T-Shirt Size Estimation Amazon用一种T-Shirt Size 估计的方式来做项目。 产品经理会对每一条需求评估上业务影响力的尺寸，如：XXXL 影响一千万人以上或是可以占到上亿美金的市场，XXL，影响百万用户或是占了千万金级别以上的市场，后面还有XL，L，M，S，这样下来。 开发团队也一样，要评估投入的人员时间成本，XXXL表示要干1年，XXL干半年，XL干3个月，L干两个月，M干一个月，S干两周以下。等等。 于是， 当业务影响力是XL，时间人员成本是S，这是最高优先级。 当业务影响力是M，时间人员成本是M，这是低优先级。 当业务影响力是S，时间人员成本是XL，直接砍掉这个需求。因为是亏的。 当业务影响力是XXL，时间人员成本是XXL，需要简化需求，把需求简化成XL，时间人员成本变成M以下。]]></summary></entry><entry><title type="html">Google自我评分卡</title><link href="http://localhost:4000/2023/08/google-scorecard/" rel="alternate" type="text/html" title="Google自我评分卡" /><published>2023-08-18T20:00:07+08:00</published><updated>2023-08-18T20:00:07+08:00</updated><id>http://localhost:4000/2023/08/google-scorecard</id><content type="html" xml:base="http://localhost:4000/2023/08/google-scorecard/"><![CDATA[<h2 id="google评分卡">Google评分卡</h2>
-
-<p>Google要求应聘人对自己的技能做出评估的工具，它可以看出应聘人在各个领域的技术水平。我们可以参考Google的这个评分卡来给自己做评估，并通过它来不断地提高对自己的要求。</p>
-
-<p>0 - you are unfamiliar with the subject area.</p>
-
-<p>1 - you can read / understand the most fundamental aspects of the subject area.</p>
-
-<p>2 - ability to implement small changes, understand basic principles and able to figure out additional details with minimal help.</p>
-
-<p>3 - basic proficiency in a subject area without relying on help.</p>
-
-<p>4 - you are comfortable with the subject area and all routine work on it:</p>
-
-<p>For software areas - ability to develop medium programs using all basic language features w/o book, awareness of more esoteric features (with book).</p>
-
-<p>For systems areas - understanding of many fundamentals of networking and systems administration, ability to run a small network of systems including recovery, debugging and nontrivial troubleshooting that relies on the knowledge of internals.</p>
-
-<p>5 - an even lower degree of reliance on reference materials. Deeper skills in a field or specific technology in the subject area.</p>
-
-<p>6 - ability to develop large programs and systems from scratch. Understanding of low level details and internals. Ability to design / deploy most large, distributed systems from scratch.</p>
-
-<p>7 - you understand and make use of most lesser known language features, technologies, and associated internals. Ability to automate significant amounts of systems administration.</p>
-
-<p>8 - deep understanding of corner cases, esoteric features, protocols and systems including “theory of operation”. Demonstrated ability to design, deploy and own very critical or large infrastructure, build accompanying automation.</p>
-
-<p>9 - could have written the book about the subject area but didn’t; works with standards committees on defining new standards and methodologies.</p>
-
-<p>10 - wrote the book on the subject area (there actually has to be a book). Recognized industry expert in the field, might have invented it.</p>
-
-<p><strong>Subject Areas:</strong></p>
-
-<ul>
-  <li>TCP/IP Networking (OSI stack, DNS etc)</li>
-  <li>Unix/Linux internals</li>
-  <li>Unix/Linux Systems administration</li>
-  <li>Algorithms and Data Structures</li>
-  <li>C</li>
-  <li>C++</li>
-  <li>Python</li>
-  <li>Java</li>
-  <li>Perl</li>
-  <li>Go</li>
-  <li>Shell Scripting (sh, Bash, ksh, csh)</li>
-  <li>SQL and/or Database Admin</li>
-  <li>Scripting language of your choice (not already mentioned)</li>
-  <li>People Management</li>
-  <li>Project Management</li>
-</ul>]]></content><author><name>caritasem</name></author><category term="appraisal" /><category term="appraisal" /><category term="google" /><summary type="html"><![CDATA[Google评分卡 Google要求应聘人对自己的技能做出评估的工具，它可以看出应聘人在各个领域的技术水平。我们可以参考Google的这个评分卡来给自己做评估，并通过它来不断地提高对自己的要求。 0 - you are unfamiliar with the subject area. 1 - you can read / understand the most fundamental aspects of the subject area. 2 - ability to implement small changes, understand basic principles and able to figure out additional details with minimal help. 3 - basic proficiency in a subject area without relying on help. 4 - you are comfortable with the subject area and all routine work on it: For software areas - ability to develop medium programs using all basic language features w/o book, awareness of more esoteric features (with book). For systems areas - understanding of many fundamentals of networking and systems administration, ability to run a small network of systems including recovery, debugging and nontrivial troubleshooting that relies on the knowledge of internals. 5 - an even lower degree of reliance on reference materials. Deeper skills in a field or specific technology in the subject area. 6 - ability to develop large programs and systems from scratch. Understanding of low level details and internals. Ability to design / deploy most large, distributed systems from scratch. 7 - you understand and make use of most lesser known language features, technologies, and associated internals. Ability to automate significant amounts of systems administration. 8 - deep understanding of corner cases, esoteric features, protocols and systems including “theory of operation”. Demonstrated ability to design, deploy and own very critical or large infrastructure, build accompanying automation. 9 - could have written the book about the subject area but didn’t; works with standards committees on defining new standards and methodologies. 10 - wrote the book on the subject area (there actually has to be a book). Recognized industry expert in the field, might have invented it. Subject Areas: TCP/IP Networking (OSI stack, DNS etc) Unix/Linux internals Unix/Linux Systems administration Algorithms and Data Structures C C++ Python Java Perl Go Shell Scripting (sh, Bash, ksh, csh) SQL and/or Database Admin Scripting language of your choice (not already mentioned) People Management Project Management]]></summary></entry><entry><title type="html">指标监控模型</title><link href="http://localhost:4000/2023/08/monitor-models/" rel="alternate" type="text/html" title="指标监控模型" /><published>2023-08-16T20:00:07+08:00</published><updated>2023-08-16T20:00:07+08:00</updated><id>http://localhost:4000/2023/08/monitor-models</id><content type="html" xml:base="http://localhost:4000/2023/08/monitor-models/"><![CDATA[<h3 id="4个黄金指标">4个黄金指标</h3>
-<p>Four Golden Signals是Google针对大量分布式监控的经验总结，4个黄金指标可以在服务级别帮助衡量终端用户体验、服务中断、业务影响等层面的问题。主要关注与以下四种类型的指标：延迟，通讯量，错误以及饱和度：</p>
-<ul>
-  <li>延迟 Latency：服务请求所需时间。</li>
-</ul>
-
-<p>记录用户所有请求所需的时间，重点是要区分成功请求的延迟时间和失败请求的延迟时间。 例如在数据库或者其他关键祸端服务异常触发HTTP 500的情况下，用户也可能会很快得到请求失败的响应内容，如果不加区分计算这些请求的延迟，可能导致计算结果与实际结果产生巨大的差异。除此以外，在微服务中通常提倡“快速失败”，开发人员需要特别注意这些延迟较大的错误，因为这些缓慢的错误会明显影响系统的性能，因此追踪这些错误的延迟也是非常重要的。</p>
-
-<ul>
-  <li>通讯量 Traffic：监控当前系统的流量，用于衡量服务的容量需求。</li>
-</ul>
-
-<p>流量对于不同类型的系统而言可能代表不同的含义。例如，在HTTP REST API中, 流量通常是每秒HTTP请求数；</p>
-
-<ul>
-  <li>错误 Error：监控当前系统所有发生的错误请求，衡量当前系统错误发生的速率。</li>
-</ul>
-
-<p>对于失败而言有些是显式的(比如, HTTP 500错误)，而有些是隐式(比如，HTTP响应200，但实际业务流程依然是失败的)。<br />
-对于一些显式的错误如HTTP 500可以通过在负载均衡器(如Nginx)上进行捕获，而对于一些系统内部的异常，则可能需要直接从服务中添加钩子统计并进行获取。</p>
-
-<ul>
-  <li>饱和度 Saturation：衡量当前服务的饱和度。</li>
-</ul>
-
-<p>主要强调最能影响服务状态的受限制的资源。 例如，如果系统主要受内存影响，那就主要关注系统的内存状态，如果系统主要受限与磁盘I/O，那就主要观测磁盘I/O的状态。因为通常情况下，当这些资源达到饱和后，服务的性能会明显下降。同时还可以利用饱和度对系统做出预测，比如，“磁盘是否可能在4个小时候就满了”。</p>
-
-<h3 id="red方法">RED方法</h3>
-<p>RED方法是Weave Cloud在基于Google的“4个黄金指标”的原则下结合Prometheus以及Kubernetes容器实践，细化和总结的方法论，特别适合于云原生应用以及微服务架构应用的监控和度量。主要关注以下三种关键指标：</p>
-<ul>
-  <li>(请求)速率 Rate：服务每秒接收的请求数。</li>
-  <li>(请求)错误 Error：每秒失败的请求数。</li>
-  <li>(请求)耗时 Duration：每个请求的耗时。</li>
-</ul>
-
-<p>在“4大黄金信号”的原则下，RED方法可以有效的帮助用户衡量云原生以及微服务应用下的用户体验问题。</p>
-
-<h3 id="use方法">USE方法</h3>
-
-<p>USE方法全称”Utilization Saturation and Errors Method”，主要用于分析系统性能问题，可以指导用户快速识别资源瓶颈以及错误的方法。正如USE方法的名字所表示的含义，USE方法主要关注与资源的：使用率(Utilization)、饱和度(Saturation)以及错误(Errors)。</p>
-
-<p>通过对资源以上指标持续观察，通过以下流程可以知道用户识别资源瓶颈：</p>
-
-<p><img src="/assets/posts/202308/USEMethod.png" /></p>]]></content><author><name>caritasem</name></author><category term="monitor" /><category term="monitor" /><category term="model" /><summary type="html"><![CDATA[4个黄金指标 Four Golden Signals是Google针对大量分布式监控的经验总结，4个黄金指标可以在服务级别帮助衡量终端用户体验、服务中断、业务影响等层面的问题。主要关注与以下四种类型的指标：延迟，通讯量，错误以及饱和度： 延迟 Latency：服务请求所需时间。 记录用户所有请求所需的时间，重点是要区分成功请求的延迟时间和失败请求的延迟时间。 例如在数据库或者其他关键祸端服务异常触发HTTP 500的情况下，用户也可能会很快得到请求失败的响应内容，如果不加区分计算这些请求的延迟，可能导致计算结果与实际结果产生巨大的差异。除此以外，在微服务中通常提倡“快速失败”，开发人员需要特别注意这些延迟较大的错误，因为这些缓慢的错误会明显影响系统的性能，因此追踪这些错误的延迟也是非常重要的。 通讯量 Traffic：监控当前系统的流量，用于衡量服务的容量需求。 流量对于不同类型的系统而言可能代表不同的含义。例如，在HTTP REST API中, 流量通常是每秒HTTP请求数； 错误 Error：监控当前系统所有发生的错误请求，衡量当前系统错误发生的速率。 对于失败而言有些是显式的(比如, HTTP 500错误)，而有些是隐式(比如，HTTP响应200，但实际业务流程依然是失败的)。 对于一些显式的错误如HTTP 500可以通过在负载均衡器(如Nginx)上进行捕获，而对于一些系统内部的异常，则可能需要直接从服务中添加钩子统计并进行获取。 饱和度 Saturation：衡量当前服务的饱和度。 主要强调最能影响服务状态的受限制的资源。 例如，如果系统主要受内存影响，那就主要关注系统的内存状态，如果系统主要受限与磁盘I/O，那就主要观测磁盘I/O的状态。因为通常情况下，当这些资源达到饱和后，服务的性能会明显下降。同时还可以利用饱和度对系统做出预测，比如，“磁盘是否可能在4个小时候就满了”。 RED方法 RED方法是Weave Cloud在基于Google的“4个黄金指标”的原则下结合Prometheus以及Kubernetes容器实践，细化和总结的方法论，特别适合于云原生应用以及微服务架构应用的监控和度量。主要关注以下三种关键指标： (请求)速率 Rate：服务每秒接收的请求数。 (请求)错误 Error：每秒失败的请求数。 (请求)耗时 Duration：每个请求的耗时。 在“4大黄金信号”的原则下，RED方法可以有效的帮助用户衡量云原生以及微服务应用下的用户体验问题。 USE方法 USE方法全称”Utilization Saturation and Errors Method”，主要用于分析系统性能问题，可以指导用户快速识别资源瓶颈以及错误的方法。正如USE方法的名字所表示的含义，USE方法主要关注与资源的：使用率(Utilization)、饱和度(Saturation)以及错误(Errors)。 通过对资源以上指标持续观察，通过以下流程可以知道用户识别资源瓶颈：]]></summary></entry><entry><title type="html">Latency监控指标</title><link href="http://localhost:4000/2023/08/how-to-monitor-latency/" rel="alternate" type="text/html" title="Latency监控指标" /><published>2023-08-16T20:00:07+08:00</published><updated>2023-08-16T20:00:07+08:00</updated><id>http://localhost:4000/2023/08/how-to-monitor-latency</id><content type="html" xml:base="http://localhost:4000/2023/08/how-to-monitor-latency/"><![CDATA[<h3 id="什么是latency">什么是Latency</h3>
-
-<p>延迟是指一个操作发生所需的时间。这意味着每个操作都有自己的延迟——如果有 100 万个操作，就会有 100 万个延迟。因此，延迟不能按工作单元/时间来衡量。我们感兴趣的是延迟的行为。为了有效地描述延迟，必须描述延迟的完整分布。延迟几乎从来不遵循正态、高斯或泊松分布，因此查看平均值、中位数甚至标准差是没有用的。</p>
-
-<p>延迟往往是多模态的，这部分是由于响应时间的“间歇性卡顿”。间歇性卡顿类似于周期性的冻结，可能由多种原因引起，例如：垃圾回收暂停、虚拟机暂停、上下文切换、中断、数据库重索引、缓冲区刷新到磁盘等。这些间歇性卡顿从来不会遵循正态分布，并且模式之间的转换通常是快速而异质的。</p>
-
-<p><img src="/assets/posts/202308/Screen-Shot-2015-10-04-at-4.32.24-PM.png" /></p>
-
-<p>如何有效地描述延迟分布？必须看分位数，但这还不止于此。许多人会陷入一个陷阱，就是只关注“常见情况”。问题是，延迟行为比常见情况复杂得多。不仅如此，你认为的“常见”情况可能没有那么常见。</p>
-
-<p>这部分是工具的原因。我们使用的许多工具不能很好地捕获和表示这些数据。例如，Grafana生成的大多数延迟图表（如下面的图表）基本上是没有用的。我们喜欢看漂亮的图表，通过绘制方便的图表，我们可以得到一个很有可读性的彩色图表。只看第95个百分位数是当你想隐藏所有不好的东西时才会做的事情。正如Gil所描述的，这是一个“营销系统”。无论是CTO、潜在客户还是工程师，总会有人上当。此外，平均分位数在数学上是荒谬的。为了节省空间，我们经常保留摘要并丢弃数据，但“第95个百分位数的平均值”是没有意义的。你不能平均分位数，但请注意你大多数Grafana图表中的标签。不幸的是，情况只会变得更糟。</p>
-
-<p><img src="/assets/posts/202308/graph_logbase10_ms.png" /></p>
-
-<p>Gil 说：“你永远不应该删除的最重要的指标是最大值。这不是噪音，这是信号。其余的都是噪音。” 对此，研讨会中有人自然地回应道：“但是如果最大值只是一个 VM 重启？这不能描述系统的行为。这只是一个不幸的、不太可能发生的事件。” 忽略最大值，你就等于说“这不会发生”。如果你能将原因识别为噪音，那你就没问题了，但如果你没有捕获这些数据，你就不知道实际发生了什么。</p>
-
-<hr />
-<p>https://bravenewgeek.com/everything-you-know-about-latency-is-wrong/</p>]]></content><author><name>caritasem</name></author><category term="java" /><category term="Docker" /><category term="MacOS" /><category term="SRE" /><summary type="html"><![CDATA[什么是Latency 延迟是指一个操作发生所需的时间。这意味着每个操作都有自己的延迟——如果有 100 万个操作，就会有 100 万个延迟。因此，延迟不能按工作单元/时间来衡量。我们感兴趣的是延迟的行为。为了有效地描述延迟，必须描述延迟的完整分布。延迟几乎从来不遵循正态、高斯或泊松分布，因此查看平均值、中位数甚至标准差是没有用的。 延迟往往是多模态的，这部分是由于响应时间的“间歇性卡顿”。间歇性卡顿类似于周期性的冻结，可能由多种原因引起，例如：垃圾回收暂停、虚拟机暂停、上下文切换、中断、数据库重索引、缓冲区刷新到磁盘等。这些间歇性卡顿从来不会遵循正态分布，并且模式之间的转换通常是快速而异质的。 如何有效地描述延迟分布？必须看分位数，但这还不止于此。许多人会陷入一个陷阱，就是只关注“常见情况”。问题是，延迟行为比常见情况复杂得多。不仅如此，你认为的“常见”情况可能没有那么常见。 这部分是工具的原因。我们使用的许多工具不能很好地捕获和表示这些数据。例如，Grafana生成的大多数延迟图表（如下面的图表）基本上是没有用的。我们喜欢看漂亮的图表，通过绘制方便的图表，我们可以得到一个很有可读性的彩色图表。只看第95个百分位数是当你想隐藏所有不好的东西时才会做的事情。正如Gil所描述的，这是一个“营销系统”。无论是CTO、潜在客户还是工程师，总会有人上当。此外，平均分位数在数学上是荒谬的。为了节省空间，我们经常保留摘要并丢弃数据，但“第95个百分位数的平均值”是没有意义的。你不能平均分位数，但请注意你大多数Grafana图表中的标签。不幸的是，情况只会变得更糟。 Gil 说：“你永远不应该删除的最重要的指标是最大值。这不是噪音，这是信号。其余的都是噪音。” 对此，研讨会中有人自然地回应道：“但是如果最大值只是一个 VM 重启？这不能描述系统的行为。这只是一个不幸的、不太可能发生的事件。” 忽略最大值，你就等于说“这不会发生”。如果你能将原因识别为噪音，那你就没问题了，但如果你没有捕获这些数据，你就不知道实际发生了什么。 https://bravenewgeek.com/everything-you-know-about-latency-is-wrong/]]></summary></entry><entry><title type="html">Docker：MacOS环境下修改容器的端口号</title><link href="http://localhost:4000/2023/07/macos-change-docker-port-binding/" rel="alternate" type="text/html" title="Docker：MacOS环境下修改容器的端口号" /><published>2023-07-25T20:00:07+08:00</published><updated>2023-07-25T20:00:07+08:00</updated><id>http://localhost:4000/2023/07/macos-change-docker-port-binding</id><content type="html" xml:base="http://localhost:4000/2023/07/macos-change-docker-port-binding/"><![CDATA[<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>​​注意:​​ MacOS 和Linux 修改Docker 容器配置方式不一样
-</code></pre></div></div>
-<p>本文中 containername​​ 是容器名称</p>
-
-<h3 id="获取容器id">获取容器id</h3>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># docker inspect 容器id/容器name
-$ docker inspect containername​​ | grep Id
-"Id": "c05fc37444df75bbf0f3277ee36b9997c8ef401568d7c5149bb4aca1c25160b2"
-
-# 停止容器
-docker stop containername​​
-
-</code></pre></div></div>
-
-<h3 id="进入docker终端获取root权限">进入Docker终端，获取root权限</h3>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># 方式一：成功率不高
-screen ~/Library/Containers/com.docker.docker/Data/vms/0/tty
-
-# 方式二：使用Justin's repo and image，
-# From Justin Cormack (Docker Maintainer)
-# 该方法同样适用于 Docker for Windows for getting in Moby Linux VM (但不适用于 Windows Containers).
-
-docker run -it --rm --privileged --pid=host justincormack/nsenter1
-</code></pre></div></div>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># 进入容器配置目录
-$ cd /var/lib/docker/containers/c05fc37444df75bbf0f3277ee36b9997c8ef401568d7c5149bb4aca1c25160b2
-
-# 容器配置目录文件
-$ ls
-c05fc37444df75bbf0f3277ee36b9997c8ef401568d7c5149bb4aca1c25160b2-json.log
-checkpoints
-config.v2.json
-hostconfig.json
-hostname
-hosts
-mounts
-resolv.conf
-resolv.conf.hash
-docker-desktop:/var/lib/docker/containers/c05fc37444df75bbf0f3277ee36b9997c8ef401568d7c5149bb4aca1c25160b2
-
-# 退出终端
-# `ctrl+a+k`退出终端，输入y
-</code></pre></div></div>
-
-<h3 id="修改端口配置">修改端口配置</h3>
-<ol>
-  <li>hostconfig.json 添加端口绑定</li>
-</ol>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vi hostconfig.json
-# 搜索关键字
-/PortBindings
-
-"PortBindings":{"8080/tcp":[{"HostIp":"","HostPort":"8082"}]}
-# 修改为 相当于运行参数 -p 8086:3306
-"PortBindings":{"8080/tcp":[{"HostIp":"","HostPort":"8082"}], "3306/tcp":[{"HostIp":"","HostPort":"8086"}]}
-</code></pre></div></div>
-
-<ol>
-  <li>config.v2.json 加上要暴露的端口<br />
-```vi config.v2.json
-    <h1 id="搜索关键字">搜索关键字</h1>
-    <p>/ExposedPorts</p>
-  </li>
-</ol>
-
-<p>“ExposedPorts”:{“8080/tcp”:{}}</p>
-<h1 id="修改为">修改为</h1>
-<p>“ExposedPorts”:{“8080/tcp”:{}, “3306/tcp”:{}}</p>
-
-<p>```</p>
-
-<p>说明：<br />
-​- ​8080/tcp​​ 是容器端口<br />
-​​- “HostPort”:”8082”​​ 是宿主主机端口，就是MacOS的端口</p>
-
-<h3 id="重启docker">重启docker</h3>
-<p>（​​重要​​，让docker重新读容器的取配置文件）</p>]]></content><author><name>caritasem</name></author><category term="java" /><category term="Docker、MacOS" /><summary type="html"><![CDATA[​​注意:​​ MacOS 和Linux 修改Docker 容器配置方式不一样 本文中 containername​​ 是容器名称 获取容器id # docker inspect 容器id/容器name $ docker inspect containername​​ | grep Id "Id": "c05fc37444df75bbf0f3277ee36b9997c8ef401568d7c5149bb4aca1c25160b2" # 停止容器 docker stop containername​​ 进入Docker终端，获取root权限 # 方式一：成功率不高 screen ~/Library/Containers/com.docker.docker/Data/vms/0/tty # 方式二：使用Justin's repo and image， # From Justin Cormack (Docker Maintainer) # 该方法同样适用于 Docker for Windows for getting in Moby Linux VM (但不适用于 Windows Containers). docker run -it --rm --privileged --pid=host justincormack/nsenter1 # 进入容器配置目录 $ cd /var/lib/docker/containers/c05fc37444df75bbf0f3277ee36b9997c8ef401568d7c5149bb4aca1c25160b2 # 容器配置目录文件 $ ls c05fc37444df75bbf0f3277ee36b9997c8ef401568d7c5149bb4aca1c25160b2-json.log checkpoints config.v2.json hostconfig.json hostname hosts mounts resolv.conf resolv.conf.hash docker-desktop:/var/lib/docker/containers/c05fc37444df75bbf0f3277ee36b9997c8ef401568d7c5149bb4aca1c25160b2 # 退出终端 # `ctrl+a+k`退出终端，输入y 修改端口配置 hostconfig.json 添加端口绑定 vi hostconfig.json # 搜索关键字 /PortBindings "PortBindings":{"8080/tcp":[{"HostIp":"","HostPort":"8082"}]} # 修改为 相当于运行参数 -p 8086:3306 "PortBindings":{"8080/tcp":[{"HostIp":"","HostPort":"8082"}], "3306/tcp":[{"HostIp":"","HostPort":"8086"}]} config.v2.json 加上要暴露的端口 ```vi config.v2.json 搜索关键字 /ExposedPorts “ExposedPorts”:{“8080/tcp”:{}} 修改为 “ExposedPorts”:{“8080/tcp”:{}, “3306/tcp”:{}} ``` 说明： ​- ​8080/tcp​​ 是容器端口 ​​- “HostPort”:”8082”​​ 是宿主主机端口，就是MacOS的端口 重启docker （​​重要​​，让docker重新读容器的取配置文件）]]></summary></entry><entry><title type="html">java 位运算符!</title><link href="http://localhost:4000/2023/05/java-bitwise-operation/" rel="alternate" type="text/html" title="java 位运算符!" /><published>2023-05-31T20:00:07+08:00</published><updated>2023-05-31T20:00:07+08:00</updated><id>http://localhost:4000/2023/05/java-bitwise-operation</id><content type="html" xml:base="http://localhost:4000/2023/05/java-bitwise-operation/"><![CDATA[<table>
-  <tbody>
-    <tr>
-      <td>java支持的位运算符有7个，分为两类：位逻辑运算和移位运算。位逻辑运算符包括按位取反（~）、按位与（&amp;）、按位或（</td>
-      <td>）和按位异或（^）4种，。移位运算符包括左移（«）、右移（»）和无符号右移（»&gt;）3种。位运算符只能用于整型数据，包括byte、short、int、long和char类型。下表列出了各种位运算符的功能与示例。假设a = 10, b = 3。</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>~运算符是对运算数的每一位按位取反。<br />
-下表列出了位运算符的基本运算,假设整数变量A的值为60和变量B的值为13：</p>
-
-<table>
-  <thead>
-    <tr>
-      <th style="text-align: center">操作符</th>
-      <th style="text-align: center">描述</th>
-      <th style="text-align: center">例子</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: center">&amp;</td>
-      <td style="text-align: center">如果相对应位都是1，则结果为1，否则为0</td>
-      <td style="text-align: center">A &amp; B得到 12，即0000 1100</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">|</td>
-      <td style="text-align: center">如果相对应位都是0，则结果为0，否则为1</td>
-      <td style="text-align: center">A | B得到61，即 0011 1101</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">^</td>
-      <td style="text-align: center">如果相对应位值相同，则结果为0，否则为1</td>
-      <td style="text-align: center">A ^ B得到 49，即 0011 0001</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">~</td>
-      <td style="text-align: center">按位取反运算符翻转操作数的每一位，即0变成1，1变成0。</td>
-      <td style="text-align: center">~A得到 -61，即1100 0011</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">«</td>
-      <td style="text-align: center">按位左移运算符。左操作数按位左移右操作数指定的位数。 （低位补零）</td>
-      <td style="text-align: center">A « 2得到 240，即 1111 0000</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">»</td>
-      <td style="text-align: center">“有符号”按位右移运算符。左操作数按位右移右操作数指定的位数。 该操作符使用 “符号扩展”：若符号为正，则高位插入 0；若符号为负，则高位插入 1。</td>
-      <td style="text-align: center">A » 2得到15即 1111</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">»&gt;</td>
-      <td style="text-align: center">“无符号”按位右移补零操作符。左操作数的值按右操作数指定的位数右移，移动得到的空位以零填充。 该操作符使用 “零扩展”，无论正负，都在高位插入 0。</td>
-      <td style="text-align: center">A »&gt; 2得到 15，即 0000 1111</td>
-    </tr>
-  </tbody>
-</table>]]></content><author><name>caritasem</name></author><category term="java" /><summary type="html"><![CDATA[java支持的位运算符有7个，分为两类：位逻辑运算和移位运算。位逻辑运算符包括按位取反（~）、按位与（&amp;）、按位或（ ）和按位异或（^）4种，。移位运算符包括左移（«）、右移（»）和无符号右移（»&gt;）3种。位运算符只能用于整型数据，包括byte、short、int、long和char类型。下表列出了各种位运算符的功能与示例。假设a = 10, b = 3。 ~运算符是对运算数的每一位按位取反。 下表列出了位运算符的基本运算,假设整数变量A的值为60和变量B的值为13： 操作符 描述 例子 &amp; 如果相对应位都是1，则结果为1，否则为0 A &amp; B得到 12，即0000 1100 | 如果相对应位都是0，则结果为0，否则为1 A | B得到61，即 0011 1101 ^ 如果相对应位值相同，则结果为0，否则为1 A ^ B得到 49，即 0011 0001 ~ 按位取反运算符翻转操作数的每一位，即0变成1，1变成0。 ~A得到 -61，即1100 0011 « 按位左移运算符。左操作数按位左移右操作数指定的位数。 （低位补零） A « 2得到 240，即 1111 0000 » “有符号”按位右移运算符。左操作数按位右移右操作数指定的位数。 该操作符使用 “符号扩展”：若符号为正，则高位插入 0；若符号为负，则高位插入 1。 A » 2得到15即 1111 »&gt; “无符号”按位右移补零操作符。左操作数的值按右操作数指定的位数右移，移动得到的空位以零填充。 该操作符使用 “零扩展”，无论正负，都在高位插入 0。 A »&gt; 2得到 15，即 0000 1111]]></summary></entry></feed>
+</ul>]]></content><author><name>caritasem</name></author><category term="engineering" /><category term="agile" /><category term="model" /><summary type="html"><![CDATA[初生牛犊 对于年轻的、刚入行的计算机学生来说，代码在他们眼中是这样的： 稍有小成 当然，实习生们都很聪明，他们知道学术界和工业界的代码有哪些不同，他们会花点儿时间给代码加上注释，做点测试，code review…… 但是，他们依然不会意识到这座冰山有多深。 A11Y: accessibility,是指设计和创建可以被所有人，包括那些有残疾的人，使用的网站和应用程序。例如让盲人通过语音方式使用软件。 l10n : localization（本地化）, 类似的还有i18n （国际化）。 GDPR：General Data Protection Regulation（通用数据保护条例），这是一项在2018年5月25日生效的欧洲联盟立法。GDPR 的主要目标是保护个人在网络上的数据安全，给予个人对自己的个人数据更多的控制权。 重要的是，冰山海面下的部分依然涉及到代码，也就是说，程序员的代码只有一小部分被用户使用，大部分都在用户的视线之外。 但是在海面以下的部分提供了真正的冰山浮力： 没有测试，系统的功能早晚会被发现问题，没有可靠的开发工具，程序员很快就会失去动力。 没有针对和解决客户问题的流程，客户很快就会抛弃你，把业务搬到别的地方。 不是所有的新产品都会触及冰山的所有部分，但很多项目都会触及大部分冰山。 即使是个最简单的活儿，也会慢慢变成一个大项目，例如，你想把一些用户数据保存在服务器上，在你开始之前，就得考虑这些事情： 🗄 确保数据得到备份，数据丢失了，用户可受不了 🗑 允许用户随时删除他们的数据，包括备份中的数据 📲 允许用户下载他们自己的数据和元数据，以符合GDPR的要求 📚 设计你的存储系统以符合HIPAA，FISA和欧盟的数据本地化政策等法律 🚂 随着存储系统的改变，迁移现有的用户数据 📊 监控后端，处理停机事件，配额使用情况和安全漏洞 👮 控制和审计客户允许的代理对用户数据的访问 如果有实习生在一个夏天就完成这么一个完整的项目，那就非常让人惊讶，印象深刻！ 拨云见日 但是，你以为这就完了吗？ 不！ 我们在冰山之下还有一个完整的冰山： 这个元冰山依然是由代码构成的，只是和你的项目代码关联不大。 你需要用IDE来编写代码，用编译器来编译代码，用调试器来调试代码，用Git来管理代码….. 你需要用到各种操作系统，数据库，框架，编程语言，流程图，安全扫描工具，静态分析工具，自动化脚本…… 你还需要白板，视频会议，电子邮件，Slack…… 它们不会影响你应用的工作方式，但是会影响你的工作效率和应对问题的能力，不好的、不适合的工具会让程序员付出高昂的代价。 最终，软件质量是由用户看得见的功能，看不见的代码，以及帮助编写代码的代码工具组成的。 只有当所有这一切都完美融合，才会创建出高质量的软件和服务。 返璞归真 吃透基础技术是为了更好地理解程序的运行原理，并基于这些基础技术进化出更优化的产品。吃透基础技术，有很多好处，具体来说，有如下几点。 万丈高楼平地起。一栋楼能盖多高，一座大桥能造多长，重要的是它们的地基。同样对于技术人员来说，基础知识越扎实，走得就会越远。 计算机技术太多了，但是仔细分析你会发现，只是表现形式很多，而基础技术并不多。学好基础技术，能让你一通百通，更快地使用各种新技术，从而可以更轻松地与时代同行。 很多分布式系统架构，以及高可用、高性能、高并发的解决方案基本都可以在基础技术上找到它们的身影。所以，学习基础技术能让你更好地掌握更高维度的技术。 https://medium.com/source-and-buggy/why-does-software-engineering-take-so-long-77a3f1832739 左耳朵耗子]]></summary></entry></feed>

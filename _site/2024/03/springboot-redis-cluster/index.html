@@ -1,10 +1,10 @@
 <!DOCTYPE html><html lang="en">
   <head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>指标监控模型 - caritasem</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>Springboot 对接Redis Cluster 消息队列 - caritasem</title>
 
-<meta name="description" content="4个黄金指标Four Golden Signals是Google针对大量分布式监控的经验总结，4个黄金指标可以在服务级别帮助衡量终端用户体验、服务中断、业务影响等层面的问题。主要关注与以下四种类型的指标：延迟，通讯量，错误以及饱和度：  延迟 Latency：服务请求所需时间。记录用户所有请求所需的时间，重点是要...">
-<link rel="canonical" href="http://localhost:4000/2023/08/monitor-models/"><link rel="alternate" type="application/rss+xml" title="caritasem" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
+<meta name="description" content="…">
+<link rel="canonical" href="http://localhost:4000/2024/03/springboot-redis-cluster/"><link rel="alternate" type="application/rss+xml" title="caritasem" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
 
 <meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/assets/browserconfig.xml">
 
@@ -279,66 +279,24 @@
               <div class="col-main cell cell--auto"><!-- start custom main top snippet -->
 
 <!-- end custom main top snippet -->
-<article itemscope itemtype="http://schema.org/Article"><div class="article__header"><header><h1>指标监控模型</h1></header><span class="split-space">&nbsp;</span>
+<article itemscope itemtype="http://schema.org/Article"><div class="article__header"><header><h1>Springboot 对接Redis Cluster 消息队列</h1></header><span class="split-space">&nbsp;</span>
           <a class="edit-on-github"
             title="Edit on Github"
-            href="https://github.com/sibosend/tree/master/_posts/2023-08-16-monitor-models.md">
-            <i class="far fa-edit"></i></a></div><meta itemprop="headline" content="指标监控模型"><div class="article__info clearfix"><ul class="left-col menu"><li>
+            href="https://github.com/sibosend/tree/master/_posts/2024-03-18-springboot-redis-cluster.md">
+            <i class="far fa-edit"></i></a></div><meta itemprop="headline" content="Springboot 对接Redis Cluster 消息队列"><div class="article__info clearfix"><ul class="left-col menu"><li>
               <a class="button button--secondary button--pill button--sm"
-                href="/archive?tag=monitor">monitor</a>
-            </li><li>
-              <a class="button button--secondary button--pill button--sm"
-                href="/archive?tag=model">model</a>
-            </li></ul><ul class="right-col menu"><li><i class="far fa-calendar-alt"></i> <span>Aug 16, 2023</span>
-            </li></ul></div><meta itemprop="author" content="caritasem"/><meta itemprop="datePublished" content="2023-08-16T20:00:07+08:00">
-    <meta itemprop="keywords" content="monitor,model"><div class="js-article-content"><div class="layout--article"><!-- start custom article top snippet -->
+                href="/archive?tag=springboot">springboot</a>
+            </li></ul><ul class="right-col menu"><li><i class="far fa-calendar-alt"></i> <span>Mar 18, 2024</span>
+            </li></ul></div><meta itemprop="author" content="caritasem"/><meta itemprop="datePublished" content="2024-03-18T11:00:07+08:00">
+    <meta itemprop="keywords" content="springboot"><div class="js-article-content"><div class="layout--article"><!-- start custom article top snippet -->
 
 <!-- end custom article top snippet -->
-<div class="article__content" itemprop="articleBody"><h3 id="4个黄金指标">4个黄金指标</h3>
-<p>Four Golden Signals是Google针对大量分布式监控的经验总结，4个黄金指标可以在服务级别帮助衡量终端用户体验、服务中断、业务影响等层面的问题。主要关注与以下四种类型的指标：延迟，通讯量，错误以及饱和度：</p>
-<ul>
-  <li>延迟 Latency：服务请求所需时间。</li>
-</ul>
+<div class="article__content" itemprop="articleBody"><blockquote>
 
-<p>记录用户所有请求所需的时间，重点是要区分成功请求的延迟时间和失败请求的延迟时间。 例如在数据库或者其他关键祸端服务异常触发HTTP 500的情况下，用户也可能会很快得到请求失败的响应内容，如果不加区分计算这些请求的延迟，可能导致计算结果与实际结果产生巨大的差异。除此以外，在微服务中通常提倡“快速失败”，开发人员需要特别注意这些延迟较大的错误，因为这些缓慢的错误会明显影响系统的性能，因此追踪这些错误的延迟也是非常重要的。</p>
+  <p>…</p>
 
-<ul>
-  <li>通讯量 Traffic：监控当前系统的流量，用于衡量服务的容量需求。</li>
-</ul>
-
-<p>流量对于不同类型的系统而言可能代表不同的含义。例如，在HTTP REST API中, 流量通常是每秒HTTP请求数；</p>
-
-<ul>
-  <li>错误 Error：监控当前系统所有发生的错误请求，衡量当前系统错误发生的速率。</li>
-</ul>
-
-<p>对于失败而言有些是显式的(比如, HTTP 500错误)，而有些是隐式(比如，HTTP响应200，但实际业务流程依然是失败的)。<br />
-对于一些显式的错误如HTTP 500可以通过在负载均衡器(如Nginx)上进行捕获，而对于一些系统内部的异常，则可能需要直接从服务中添加钩子统计并进行获取。</p>
-
-<ul>
-  <li>饱和度 Saturation：衡量当前服务的饱和度。</li>
-</ul>
-
-<p>主要强调最能影响服务状态的受限制的资源。 例如，如果系统主要受内存影响，那就主要关注系统的内存状态，如果系统主要受限与磁盘I/O，那就主要观测磁盘I/O的状态。因为通常情况下，当这些资源达到饱和后，服务的性能会明显下降。同时还可以利用饱和度对系统做出预测，比如，“磁盘是否可能在4个小时候就满了”。</p>
-
-<h3 id="red方法">RED方法</h3>
-<p>RED方法是Weave Cloud在基于Google的“4个黄金指标”的原则下结合Prometheus以及Kubernetes容器实践，细化和总结的方法论，特别适合于云原生应用以及微服务架构应用的监控和度量。主要关注以下三种关键指标：</p>
-<ul>
-  <li>(请求)速率 Rate：服务每秒接收的请求数。</li>
-  <li>(请求)错误 Error：每秒失败的请求数。</li>
-  <li>(请求)耗时 Duration：每个请求的耗时。</li>
-</ul>
-
-<p>在“4大黄金信号”的原则下，RED方法可以有效的帮助用户衡量云原生以及微服务应用下的用户体验问题。</p>
-
-<h3 id="use方法">USE方法</h3>
-
-<p>USE方法全称”Utilization Saturation and Errors Method”，主要用于分析系统性能问题，可以指导用户快速识别资源瓶颈以及错误的方法。正如USE方法的名字所表示的含义，USE方法主要关注与资源的：使用率(Utilization)、饱和度(Saturation)以及错误(Errors)。</p>
-
-<p>通过对资源以上指标持续观察，通过以下流程可以知道用户识别资源瓶颈：</p>
-
-<p><img src="/assets/posts/202308/USEMethod.png" /></p>
-</div><section class="article__sharing d-print-none"></section><div class="d-print-none"><footer class="article__footer"><meta itemprop="dateModified" content="2023-08-16T20:00:07+08:00"><!-- start custom article footer snippet -->
+</blockquote>
+</div><section class="article__sharing d-print-none"></section><div class="d-print-none"><footer class="article__footer"><meta itemprop="dateModified" content="2024-03-18T11:00:07+08:00"><!-- start custom article footer snippet -->
 
 <!-- end custom article footer snippet -->
 <div class="article__subscribe"><div class="subscribe"><i class="fas fa-rss"></i> <a type="application/rss+xml" href="/feed.xml">Subscribe</a></div>
@@ -349,7 +307,7 @@
       </a>
     </p>
   </div></div></footer>
-<div class="article__section-navigator clearfix"><div class="previous"><span>PREVIOUS</span><a href="/2023/08/how-to-monitor-latency/">Latency监控指标</a></div><div class="next"><span>NEXT</span><a href="/2023/08/google-scorecard/">Google自我评分卡</a></div></div></div>
+<div class="article__section-navigator clearfix"><div class="previous"><span>PREVIOUS</span><a href="/2024/03/macos-docker-network-interconnect/">mac 下docker多个网段与host间网络互通</a></div><div class="next"><span>NEXT</span><a href="/2024/03/install-blender-python-module-on-ubuntu/">how to install blender as a python module on Ubuntu 20.04</a></div></div></div>
 
 </div>
 
