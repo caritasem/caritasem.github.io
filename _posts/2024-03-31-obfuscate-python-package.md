@@ -15,6 +15,5 @@ tags:
 
 频繁遇到package找不到的错误，关键在于需要对内部package分别进行混淆处理，见 pyarmor.py
 
-
-
-
+todo:
+混淆后项目的跨平台可执行性尚待实践。
