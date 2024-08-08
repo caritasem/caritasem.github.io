@@ -1,6 +1,6 @@
 ---
 layout: article
-title:  "SRE建设之事前建设"
+title:  "SRE建设之质量建设"
 date:   2023-09-07 20:00:07 +0800
 categories: SRE
 tags: 
