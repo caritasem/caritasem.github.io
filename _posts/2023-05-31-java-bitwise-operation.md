@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: article
 title:  "java 位运算符!"
 date:   2023-05-31 20:00:07 +0800
 categories: java
