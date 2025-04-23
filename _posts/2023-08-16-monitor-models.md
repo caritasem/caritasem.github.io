@@ -1,6 +1,6 @@
 ---
 layout: article
-title:  "指标监控模型"
+title:  "用于系统服务监控的指标模型"
 date:   2023-08-16 20:00:07 +0800
 categories: monitor
 tags: 

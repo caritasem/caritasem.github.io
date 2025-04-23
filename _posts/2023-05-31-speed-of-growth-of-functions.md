@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "函数增长曲线!"
+title:  "不同函数的增长曲线"
 date:   2023-05-31 20:00:07 +0800
 categories: java
 ---
