@@ -24,6 +24,13 @@ wget https://pypi.tuna.tsinghua.edu.cn/packages/9c/cf/536e231d0fff186e46668ae701
 # 安装
 pip install bpy-3.6.0-cp310-cp310-manylinux_2_28_x86_64.whl
 
+
+# 附ubuntu下的依赖
+apt install libxrender1
+apt install libxi6
+apt install libxkbcommon-x11-0
+apt install -y libsm6 libxext6
+apt install -y libxrender-dev
 ```
 
 all done!
