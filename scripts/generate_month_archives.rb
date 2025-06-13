@@ -25,10 +25,12 @@ months.each do |year, month|
       permalink: /#{year}/#{month}/
       ---
 
-      {% assign posts = site.posts | where_exp: "post", "post.date | date: '%Y' == '#{year}' and post.date | date: '%m' == '#{month}'" %}
-      {% for post in posts %}
+      {% for post in site.posts %}
+        {% if post.date and post.date | date: "%Y" == "#{year}" and post.date | date: "%m" == "#{month}" %}
       - [{{ post.title }}]({{ post.url }}) <span>{{ post.date | date: "%Y-%m-%d" }}</span>
+        {% endif %}
       {% endfor %}
+
     MARKDOWN
   end
   puts "Generated #{index_md}"
