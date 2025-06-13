@@ -25,10 +25,9 @@ months.each do |year, month|
       permalink: /#{year}/#{month}/
       ---
 
-      {% for post in site.posts %}
-        {% if post.date and post.date | date: "%Y" == "#{year}" and post.date | date: "%m" == "#{month}" %}
+      {% assign posts = site.posts | where_exp: "post", "post.date and post.date | date: '%Y' == '#{year}' and post.date | date: '%m' == '#{month}'" %}
+      {% for post in posts %}
       - [{{ post.title }}]({{ post.url }}) <span>{{ post.date | date: "%Y-%m-%d" }}</span>
-        {% endif %}
       {% endfor %}
 
     MARKDOWN
@@ -40,7 +39,7 @@ end
 # 获取所有文章的年
 years = Dir.glob("#{POSTS_DIR}/*.md").map do |file|
   if File.basename(file) =~ /^(\d{4})-(\d{2})-\d{2}-/
-    [$1]
+    $1
   end
 end.compact.uniq
 
@@ -58,10 +57,10 @@ years.each do |year|
       permalink: /#{year}/
       ---
 
+      {% assign posts = site.posts | where_exp: "post", "post.date and post.date | date: '%Y' == '#{year}'" %}
+
       {% for post in site.posts %}
-        {% if post.date and post.date | date: "%Y" == "#{year}" %}
       - [{{ post.title }}]({{ post.url }}) <span>{{ post.date | date: "%Y-%m-%d" }}</span>
-        {% endif %}
       {% endfor %}
 
     MARKDOWN
