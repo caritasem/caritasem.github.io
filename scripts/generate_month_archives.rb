@@ -24,14 +24,18 @@ months.each do |year, month|
       permalink: /#{year}/#{month}/
       ---
 
+      <ul>
       {% for post in posts %}
         {% assign y = post.date | date: "%Y" %}
         {% assign m = post.date | date: "%m" %}
         {% if y == '#{year}' and m == '#{month}' %}
-        - [{{ post.title }}]({{ post.url }}) <span>{{ post.date | date: "%Y-%m-%d" }}</span>
+        <li>
+          <a href="{{ post.url }}">{{ post.title }}</a>
+          <span>{{ post.date | date: "%Y-%m-%d" }}</span>
+        </li>
         {% endif %}
       {% endfor %}
-
+      </ul>
     MARKDOWN
   end
   puts "Generated #{index_md}"
@@ -58,13 +62,17 @@ years.each do |year|
       permalink: /#{year}/
       ---
 
+      <ul>
       {% for post in site.posts %}
         {% assign y = post.date | date: "%Y" %}
         {% if y == '#{year}' %}        
-          - [{{ post.title }}]({{ post.url }}) <span>{{ post.date | date: "%Y-%m-%d" }}</span>
+        <li>
+          <a href="{{ post.url }}">{{ post.title }}</a>
+          <span>{{ post.date | date: "%Y-%m-%d" }}</span>
+        </li>
         {% endif %}
       {% endfor %}
-
+      </ul>
     MARKDOWN
   end
   puts "Generated #{index_md}"
