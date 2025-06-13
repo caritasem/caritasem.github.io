@@ -25,9 +25,12 @@ months.each do |year, month|
       permalink: /#{year}/#{month}/
       ---
 
-      {% assign posts = site.posts | where_exp: "post", "post.date and post.date | date: '%Y' == '#{year}' and post.date | date: '%m' == '#{month}'" %}
       {% for post in posts %}
-      - [{{ post.title }}]({{ post.url }}) <span>{{ post.date | date: "%Y-%m-%d" }}</span>
+        {% assign y = post.date | date: "%Y" %}
+        {% assign m = post.date | date: "%m" %}
+        {% if y == '#{year}' and m == '#{month}' %}
+        - [{{ post.title }}]({{ post.url }}) <span>{{ post.date | date: "%Y-%m-%d" }}</span>
+        {% endif %}
       {% endfor %}
 
     MARKDOWN
@@ -57,10 +60,11 @@ years.each do |year|
       permalink: /#{year}/
       ---
 
-      {% assign posts = site.posts | where_exp: "post", "post.date and post.date | date: '%Y' == '#{year}'" %}
-
       {% for post in site.posts %}
-      - [{{ post.title }}]({{ post.url }}) <span>{{ post.date | date: "%Y-%m-%d" }}</span>
+        {% assign y = post.date | date: "%Y" %}
+        {% if y == '#{year}' %}        
+          - [{{ post.title }}]({{ post.url }}) <span>{{ post.date | date: "%Y-%m-%d" }}</span>
+        {% endif %}
       {% endfor %}
 
     MARKDOWN
