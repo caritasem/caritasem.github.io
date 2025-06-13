@@ -188,15 +188,6 @@ kramdown:
   input: GFM # Enable GitHub Flavored Markdown (fenced code blocks)
   hard_wrap: true
 
-jekyll-archives:
-  enabled:
-    - year
-    - month
-  layout: 'archive' # 你可以用 theme 自带的 archive.html 或自定义
-  permalinks:
-    year: '/:year/'
-    month: '/:year/:month/'
-
 exclude:
   - CHANGELOG.md
   - HOW_TO_RELEASE.md
