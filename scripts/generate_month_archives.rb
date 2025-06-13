@@ -20,7 +20,6 @@ months.each do |year, month|
   File.open(index_md, "w") do |f|
     f.puts <<~MARKDOWN
       ---
-      layout: archive
       title: "#{year}年#{month}月文章归档"
       permalink: /#{year}/#{month}/
       ---
@@ -55,7 +54,6 @@ years.each do |year|
   File.open(index_md, "w") do |f|
     f.puts <<~MARKDOWN
       ---
-      layout: archive
       title: "#{year}年文章归档"
       permalink: /#{year}/
       ---

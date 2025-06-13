@@ -1,5 +1,4 @@
 ---
-layout: archive
 title: "2023年10月文章归档"
 permalink: /2023/10/
 ---

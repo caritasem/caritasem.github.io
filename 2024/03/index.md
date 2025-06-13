@@ -1,5 +1,4 @@
 ---
-layout: archive
 title: "2024年03月文章归档"
 permalink: /2024/03/
 ---

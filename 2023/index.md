@@ -1,5 +1,4 @@
 ---
-layout: archive
 title: "2023年文章归档"
 permalink: /2023/
 ---

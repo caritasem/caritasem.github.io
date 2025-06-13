@@ -1,5 +1,4 @@
 ---
-layout: archive
 title: "2025年文章归档"
 permalink: /2025/
 ---

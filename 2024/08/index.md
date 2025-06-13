@@ -1,5 +1,4 @@
 ---
-layout: archive
 title: "2024年08月文章归档"
 permalink: /2024/08/
 ---
