@@ -25,7 +25,7 @@ months.each do |year, month|
       ---
 
       <ul>
-      {% for post in posts %}
+      {% for post in site.posts %}
         {% assign y = post.date | date: "%Y" %}
         {% assign m = post.date | date: "%m" %}
         {% if y == '#{year}' and m == '#{month}' %}
