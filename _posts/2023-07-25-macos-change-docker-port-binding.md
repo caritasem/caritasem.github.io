@@ -64,7 +64,6 @@ docker-desktop:/var/lib/docker/containers/c05fc37444df75bbf0f3277ee36b9997c8ef40
 vi hostconfig.json
 #### 搜索关键字
 /PortBindings
-
 "PortBindings":{"8080/tcp":[{"HostIp":"","HostPort":"8082"}]}
 # 修改为 相当于运行参数 -p 8086:3306
 "PortBindings":{"8080/tcp":[{"HostIp":"","HostPort":"8082"}], "3306/tcp":[{"HostIp":"","HostPort":"8086"}]}
@@ -73,7 +72,6 @@ vi hostconfig.json
 ```vi config.v2.json
 #### 搜索关键字
 /ExposedPorts
-
 "ExposedPorts":{"8080/tcp":{}}
 #### 修改为
 "ExposedPorts":{"8080/tcp":{}, "3306/tcp":{}}
