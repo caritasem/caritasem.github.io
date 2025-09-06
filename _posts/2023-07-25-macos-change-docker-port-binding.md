@@ -58,37 +58,29 @@ docker-desktop:/var/lib/docker/containers/c05fc37444df75bbf0f3277ee36b9997c8ef40
 # 退出终端
 # `ctrl+a+k`退出终端，输入y
 ```
-
-
 ### 修改端口配置
 1. hostconfig.json 添加端口绑定
-
 ```
 vi hostconfig.json
-# 搜索关键字
+#### 搜索关键字
 /PortBindings
 
 "PortBindings":{"8080/tcp":[{"HostIp":"","HostPort":"8082"}]}
 # 修改为 相当于运行参数 -p 8086:3306
 "PortBindings":{"8080/tcp":[{"HostIp":"","HostPort":"8082"}], "3306/tcp":[{"HostIp":"","HostPort":"8086"}]}
 ```
-
 2. config.v2.json 加上要暴露的端口
 ```vi config.v2.json
-# 搜索关键字
+#### 搜索关键字
 /ExposedPorts
 
 "ExposedPorts":{"8080/tcp":{}}
-# 修改为
+#### 修改为
 "ExposedPorts":{"8080/tcp":{}, "3306/tcp":{}}
-
 ```
-
-
 说明：
 ​- ​8080/tcp​​ 是容器端口
 ​​- "HostPort":"8082"​​ 是宿主主机端口，就是MacOS的端口
-
 ### 重启docker
 （​​重要​​，让docker重新读容器的取配置文件）
 
