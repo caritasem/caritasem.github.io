@@ -96,9 +96,9 @@ CREATE DATABASE knowledge;
 - 启用扩展并做简单验证
 ```sql
 CREATE EXTENSION vector;
-CREATE TABLE items (id serial, emb vector(3));
-INSERT INTO items (emb) VALUES ('[1,2,3]');
-SELECT * FROM items ORDER BY emb <-> '[1,1,1]' LIMIT 1;
+CREATE TABLE test_items (id serial, emb vector(3));
+INSERT INTO test_items (emb) VALUES ('[1,2,3]');
+SELECT * FROM test_items ORDER BY emb <-> '[1,1,1]' LIMIT 1;
 ```
 
 若能看到查询结果返回一行记录，则表示向量扩展启用成功。
