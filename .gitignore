@@ -1,1 +1,5 @@
 tmp/
+zen/
+.cache/
+.vscode/
+..jekyll-cache/
