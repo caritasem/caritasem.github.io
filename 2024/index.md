@@ -1,5 +1,6 @@
 ---
 title: "2024年文章归档"
+description: "caritasem 的 2024 年博客文章归档列表，记录该年度的技术积累与思考。"
 permalink: /2024/
 ---
 

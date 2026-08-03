@@ -3,3 +3,5 @@ zen/
 .cache/
 .vscode/
 ..jekyll-cache/
+AGENTS.md
+GEMINI.md

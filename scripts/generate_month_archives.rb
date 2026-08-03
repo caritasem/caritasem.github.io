@@ -21,6 +21,7 @@ months.each do |year, month|
     f.puts <<~MARKDOWN
       ---
       title: "#{year}年#{month}月文章归档"
+      description: "caritasem 的 #{year} 年 #{month} 月博客文章归档列表，整理该月份发布的所有技术博文与随笔。"
       permalink: /#{year}/#{month}/
       ---
 
@@ -59,6 +60,7 @@ years.each do |year|
     f.puts <<~MARKDOWN
       ---
       title: "#{year}年文章归档"
+      description: "caritasem 的 #{year} 年博客文章归档列表，整理该年度发布的所有技术积累与随笔。"
       permalink: /#{year}/
       ---
 

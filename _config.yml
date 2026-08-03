@@ -189,6 +189,8 @@ kramdown:
   hard_wrap: true
 
 exclude:
+  - AGENTS.md
+  - GEMINI.md
   - CHANGELOG.md
   - HOW_TO_RELEASE.md
   - Gemfile
