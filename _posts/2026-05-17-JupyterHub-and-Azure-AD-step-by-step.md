@@ -8,7 +8,9 @@ tags: [JupyterHub, Azure AD, OAuth2, 单点登录]
 
 ## 引言
 
-在一期部署中，我们成功搭建了基于 SystemdSpawner 与本地 PAM 认证的多用户 JupyterHub。随着团队规模的扩大，手动管理 Linux 用户、维护密码不仅繁琐，而且无法满足企业对单点登录（SSO）与多因素认证（MFA）的安全合规要求。
+**前置文章**：[JupyterHub 极简部署实践：基于 SystemdSpawner 与本地 PAM 认证 (一期)](/2026/05/JupyterHub-step-by-step/)
+
+在[一期部署](/2026/05/JupyterHub-step-by-step/)中，我们成功搭建了基于 SystemdSpawner 与本地 PAM 认证的多用户 JupyterHub。随着团队规模的扩大，手动管理 Linux 用户、维护密码不仅繁琐，而且无法满足企业对单点登录（SSO）与多因素认证（MFA）的安全合规要求。
 
 本期我们将 JupyterHub 升级为 **Azure AD（Microsoft Entra ID）OAuth2 认证**。由于一期已经严格遵循了统一的用户名规范，本次升级无需迁移已有用户数据，可以实现无痛过渡。
 
@@ -366,3 +368,7 @@ c.JupyterHub.tornado_settings = {
 这样，每个用户在登录 JupyterLab 后，工作目录下都会自动出现一个名为 `shared-data` 的软链接，从而实现数据零拷贝的高效共享。
 
 ---
+
+## 相关阅读
+
+- [JupyterHub 极简部署实践：基于 SystemdSpawner 与本地 PAM 认证 (一期)](/2026/05/JupyterHub-step-by-step/)

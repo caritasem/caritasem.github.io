@@ -326,3 +326,7 @@ sudo systemctl enable jupyter-resource-limits.service
 
 ---
 
+## 续篇
+
+一期完成后，可继续：[JupyterHub 进阶实践：集成 Azure AD 实现企业级单点登录 (二期)](/2026/05/JupyterHub-and-Azure-AD-step-by-step/)。
+
