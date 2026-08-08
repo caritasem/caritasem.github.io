@@ -1,18 +1,88 @@
 name: IndexNow Submission
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["pages build and deployment"]
+    types:
+      - completed
+
+permissions:
+  contents: read
+  actions: read
 
 jobs:
   submit-indexnow:
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'main'
     runs-on: ubuntu-latest
     steps:
-      - name: Submit URLs to IndexNow
-        uses: c2c24/indexnow-action@v1.1.0
+      - name: Checkout deployed commit
+        uses: actions/checkout@v4
         with:
-          domain: 'www.caritasem.com'
-          key: 'a3863e049ced424ca04b179fb91c801c'
-          keyLocation: 'https://www.caritasem.com/a3863e049ced424ca04b179fb91c801c.txt'
-          sitemapLocation: 'https://www.caritasem.com/sitemap.xml'
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0
+
+      - name: Submit changed post URLs to IndexNow
+        env:
+          GH_TOKEN: ${{ github.token }}
+          INDEXNOW_KEY: a3863e049ced424ca04b179fb91c801c
+          CURRENT: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          set -euo pipefail
+
+          PREV="$(gh api \
+            "/repos/${GITHUB_REPOSITORY}/actions/runs?branch=main&per_page=20" \
+            --jq "[.workflow_runs[]
+              | select(.name == \"pages build and deployment\"
+                       and .conclusion == \"success\"
+                       and .head_sha != \"${CURRENT}\")][0].head_sha // empty")"
+
+          if [ -z "${PREV}" ]; then
+            RANGE="${CURRENT}"
+            echo "No previous successful Pages deploy; using commit ${CURRENT}"
+          else
+            RANGE="${PREV}...${CURRENT}"
+            echo "Diff range: ${RANGE}"
+          fi
+
+          mapfile -t FILES < <(
+            git diff --name-only --diff-filter=ACMRD "${RANGE}" -- '_posts/*.md'
+          )
+
+          if [ "${#FILES[@]}" -eq 0 ]; then
+            echo "No post changes; skip IndexNow"
+            exit 0
+          fi
+
+          URLS=()
+          for f in "${FILES[@]}"; do
+            base="$(basename "${f}" .md)"
+            year="${base:0:4}"
+            month="${base:5:2}"
+            slug="${base:11}"
+            URLS+=("\"https://www.caritasem.com/${year}/${month}/${slug}/\"")
+          done
+
+          JSON_URLS="$(IFS=,; echo "${URLS[*]}")"
+          echo "Submitting: ${JSON_URLS}"
+
+          HTTP_CODE="$(curl -sS -o /tmp/indexnow-response.txt -w "%{http_code}" \
+            -X POST "https://api.indexnow.org/IndexNow" \
+            -H "Content-Type: application/json; charset=utf-8" \
+            -d "{
+              \"host\": \"www.caritasem.com\",
+              \"key\": \"${INDEXNOW_KEY}\",
+              \"keyLocation\": \"https://www.caritasem.com/${INDEXNOW_KEY}.txt\",
+              \"urlList\": [${JSON_URLS}]
+            }")"
+
+          echo "IndexNow response body:"
+          cat /tmp/indexnow-response.txt || true
+          echo
+          echo "IndexNow HTTP status: ${HTTP_CODE}"
+
+          case "${HTTP_CODE}" in
+            200|202) exit 0 ;;
+            *) exit 1 ;;
+          esac
